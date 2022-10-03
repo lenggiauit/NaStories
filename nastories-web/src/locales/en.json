@@ -92,7 +92,12 @@
     "nav_admin_manageUser": "Manage user",
     "nav_admin_managePost" : "Manage post",
     "input_public" : "Public",
+    "input_draft": "Draft",
+    "input_archived": "Archived",
     "CategoryNameAlreadyExisted": "This Category name has already existed",
-    "btnSaveDraft": "Save Draft"
+    "btnSaveDraft": "Save Draft",
+    "label_all" : "All",
+    "label_draft": "Draft",
+    "label_public": "Published"
     
 }

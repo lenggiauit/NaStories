@@ -1,0 +1,15 @@
+.admin-post-header{
+    
+    background-color: white;
+    text-align: center;
+}
+.admin-post-item{
+    background-color: white;
+    cursor: pointer;
+}
+.admin-post-img {
+    padding-left: 0px !important;
+}
+.admin-post-img img{
+    
+}

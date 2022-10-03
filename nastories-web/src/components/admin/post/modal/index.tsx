@@ -9,7 +9,7 @@ import { ResultCode } from "../../../../utils/enums";
 import PageLoading from "../../../pageLoading";
 import { BlogPost } from "../../../../services/models/admin/blogPost";
 import * as uuid from "uuid";
-import { useCreateEditBlogPostMutation } from "../../../../services/admin";
+import { useCreateEditBlogPostMutation, useGetQueryCategoryQuery } from "../../../../services/admin";
 //@ts-ignore
 import { SliderPicker } from 'react-color';
 import { getLoggedUser } from "../../../../utils/functions";
@@ -17,6 +17,15 @@ import { Category } from "../../../../services/models/admin/category";
 import { Tag } from "../../../../services/models/tag";
 import { useUploadImageMutation, useUploadPackageFileMutation } from "../../../../services/fileService";
 import { GlobalKeys } from "../../../../utils/constants";
+
+import { Editor } from "react-draft-wysiwyg";
+import { ContentState, convertFromHTML, EditorProps, EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+ 
+import { stateToHTML } from 'draft-js-export-html';
+ 
+import htmlToDraft from 'html-to-draftjs'; 
+
 
 let appSetting: AppSetting = require('../../../../appSetting.json');
 
@@ -26,8 +35,8 @@ interface FormValues {
     thumbnail: string,
     shortDescription: string,
     content: string,
-    categoty?: Category,
-    tags?: Tag[], 
+    categotyId: Category,
+    tagIds: any[],
     isArchived: boolean,
     isPublic: boolean,
     isDraft: boolean
@@ -40,18 +49,30 @@ type Props = {
 
 const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
 
-    const { locale } = useAppContext(); 
+    const { locale } = useAppContext();
     const [BlogPost, setBlogPost] = useState<BlogPost | undefined>(dataModel);
     const [createEditBlogPost, createEditBlogPostStatus] = useCreateEditBlogPostMutation();
     const [isArchived, setIsArchived] = useState<boolean>(dataModel != null ? dataModel.isArchived : false);
     const [isPublic, setIsPublic] = useState<boolean>(dataModel != null ? dataModel.isPublic : false);
     const [isDraft, setIsDraft] = useState<boolean>(dataModel != null ? dataModel.isDraft : false);
 
+    const getQueryCategoryStatus = useGetQueryCategoryQuery({ payload: { isArchived: false } });
+
     const [uploadFile, uploadData] = useUploadImageMutation();
-    const [uploadPackageFile, uploadPackageData] = useUploadPackageFileMutation();
     const [currentThumbnail, setCurrentThumbnail] = useState<string>(dataModel?.thumbnail ?? GlobalKeys.NoThumbnailUrl);
-    const [currentPackage, setCurrentPackage] = useState<string>();
+    
+    const blocksFromHTML = htmlToDraft(dataModel != null? dataModel?.content.replace(/(<\/?)figure((?:\s+.*?)?>)/g, '$1div$2'): "");
      
+    const contentState =   
+    ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks
+      );
+    const [editorState, setEditorState] = React.useState(
+        EditorState.createWithContent(contentState) );
+
+    const [editorContent, setEditorContent] = useState<any>();
+
+ 
     const onCancelHandler: React.MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault();
         onClose();
@@ -71,52 +92,67 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
         isArchived: (dataModel != null ? dataModel.isArchived : false),
         isPublic: (dataModel != null ? dataModel.isPublic : false),
         isDraft: (dataModel != null ? dataModel.isDraft : false),
-        categoty: dataModel?.category,
-        tags: dataModel?.tags
+        categotyId: (dataModel != null ? dataModel.category.id : ""),
+        tagIds: []
     };
 
     const validationSchema = () => {
         return Yup.object().shape({
             title: Yup.string().required(dictionaryList[locale]["RequiredField"])
-            .test("BlogPostNameAlreadyExisted", dictionaryList[locale]["BlogPostNameAlreadyExisted"], (title) => {
-                if (title) {
-                    return new Promise((resolve, reject) => {
-                        const currentUser = getLoggedUser();
-                        const headers: HeadersInit = {
-                            'Content-Type': 'application/json',
-                            'X-Request-Id': uuid.v4().toString(),
-                            'Authorization': `Bearer ${currentUser?.accessToken}`
-                          };
-                        const opts: RequestInit = {
-                            method: 'GET',
-                            headers
-                          };
-                        fetch(appSetting.BaseUrl + `admin/CheckBlogPostTitle?title=${title}` + (dataModel != null? `&BlogPostid=${dataModel.id}`: ""), opts)
-                            .then(response => response.json())
-                            .then((json) => {
-                                if (json.resultCode == ResultCode.Invalid)
+                .test("BlogPostNameAlreadyExisted", dictionaryList[locale]["BlogPostNameAlreadyExisted"], (title) => {
+                    if (title) {
+                        return new Promise((resolve, reject) => {
+                            const currentUser = getLoggedUser();
+                            const headers: HeadersInit = {
+                                'Content-Type': 'application/json',
+                                'X-Request-Id': uuid.v4().toString(),
+                                'Authorization': `Bearer ${currentUser?.accessToken}`
+                            };
+                            const opts: RequestInit = {
+                                method: 'GET',
+                                headers
+                            };
+                            fetch(appSetting.BaseUrl + `admin/CheckBlogPostTitle?title=${title}` + (dataModel != null ? `&BlogPostid=${dataModel.id}` : ""), opts)
+                                .then(response => response.json())
+                                .then((json) => {
+                                    if (json.resultCode == ResultCode.Invalid)
+                                        resolve(false);
+                                    else
+                                        resolve(true);
+                                }).catch(() => {
                                     resolve(false);
-                                else
-                                    resolve(true);
-                            }).catch(() => {
-                                resolve(false);
-                            })
-                    })
-                }
-                else {
-                    return true;
-                }
-            }),
+                                })
+                        })
+                    }
+                    else {
+                        return true;
+                    }
+                }),
+            categotyId: Yup.string()
+                .required(dictionaryList[locale]["RequiredField"]),
             shortDescription: Yup.string()
-                .required(dictionaryList[locale]["RequiredField"])
-                .length(500),
-            content: Yup.string()
-            .required(dictionaryList[locale]["RequiredField"])
+                .required(dictionaryList[locale]["RequiredField"]),
+
 
         });
     }
-    const handleOnSubmit = (values: FormValues, actions: FormikHelpers<FormValues>) => { 
-         
+    const handleOnSubmit = (values: FormValues, actions: FormikHelpers<FormValues>) => {
+
+        createEditBlogPost({
+            payload: {
+                id: values.id,
+                title: values.title,
+                categoryId: values.categotyId,
+                thumbnail: currentThumbnail,
+                content: editorContent,
+                shortDescription: values.shortDescription,
+                isArchived: isArchived,
+                isPublic: isPublic,
+                isDraft: isDraft,
+                tagIds: []
+
+            }
+        });
     }
 
     useEffect(() => {
@@ -128,12 +164,43 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
     const handleArchivedClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
         setIsArchived(!isArchived);
     }
+
     const handlePublicClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
         setIsPublic(!isPublic);
-    } 
+    }
+
+    const handleDraftClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
+        setIsDraft(!isDraft);
+    }
+
+    const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        switch(value.toLocaleLowerCase()){
+            case "published":
+                {
+                    setIsPublic(true);
+                    setIsDraft(false);
+                    setIsArchived(false);
+                    break;
+                }
+                case "draft": {
+                    setIsPublic(false);
+                    setIsDraft(true);
+                    setIsArchived(false);
+                    break;
+                }
+                case "archived":{
+                    setIsPublic(false);
+                    setIsDraft(false);
+                    setIsArchived(true);
+                    break;
+                }
+        } 
+      };
+ 
     const inputFileUploadRef = useRef<HTMLInputElement>(null);
 
-    const handleSelectFile: React.ChangeEventHandler<HTMLInputElement> = (e) => { 
+    const handleSelectFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         let file = e.target.files?.item(0);
         if (file) {
             const formData = new FormData();
@@ -141,9 +208,35 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
             uploadFile(formData);
         }
     }
-
-    const handleUploadFile: React.MouseEventHandler<HTMLAnchorElement> = (e) => { 
-        inputFileUploadRef.current?.click();
+ 
+    const uploadCallback = async (file: any) => {
+        return new Promise((resolve, reject) => {
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+                const currentUser = getLoggedUser();
+                const headers: HeadersInit = {
+                    // 'Content-Type': 'multipart/form-data',
+                    'X-Request-Id': uuid.v4().toString(),
+                    'Authorization': `Bearer ${currentUser?.accessToken}`
+                };
+                const opts: RequestInit = {
+                    method: 'POST',
+                    headers,
+                    body: formData
+                };
+                fetch(appSetting.BaseUrl + "file/uploadImage", opts)
+                    .then(response => response.json())
+                    .then((json) => {
+                        if (json.resultCode == ResultCode.Success)
+                            resolve({ data: { link: json.resource.url } });
+                        else
+                            reject();
+                    }).catch(() => {
+                        reject();
+                    })
+            }
+        });
     }
 
     useEffect(() => {
@@ -152,24 +245,10 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
         }
     }, [uploadData.data]);
 
-    const handleSelectPackageFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        let file = e.target.files?.item(0);
-        if (file) {
-            const formData = new FormData();
-            formData.append("file", file!);
-            uploadPackageFile(formData);
-        }
-    }
-
-
     useEffect(() => {
-        if (uploadPackageData.data && uploadPackageData.data.resultCode == ResultCode.Success) {
-            setCurrentPackage(uploadPackageData.data.resource.url);
+        setEditorContent(stateToHTML(editorState.getCurrentContent()));
 
-        }
-    }, [uploadPackageData]);
-    
- 
+    }, [editorState]);
     // 
     return (<>
         {createEditBlogPostStatus.isLoading && <PageLoading />}
@@ -195,9 +274,27 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
                                 <Form autoComplete="off">
                                     <div className="form-group align-items-center text-center">
                                         <img src={currentThumbnail} alt={"Thumbnail"} className="thumbnail-upload-img" width="350" />
-                                        <div className="profile-avatar-edit-link-container mt-4">  
-                                                <input type="file" name="image" ref={inputFileUploadRef} onChange={handleSelectFile} /> 
+                                        <div className="profile-avatar-edit-link-container mt-4">
+                                            <input type="file" name="image" ref={inputFileUploadRef} onChange={handleSelectFile} />
                                         </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <Field as="select" type="select" name="categotyId"
+                                            className="form-control" placeholder="Category"
+                                            defaultValue={dataModel != null ? dataModel.category.id : ""} >
+                                            <option value="" label="Select a categoty">Select a categoty</option>
+                                            {getQueryCategoryStatus.data && <>
+                                                {getQueryCategoryStatus.data.resource.map((type) => (
+                                                    <option key={type.id} value={type.id} >{type.name}</option>
+                                                ))}
+                                            </>
+                                            }
+                                        </Field>
+                                        <ErrorMessage
+                                            name="categotyId"
+                                            component="div"
+                                            className="alert alert-field alert-danger"
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <Field type="hidden" name="id" />
@@ -210,7 +307,7 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
                                     </div>
 
                                     <div className="form-group">
-                                        <Field type="textarea" as="textarea" row={7} length={500} className="form-control" name="shortDescription" placeholder="short description" />
+                                        <Field type="textarea" as="textarea" row={5} length={350} className="form-control" name="shortDescription" placeholder="short description" />
                                         <ErrorMessage
                                             name="shortDescription"
                                             component="div"
@@ -218,7 +315,12 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <Field type="textarea" as="textarea" row={15} className="form-control" name="content" placeholder="content" />
+                                        <div className="border" style={{ height: 255, overflow: 'auto' }}>
+                                            <Editor wrapperClassName="nsEditorClassName"
+                                                editorState={editorState} toolbar={{ image: { uploadEnabled: true, uploadCallback: uploadCallback, previewImage: true } }}
+                                                onEditorStateChange={setEditorState}
+                                            />
+                                        </div>
                                         <ErrorMessage
                                             name="content"
                                             component="div"
@@ -226,22 +328,34 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <div className="custom-control custom-checkbox">
-                                            <Field type="checkbox" className="custom-control-input" name="isArchived" checked={isArchived} />
-                                            <label className="custom-control-label" onClick={handleArchivedClick} ><Translation tid="archived" /></label>
-                                        </div>
-                                        <div className="custom-control custom-checkbox">
-                                            <Field type="checkbox" className="custom-control-input" name="isPublic" checked={isPublic} />
-                                            <label className="custom-control-label" onClick={handlePublicClick} ><Translation tid="input_public" /></label>
-                                        </div>
+                                        <select name="status" className="form-control" onChange={ handleStatusChange } >
+                                            <option selected={dataModel?.isPublic}  value="Published">Published</option>
+                                            <option selected={dataModel?.isDraft}  value="Draft">Draft</option>
+                                            <option selected={dataModel?.isArchived}  value="Archived">Archived</option>
+                                        </select>
+                                        {/* <div className="row">
+                                            <div className="col col-md-2">
+                                                <div className="custom-control custom-checkbox">
+                                                    <Field type="radio" className="custom-control-input" name="isArchived" checked={isArchived} />
+                                                    <label className="custom-control-label" onClick={handleArchivedClick} ><Translation tid="input_archived" /></label>
+                                                </div>
+                                            </div>
+                                            <div className="col col-md-2">
+                                                <div className="custom-control custom-checkbox">
+                                                    <Field type="radio" className="custom-control-input" name="isPublic" checked={isPublic} />
+                                                    <label className="custom-control-label" onClick={handlePublicClick} ><Translation tid="input_public" /></label>
+                                                </div>
+                                            </div>
+                                            <div className="col col-md-2">
+                                                <div className="custom-control custom-checkbox">
+                                                    <Field type="radio" className="custom-control-input" name="isDraft" checked={isDraft} />
+                                                    <label className="custom-control-label" onClick={handleDraftClick} ><Translation tid="input_draft" /></label>
+                                                </div>
+                                            </div>
+                                        </div> */}
                                     </div>
-                                    <div className="modal-footer border-0 pr-0 pl-0">
-                                        <button type="button" className="btn btn-secondary" onClick={onCancelHandler} data-dismiss="modal"><Translation tid="btnClose" /></button>
-                                        {!dataModel &&
-                                        <button type="submit" className="btn btn-primary" >
-                                            <Translation tid="btnSaveDraft" />
-                                        </button>
-                                        }
+                                    <div className="modal-footer border-0 pr-0 pl-0 mb-4">
+                                        <button type="button" className="btn btn-secondary" onClick={onCancelHandler} data-dismiss="modal"><Translation tid="btnClose" /></button> 
                                         <button type="submit" className="btn btn-primary" >
                                             {dataModel && <Translation tid="btnSave" />}
                                             {!dataModel && <Translation tid="btnCreate" />}

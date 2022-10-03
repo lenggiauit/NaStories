@@ -37,6 +37,11 @@
     "nav_admin_manageUser": "Quản lý user",
     "nav_admin_managePost" : "Quản lý bài viết",
     "input_public" : "Công khai",
+    "input_draft": "Nháp",
+    "input_archived": "Lưu trữ",
     "CategoryNameAlreadyExisted": "This Category name has already existed",
-    "btnSaveDraft": "Lưu bản nháp"
+    "btnSaveDraft": "Lưu bản nháp",
+    "label_all" : "All",
+    "label_draft": "Draft",
+    "label_public": "Published"
 }

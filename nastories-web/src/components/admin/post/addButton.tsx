@@ -14,10 +14,10 @@ const AddBlogPostButton: React.FC<Props> = ({ onAdded }) => {
     }
     return (<>
         {isShowModal && <AddEditBlogPostModal onClose={onAddNewHandler} />}
-        <div className="col-6 col-lg-3">
+        <div className="col-12 col-sm-3">
             <a className="card shadow-1 hover-shadow-6" href="#" onClick={(e) => { e.preventDefault(); setIsShowModal(true) }} data-toggle="modal"  >
-                <div className="card-body project-container d-flex text-center justify-content-center ">
-                    <i className="bi bi-plus" style={{ fontSize: 42 }} ></i>
+                <div className="card-body project-container1 d-flex text-center justify-content-center ">
+                    <i className="bi bi-plus" style={{ fontSize: 16 }} ></i>
                 </div>
             </a>
         </div>

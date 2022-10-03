@@ -33,6 +33,18 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+
+        GetQueryCategory: builder.query<ApiResponse<Category[]>, ApiRequest<{ isArchived: boolean }>>({
+            query: (payload) => ({
+                url: 'admin/getCategory',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<Category[]>) {
+                return response;
+            },
+        }),
+
         CreateEditCategory: builder.mutation<ApiResponse<Category>, ApiRequest<{ id: any, name: any, color: any, description: any, isArchived: boolean }>>({
             query: (payload) => ({
                 url: 'admin/createEditCategory',
@@ -43,6 +55,7 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+
         GetBlogPost: builder.mutation<ApiResponse<BlogPost[]>, ApiRequest<{ keywords: any, isAll?: boolean, isPublic?: boolean, isDraft?: boolean, isArchived: boolean }>>({
             query: (payload) => ({
                 url: 'admin/getBlogPost',
@@ -53,15 +66,16 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+
         CreateEditBlogPost: builder.mutation<ApiResponse<BlogPost>, 
                 ApiRequest<{ 
                     id: any, 
                     title: any, 
                     thumbnail: any,
-                    category: Category, 
+                    categoryId: any, 
                     shortDescription: any, 
                     content: any,
-                    tags: Tag[],
+                    tagIds: any[],
                     isPublic: boolean,
                     isDraft: boolean,
                     isArchived: boolean 
@@ -80,4 +94,4 @@ export const AdminService = createApi({
     })
 });
 
-export const { useGetCategoryMutation, useCreateEditCategoryMutation, useGetBlogPostMutation, useCreateEditBlogPostMutation  } = AdminService;
+export const { useGetCategoryMutation, useCreateEditCategoryMutation, useGetBlogPostMutation, useCreateEditBlogPostMutation, useGetQueryCategoryQuery  } = AdminService;
