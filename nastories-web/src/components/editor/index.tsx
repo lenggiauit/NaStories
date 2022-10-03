@@ -4,6 +4,8 @@ import { ContentState, EditorProps, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import  './nsEditorStyle.css';
 
+
+
 const NSEditor: React.FC<
     { text: string } & Omit<EditorProps, "editorState" | "onChange">
 > = ({ text, ...props }) => {
