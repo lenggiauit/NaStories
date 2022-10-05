@@ -10,12 +10,13 @@ const appSetting: AppSetting = require('../../appSetting.json');
 
 type Props = {
     totalRows: number,
+    pagingData: Paging,
     pageChangeEvent: (metaData: Paging) => void,
 }
-const Pagination: React.FC<Props> = ({ totalRows, pageChangeEvent }) => {
+const Pagination: React.FC<Props> = ({ totalRows, pagingData, pageChangeEvent }) => {
 
     let totalPages = Math.ceil(totalRows / appSetting.PageSize);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(pagingData.index);
 
     const nextPageHandle = () => {
         let p = currentPage + 1;

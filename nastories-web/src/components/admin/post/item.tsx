@@ -1,31 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BlogPost } from "../../../services/models/admin/blogPost";
+import { useUpdateBlogPostStatusMutation } from "../../../services/admin";
+import PageLoading from "../../pageLoading";
 
 type Props = {
     dataItem: BlogPost,
     onSelected: (dataItem: BlogPost) => void,
+    onChangeStatus: (dataItem: BlogPost) => void,
 }
 
-const BlogPostItem: React.FC<Props> = ({ dataItem, onSelected }) => {
+const BlogPostItem: React.FC<Props> = ({ dataItem, onSelected, onChangeStatus }) => {
+
+    const [updateBlogPostStatus, updateBlogPostStatusStatus] = useUpdateBlogPostStatusMutation();
+
     const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value;
-        switch(value.toLocaleLowerCase()){
-            case "published":
-                {
-                    
-                    break;
-                }
-                case "draft": {
-                     
-                    break;
-                }
-                case "archived":{
-                    
-                    break;
-                }
-        } 
+        updateBlogPostStatus({payload: { id : dataItem.id, status: value}});
       };
+
+ 
     return (<>
+    {updateBlogPostStatusStatus.isLoading && <PageLoading />}
         <div className="col-md-12" >
             <div className="row admin-post-item border border-white">
                 <div className="col-7">

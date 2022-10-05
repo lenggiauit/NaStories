@@ -248,7 +248,7 @@ namespace NaStories.API.Persistence.Repositories
                 //    .ToListAsync();
 
 
-                return _context.Conversation.AsNoTracking()
+                return await Task.FromResult( _context.Conversation.AsNoTracking()
                     .OrderByDescending(s => s.UpdatedBy)
                     .Where(c => c.Title.ToLower().Contains(request.Payload.Keyword.ToLower()))
                     .Join(_context.ConversationUsers,
@@ -295,7 +295,7 @@ namespace NaStories.API.Persistence.Repositories
                         Conversationers = new List<User> { currentUser, u },
                     }))
                     //.DistinctBy(d => d.Conversationers )
-                    .ToList();
+                    .ToList());
 
             }
             catch (Exception ex)

@@ -75,7 +75,7 @@ export const AdminService = createApi({
                     categoryId: any, 
                     shortDescription: any, 
                     content: any,
-                    tagIds: any[],
+                    tags: any[],
                     isPublic: boolean,
                     isDraft: boolean,
                     isArchived: boolean 
@@ -91,7 +91,23 @@ export const AdminService = createApi({
             },
         }),
 
+        UpdateBlogPostStatus: builder.mutation<ApiResponse<Category>, ApiRequest<{ id: any, status: any }>>({
+            query: (payload) => ({
+                url: 'admin/updateBlogPostStatus',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<Category>) {
+                return response;
+            },
+        }),
+
     })
 });
 
-export const { useGetCategoryMutation, useCreateEditCategoryMutation, useGetBlogPostMutation, useCreateEditBlogPostMutation, useGetQueryCategoryQuery  } = AdminService;
+export const { useGetCategoryMutation, 
+    useCreateEditCategoryMutation, 
+    useGetBlogPostMutation, 
+    useCreateEditBlogPostMutation, 
+    useGetQueryCategoryQuery,  
+    useUpdateBlogPostStatusMutation  } = AdminService;

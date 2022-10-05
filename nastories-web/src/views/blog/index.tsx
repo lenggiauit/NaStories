@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import BlogPostItem from "../../components/blog/blogPostItem";
 import Categories from "../../components/blog/categories";
@@ -7,17 +7,24 @@ import Tags from "../../components/blog/tags";
 import TopPosts from "../../components/blog/topPosts";
 import Footer from "../../components/footer";
 import Layout from "../../components/layout";
+import LocalSpinner from "../../components/localSpinner";
 import NotFound from "../../components/notFound";
 import Pagination from "../../components/pagination";
+import { useGetBlogPostMutation } from "../../services/blog";
 import { PostDataItem } from "../../services/models/postDataItem";
+import { BlogPostResource } from "../../services/resources/blogPostResource";
 import { AppSetting, MetaData, Paging } from "../../types/type";
+import { ResultCode } from "../../utils/enums";
 const appSetting: AppSetting = require('../../appSetting.json');
 
 const Blog: React.FC = (): ReactElement => {
+    const [keyWords, setKeyWords] = useState<string | null>(); 
+    const [getBlogPostList, getBlogPostStatus] = useGetBlogPostMutation();
     const [metaData, setMetaData] = useState<MetaData>({ paging: { index: 1, size: appSetting.PageSize } });
     const [pagingData, setPagingData] = useState<Paging>({ index: 1, size: appSetting.PageSize });
     const [totalRows, setTotalRows] = useState<number>(0);
-    const [postDataList, setPostDataList] = useState<PostDataItem[]>([]);
+    const [BlogPostList, setBlogPostList] = useState<BlogPostResource[]>([]);
+     
     const pagingChangeEvent: any = (p: Paging) => {
 
         let mp: Paging = {
@@ -26,7 +33,31 @@ const Blog: React.FC = (): ReactElement => {
         }
         setPagingData(mp);
     }
-    
+    useEffect(() => {
+        let md: MetaData = {
+            paging: pagingData
+        }
+        setMetaData(md);
+    }, [pagingData]);
+
+
+    useEffect(() => {
+        getBlogPostList({ payload: { keywords:keyWords}, metaData: metaData });
+    }, [metaData]);
+
+    useEffect(() => {
+        if (getBlogPostStatus.isSuccess && getBlogPostStatus.data.resource != null) {
+            let data = getBlogPostStatus.data.resource;
+            if (data.length > 0) {
+                setTotalRows(data[0].totalRows);
+            }
+            else {
+                setTotalRows(0);
+            } 
+            setBlogPostList(data);
+        }
+    }, [getBlogPostStatus]);
+ 
     return (
         <>
             <Layout isPublic={true}>
@@ -42,11 +73,14 @@ const Blog: React.FC = (): ReactElement => {
                         <div className="row">
                             {/* <!-- Begin left side --> */}
                             <div className="col-md-8 col-xl-9">
-                                <div className="row gap-y">
-                                    {postDataList.map(p => <BlogPostItem key={v4().toString()} dataItem={p} />)} 
-                                    {(postDataList == null || postDataList.length == 0) && <NotFound />}
+                                <div className="row gap-y"> 
+                                {getBlogPostStatus.isLoading && <LocalSpinner /> }
+                                    {BlogPostList.map((p) => (
+                                     <BlogPostItem key={v4().toString()} postData={p} />
+                                    ))}  
+                                    {(getBlogPostStatus.isSuccess && BlogPostList.length == 0 ) && <NotFound />}
                                 </div> 
-                                <Pagination totalRows={totalRows} pageChangeEvent={pagingChangeEvent} />
+                                <Pagination totalRows={totalRows} pagingData={pagingData} pageChangeEvent={pagingChangeEvent} />
                             </div>
                             {/* <!-- End left side --> */} 
                             {/* <!-- Begin right side --> */}

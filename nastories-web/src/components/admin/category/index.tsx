@@ -94,7 +94,7 @@ const CategorysList: React.FC = () => {
                     </div>
 
                     <div className="mt-7">
-                        <Pagination totalRows={totalRows} pageChangeEvent={pagingChangeEvent} />
+                        <Pagination totalRows={totalRows} pagingData={pagingData} pageChangeEvent={pagingChangeEvent} />
                     </div>
                 </div>
             </div>

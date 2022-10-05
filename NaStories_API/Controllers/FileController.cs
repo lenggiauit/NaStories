@@ -32,43 +32,58 @@ namespace NaStories.API.Controllers
         [HttpPost("UploadImage")]
         public async Task<BaseResponse<FileResource>> UploadImage(IFormFile file)
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), _appSettings.FileFolderPath);
-            string fileName = await _fileService.UploadImage(file, path);
-            if (!string.IsNullOrEmpty(fileName))
+            if (file != null)
             {
-                return new BaseResponse<FileResource>(new FileResource
-                {
-                    FileName = fileName,
-                    Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, _appSettings.FileRequestUrl, fileName)
-                }); ;
-            }
-            else
-            {
-                return new BaseResponse<FileResource>("Cannot image upload!", ResultCode.Unknown);
-            }
-        }
-        [HttpPost("UploadPackageFile")]
-        public async Task<BaseResponse<FileResource>> UploadPackageFile(IFormFile file)
-        {
-            if (_appSettings.TemplateSupportExtension.Any(e => e.ToLower().Equals(file.ContentType.ToLower()))) {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), _appSettings.FileFolderPath);
-                string fileName = await _fileService.UploadTemplateZipFile(file, path);
+                string fileName = await _fileService.UploadImage(file, path);
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     return new BaseResponse<FileResource>(new FileResource
                     {
                         FileName = fileName,
-                        Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, _appSettings.TemplateRequestUrl, fileName)
+                        Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, _appSettings.FileRequestUrl, fileName)
                     }); ;
                 }
                 else
                 {
-                    return new BaseResponse<FileResource>("Cannot file upload!", ResultCode.Unknown);
+                    return new BaseResponse<FileResource>("Cannot image upload!", ResultCode.Unknown);
                 }
             }
             else
             {
-                return new BaseResponse<FileResource>("File doesn't not support!", ResultCode.Unknown);
+                return new BaseResponse<FileResource>("File upload is null!", ResultCode.Unknown);
+            }
+        }
+        [HttpPost("UploadPackageFile")]
+        public async Task<BaseResponse<FileResource>> UploadPackageFile(IFormFile file)
+        {
+            if (file != null)
+            {
+                if (_appSettings.TemplateSupportExtension.Any(e => e.ToLower().Equals(file.ContentType.ToLower())))
+                {
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), _appSettings.FileFolderPath);
+                    string fileName = await _fileService.UploadTemplateZipFile(file, path);
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        return new BaseResponse<FileResource>(new FileResource
+                        {
+                            FileName = fileName,
+                            Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, _appSettings.TemplateRequestUrl, fileName)
+                        }); ;
+                    }
+                    else
+                    {
+                        return new BaseResponse<FileResource>("Cannot file upload!", ResultCode.Unknown);
+                    }
+                }
+                else
+                {
+                    return new BaseResponse<FileResource>("File doesn't not support!", ResultCode.Unknown);
+                }
+            }
+            else
+            {
+                return new BaseResponse<FileResource>("File upload is null!", ResultCode.Unknown);
             }
         }
     }

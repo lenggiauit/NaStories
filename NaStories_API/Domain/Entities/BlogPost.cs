@@ -11,6 +11,7 @@ namespace NaStories.API.Domain.Entities
         public string Content { get; set; } 
         public string Url { get; set; }
         public int View { get; set; }
+        public int Comment { get; set; }
         public bool IsDraft { get; set; }
         public bool IsPublic { get; set; }
         public bool IsArchived { get; set; }
@@ -18,8 +19,6 @@ namespace NaStories.API.Domain.Entities
         [ForeignKey("Category")]
         public Guid CategoryId { get; set; }
         public virtual Category Category { get; set; }
-
-        [NotMapped]
         public virtual ICollection<Tag> Tags { get; set; }
          
         public string ShortDescription { get; set; }

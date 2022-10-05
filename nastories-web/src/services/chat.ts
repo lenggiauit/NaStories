@@ -9,11 +9,12 @@ import { CommonResponse } from './communication/response/commonResponse';
 import { Messenger } from './models/messenger';
 let appSetting: AppSetting = require('../appSetting.json');
 
+ 
 export const signalRHubConnection = new signalR.HubConnectionBuilder()
     .withUrl(appSetting.BaseUrl + "conversationServiceHub", {
         accessTokenFactory: () => getLoggedUser()?.accessToken,
     })
-    .withAutomaticReconnect()
+    .withAutomaticReconnect() 
     .build();
 
 export const StartSignalRHubConnection = () => {

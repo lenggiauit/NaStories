@@ -26,7 +26,8 @@ namespace NaStories.API.Mapping
             CreateMap<Language, LanguageResource>();
             //
             CreateMap<Category, CategoryResource>();
-
+            CreateMap<Tag, TagResource>();
+            CreateMap<BlogPost, BlogPostResource>();
         }
     }
 }

@@ -14,6 +14,7 @@ using NaStories.API.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlogPostFilterRequest = NaStories.API.Domain.Services.Communication.Request.Admin.BlogPostFilterRequest;
 
 namespace NaStories.API.Controllers
 {
@@ -122,7 +123,21 @@ namespace NaStories.API.Controllers
                 return new BaseResponse<BlogPost>(Constants.InvalidMsg, ResultCode.Invalid);
             }
         }
-         
+
+        [Permissions(PermissionConstant.CreateEditBlogPost)]
+        [HttpPost("UpdateBlogPostStatus")]
+        public async Task<BaseResponse<ResultCode>> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.UpdateBlogPostStatus(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
 
     }
 }

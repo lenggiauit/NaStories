@@ -16,16 +16,15 @@ import { getLoggedUser } from "../../../../utils/functions";
 import { Category } from "../../../../services/models/admin/category";
 import { Tag } from "../../../../services/models/tag";
 import { useUploadImageMutation, useUploadPackageFileMutation } from "../../../../services/fileService";
-import { GlobalKeys } from "../../../../utils/constants";
-
+import { GlobalKeys } from "../../../../utils/constants"; 
 import { Editor } from "react-draft-wysiwyg";
 import { ContentState, convertFromHTML, EditorProps, EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
- 
-import { stateToHTML } from 'draft-js-export-html';
- 
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
+import { stateToHTML } from 'draft-js-export-html'; 
 import htmlToDraft from 'html-to-draftjs'; 
+import { TagsInput } from "react-tag-input-component";
 
+ 
 
 let appSetting: AppSetting = require('../../../../appSetting.json');
 
@@ -36,7 +35,7 @@ interface FormValues {
     shortDescription: string,
     content: string,
     categotyId: Category,
-    tagIds: any[],
+    tags: any[],
     isArchived: boolean,
     isPublic: boolean,
     isDraft: boolean
@@ -63,16 +62,14 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
     
     const blocksFromHTML = htmlToDraft(dataModel != null? dataModel?.content.replace(/(<\/?)figure((?:\s+.*?)?>)/g, '$1div$2'): "");
      
-    const contentState =   
-    ContentState.createFromBlockArray(
-        blocksFromHTML.contentBlocks
-      );
+    const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks);
     const [editorState, setEditorState] = React.useState(
         EditorState.createWithContent(contentState) );
 
     const [editorContent, setEditorContent] = useState<any>();
+    const [selectedTags, setSelectedTags] = useState<any[]>(dataModel != null ? dataModel.tags.map(t => t.name) : []);
 
- 
+     
     const onCancelHandler: React.MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault();
         onClose();
@@ -93,7 +90,7 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
         isPublic: (dataModel != null ? dataModel.isPublic : false),
         isDraft: (dataModel != null ? dataModel.isDraft : false),
         categotyId: (dataModel != null ? dataModel.category.id : ""),
-        tagIds: []
+        tags: (dataModel != null ? dataModel.tags : []),
     };
 
     const validationSchema = () => {
@@ -149,7 +146,7 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
                 isArchived: isArchived,
                 isPublic: isPublic,
                 isDraft: isDraft,
-                tagIds: []
+                tags: selectedTags
 
             }
         });
@@ -160,19 +157,7 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
             onClose(createEditBlogPostStatus.data.resource);
         }
     }, [createEditBlogPostStatus])
-
-    const handleArchivedClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
-        setIsArchived(!isArchived);
-    }
-
-    const handlePublicClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
-        setIsPublic(!isPublic);
-    }
-
-    const handleDraftClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
-        setIsDraft(!isDraft);
-    }
-
+ 
     const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value;
         switch(value.toLocaleLowerCase()){
@@ -328,31 +313,19 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
                                         />
                                     </div>
                                     <div className="form-group">
+                                    <TagsInput
+                                        value={selectedTags}
+                                        onChange={setSelectedTags}
+                                        name="tags"
+                                        placeHolder="tags"
+                                    />
+                                    </div>
+                                    <div className="form-group">
                                         <select name="status" className="form-control" onChange={ handleStatusChange } >
                                             <option selected={dataModel?.isPublic}  value="Published">Published</option>
                                             <option selected={dataModel?.isDraft}  value="Draft">Draft</option>
                                             <option selected={dataModel?.isArchived}  value="Archived">Archived</option>
-                                        </select>
-                                        {/* <div className="row">
-                                            <div className="col col-md-2">
-                                                <div className="custom-control custom-checkbox">
-                                                    <Field type="radio" className="custom-control-input" name="isArchived" checked={isArchived} />
-                                                    <label className="custom-control-label" onClick={handleArchivedClick} ><Translation tid="input_archived" /></label>
-                                                </div>
-                                            </div>
-                                            <div className="col col-md-2">
-                                                <div className="custom-control custom-checkbox">
-                                                    <Field type="radio" className="custom-control-input" name="isPublic" checked={isPublic} />
-                                                    <label className="custom-control-label" onClick={handlePublicClick} ><Translation tid="input_public" /></label>
-                                                </div>
-                                            </div>
-                                            <div className="col col-md-2">
-                                                <div className="custom-control custom-checkbox">
-                                                    <Field type="radio" className="custom-control-input" name="isDraft" checked={isDraft} />
-                                                    <label className="custom-control-label" onClick={handleDraftClick} ><Translation tid="input_draft" /></label>
-                                                </div>
-                                            </div>
-                                        </div> */}
+                                        </select> 
                                     </div>
                                     <div className="modal-footer border-0 pr-0 pl-0 mb-4">
                                         <button type="button" className="btn btn-secondary" onClick={onCancelHandler} data-dismiss="modal"><Translation tid="btnClose" /></button> 

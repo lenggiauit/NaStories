@@ -627,5 +627,10 @@ label.btn {
   height: calc(100vh - 300px);
 } 
 
+.modal-header  {
+  padding-top: 5px !important;
+  padding-bottom: 0 !important;
+}
+
 /* sub menu */
  

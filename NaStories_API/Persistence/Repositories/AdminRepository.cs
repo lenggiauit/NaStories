@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BlogPostFilterRequest = NaStories.API.Domain.Services.Communication.Request.Admin.BlogPostFilterRequest;
 
 namespace NaStories.API.Persistence.Repositories
 {
@@ -25,20 +26,20 @@ namespace NaStories.API.Persistence.Repositories
 
         public async Task<(List<Category>, ResultCode)> GetCategory(BaseRequest<CategoryFilterRequest> request)
         {
-            try 
+            try
             {
                 return (await _context.Category
-                    .Where(p => p.IsArchived == request.Payload.IsArchived) 
+                    .Where(p => p.IsArchived == request.Payload.IsArchived)
                     .AsNoTracking()
                     .OrderByDescending(x => x.UpdatedDate)
                     .GetPagingQueryable(request.MetaData)
-                    .ToListAsync() , ResultCode.Success);
-            
+                    .ToListAsync(), ResultCode.Success);
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Error at GetCategory method: " + ex.Message);
-                return (null, ResultCode.Error); 
+                return (null, ResultCode.Error);
             }
         }
 
@@ -47,10 +48,10 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
                 var predicate = PredicateBuilder.New<Category>();
-                
+
                 predicate.And(c => c.Name.Equals(name));
 
-                if ( categoryid != null)
+                if (categoryid != null)
                 {
                     predicate.And(c => !c.Id.Equals(categoryid));
                 }
@@ -74,7 +75,7 @@ namespace NaStories.API.Persistence.Repositories
             {
                 _logger.LogError("Error at CheckCategoryName method: " + ex.Message);
                 return ResultCode.Error;
-                
+
             }
         }
 
@@ -92,7 +93,7 @@ namespace NaStories.API.Persistence.Repositories
                         Description = request.Payload.Description,
                         Color = request.Payload.Color,
                         CreatedBy = userId,
-                        CreatedDate = DateTime.Now, 
+                        CreatedDate = DateTime.Now,
                         IsArchived = request.Payload.IsArchived,
                     };
                     await _context.Category.AddAsync(category);
@@ -102,7 +103,7 @@ namespace NaStories.API.Persistence.Repositories
                 else
                 {
                     var category = await _context.Category.Where(c => c.Id.Equals(request.Payload.Id)).FirstOrDefaultAsync();
-                    if(category != null)
+                    if (category != null)
                     {
                         category.Name = request.Payload.Name;
                         category.Url = Regex.Replace(request.Payload.Name.ToLower(), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled);
@@ -173,7 +174,7 @@ namespace NaStories.API.Persistence.Repositories
                         Id = postId,
                         Title = request.Payload.Title,
                         Thumbnail = request.Payload.Thumbnail,
-                        CategoryId = request.Payload.Category.Id, 
+                        CategoryId = request.Payload.CategoryId,
                         Url = Regex.Replace(request.Payload.Title.ToLower(), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
                         ShortDescription = request.Payload.ShortDescription,
                         Content = request.Payload.Content,
@@ -183,7 +184,23 @@ namespace NaStories.API.Persistence.Repositories
                         IsDraft = request.Payload.IsDraft,
                         IsPublic = request.Payload.IsPublic,
                     };
+                     
                     await _context.BlogPost.AddAsync(post);
+                    if (request.Payload.Tags != null)
+                    {
+                        List<Tag> tags = new List<Tag>();
+                        foreach (var name in request.Payload.Tags)
+                        {
+                            tags.Add(new Tag()
+                            {
+                                Id = Guid.NewGuid(),
+                                Name = name,
+                                Url = Regex.Replace(name, "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
+                                BlogPostId = postId
+                            }) ; 
+                        }
+                        await _context.Tag.AddRangeAsync(tags);
+                    }
                     await _context.SaveChangesAsync();
                     return (post, ResultCode.Success);
                 }
@@ -194,7 +211,7 @@ namespace NaStories.API.Persistence.Repositories
                     {
                         post.Title = request.Payload.Title;
                         post.Thumbnail = request.Payload.Thumbnail;
-                        post.CategoryId = request.Payload.Category.Id;
+                        post.CategoryId = request.Payload.CategoryId;
                         post.Url = Regex.Replace(request.Payload.Title.ToLower(), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled);
                         post.ShortDescription = request.Payload.ShortDescription;
                         post.Content = request.Payload.Content;
@@ -203,6 +220,26 @@ namespace NaStories.API.Persistence.Repositories
                         post.IsArchived = request.Payload.IsArchived;
                         post.IsDraft = request.Payload.IsDraft;
                         post.IsPublic = request.Payload.IsPublic;
+
+                        var oldTags = _context.Tag.Where(t => t.BlogPostId.Equals(post.Id)).ToList();
+                        _context.Tag.RemoveRange(oldTags);
+
+                        if (request.Payload.Tags != null)
+                        {
+                            List<Tag> tags = new List<Tag>();
+                            foreach (var name in request.Payload.Tags)
+                            {
+                                tags.Add(new Tag()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = name,
+                                    Url = Regex.Replace(name, "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
+                                    BlogPostId = post.Id
+                                });
+                            }
+                            await _context.Tag.AddRangeAsync(tags);
+                        }
+
                     }
                     _context.BlogPost.Update(post);
                     await _context.SaveChangesAsync();
@@ -221,40 +258,116 @@ namespace NaStories.API.Persistence.Repositories
         {
             try
             {
-                var predicate = PredicateBuilder.New<BlogPost>();
-                 
+                var query = _context.BlogPost.AsQueryable();
+
                 if (!string.IsNullOrEmpty(request.Payload.Keywords))
                 {
-                    predicate.And(p => p.Title.Contains(request.Payload.Keywords));
+                    query = query
+                    .Where(p => p.Title.Contains(request.Payload.Keywords));
+
                 }
-                if (request.Payload.IsAll != null && request.Payload.IsAll.Value )
+                if (request.Payload.IsAll != null && !request.Payload.IsAll.Value)
                 {
                     if (request.Payload.IsArchived != null && request.Payload.IsArchived.Value)
                     {
-                        predicate.And(p => p.IsArchived == request.Payload.IsArchived);
+                        query = query
+                        .Where(p => p.IsArchived == request.Payload.IsArchived);
                     }
                     if (request.Payload.IsPublic != null && request.Payload.IsPublic.Value)
                     {
-                        predicate.And(p => p.IsPublic == request.Payload.IsPublic);
+                        query = query
+                        .Where(p => p.IsPublic == request.Payload.IsPublic);
                     }
                     if (request.Payload.IsDraft != null && request.Payload.IsDraft.Value)
                     {
-                        predicate.And(p => p.IsDraft == request.Payload.IsDraft);
+                        query = query
+                       .Where(p => p.IsDraft == request.Payload.IsDraft);
                     }
                 }
 
-                return (await _context.BlogPost
-                    .Where(predicate)
-                    .AsNoTracking()
-                    .OrderByDescending(x => x.UpdatedDate)
-                    .GetPagingQueryable(request.MetaData)
-                    .ToListAsync(), ResultCode.Success);
+                var totalRow = await query.CountAsync();
+
+                return (await query 
+                  .AsNoTracking()
+                  .OrderByDescending(x => x.UpdatedDate)
+                  .Include(p => p.Category)
+                  .Include(p => p.Tags)
+                  .Select(p =>  new BlogPost() { 
+                    Id = p.Id,
+                    Title = p.Title,    
+                    CategoryId = p.CategoryId,
+                    Category = p.Category,
+                    Content = p.Content,
+                    TotalRows = totalRow,
+                    Thumbnail = p.Thumbnail,
+                    ShortDescription = p.ShortDescription,
+                    CreatedBy = p.CreatedBy,
+                    UpdatedBy  = p.UpdatedBy,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    Url = p.Url,
+                    IsArchived = p.IsArchived,
+                    IsDraft = p.IsDraft,
+                    IsPublic = p.IsPublic,
+                    View = p.View,
+                    Comment = p.Comment,
+                    Tags = p.Tags
+                  })
+                  
+                  .GetPagingQueryable(request.MetaData) 
+                  .ToListAsync(), ResultCode.Success);
+
 
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error at GetBlogPost method: " + ex.Message);
                 return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId)
+        {
+            try
+            {
+                var post = await _context.BlogPost.Where(c => c.Id.Equals(request.Payload.Id)).FirstOrDefaultAsync();
+                if (post != null)
+                {
+                    switch (request.Payload.Status.ToLower())
+                    {
+                        case "published":
+                            {
+                                post.IsArchived = false;
+                                post.IsDraft = false;
+                                post.IsPublic = true;
+                                break;
+                            }
+                        case "draft":
+                            {
+                                post.IsArchived = false;
+                                post.IsDraft = true;
+                                post.IsPublic = false;
+                                break;
+                            }
+                        case "archived":
+                            {
+                                post.IsArchived = true;
+                                post.IsDraft = false;
+                                post.IsPublic = false;
+                                break;
+                            }
+                    }
+
+                    
+                }
+                _context.BlogPost.Update(post);
+                await _context.SaveChangesAsync();
+                return ResultCode.Success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at UpdateBlogPostStatus method: " + ex.Message);
+                return (ResultCode.Error);
             }
         }
     }

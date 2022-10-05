@@ -9,6 +9,7 @@ using NaStories.API.Domain.Services.Communication.Request.Admin;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlogPostFilterRequest = NaStories.API.Domain.Services.Communication.Request.Admin.BlogPostFilterRequest;
 
 namespace NaStories.API.Services
 {
@@ -57,6 +58,11 @@ namespace NaStories.API.Services
         public async Task<(List<Category>, ResultCode)> GetCategory(BaseRequest<CategoryFilterRequest> request)
         {
             return await _adminRepository.GetCategory(request);
+        }
+
+        public async Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId)
+        {
+            return await _adminRepository.UpdateBlogPostStatus(request, userId);
         }
     }
 }

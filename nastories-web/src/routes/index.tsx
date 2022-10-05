@@ -110,6 +110,30 @@ const Blog = lazy(() => {
         .then(([moduleExports]) => moduleExports);
 });
 
+const BlogDetail = lazy(() => {
+    return Promise.all([
+        import("../views/blog/detail"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const BlogCategory = lazy(() => {
+    return Promise.all([
+        import("../views/blog/category"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const BlogTags = lazy(() => {
+    return Promise.all([
+        import("../views/blog/tag"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+ 
 // Admin 
 const AdminBlogCategory = lazy(() => {
     return Promise.all([
@@ -161,7 +185,12 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/resetPassword" exact component={ResetPassword} />
                         <Route path="/about" exact component={About} />
                         <Route path="/contact" exact component={Contact} />
-                        <Route path="/blog" exact component={Blog} />
+                        <Route path="/blog" exact component={Blog} /> 
+                        <Route path="/blog/:postUrl" exact component={BlogDetail} />
+                        <Route path="/blog/category/:categoryUrl" exact component={BlogCategory} />
+                        <Route path="/blog/tag/:tagUrl" exact component={BlogTags} />
+                        {/* <Route path="/blog/(page)?/:page?/(sort)?/:sort?" component={Blog} /> */}
+
                         <Route path="/termOfService" exact component={TermOfService} />
                         {/* Admin  */} 
                         <Route path="/admin/blog/category" exact component={AdminBlogCategory} />

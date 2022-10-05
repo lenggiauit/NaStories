@@ -5,6 +5,7 @@ using NaStories.API.Domain.Services.Communication.Request.Admin;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlogPostFilterRequest = NaStories.API.Domain.Services.Communication.Request.Admin.BlogPostFilterRequest;
 
 namespace NaStories.API.Domain.Repositories
 {
@@ -16,5 +17,6 @@ namespace NaStories.API.Domain.Repositories
         Task<ResultCode> CheckBlogPostTitle(string title, Guid? blogPostId);
         Task<(BlogPost, ResultCode)> CreateEditBlogPost(BaseRequest<CreateEditBlogPostRequest> request, Guid userId);
         Task<(List<BlogPost>, ResultCode)> GetBlogPost(BaseRequest<BlogPostFilterRequest> request);
+        Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId);
     }
 }

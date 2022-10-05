@@ -20,27 +20,9 @@ namespace NaStories.API.Domain.Services.Communication.Request.Admin
         public bool IsPublic { get; set; }
         public bool IsArchived { get; set; }
         [Required]
-        public  CategoryModel Category { get; set; }
-        [Required]
-        public List<TagModel> Tags { get; set; }
-
-        
-    }
-    public class CategoryModel
-    {
-        [Required]
-        public Guid Id { get; set; }
-        [Required]
-        public string Name { get; set; } 
-    }
-
-    public class TagModel
-    {
-        [Required]
-        public Guid Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-    }
-
-
+        public Guid CategoryId { get; set; }
+       
+        public List<string> Tags { get; set; }
+         
+    } 
 }

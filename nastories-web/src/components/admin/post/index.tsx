@@ -67,6 +67,10 @@ const BlogPostList: React.FC = () => {
         setIsShowModal(true);
     }
 
+    const onChangeStatusHandler = (post: BlogPost) =>{
+       setIsAll(true);
+    }
+
     const onCloseHandler = (post?: BlogPost) => {
         setIsShowModal(false);
         getBlogPostList( { payload: { keywords:keyWords, isPublic: isPublic, isDraft: isDraft, isArchived: isArchived }, metaData: metaData });
@@ -86,16 +90,16 @@ const BlogPostList: React.FC = () => {
                 <div data-provide="shuffle">
                     <ul className="nav nav-center nav-bold nav-uppercase nav-pills mb-7 mt-0" data-shuffle="filter">
                         <li className="nav-item">
-                            <a className={"nav-link " + (isAll ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(true);setIsPublic(false);setIsArchived(false);setIsDraft(false);  }}><Translation tid="label_all" /></a>
+                            <a className={"nav-link " + (isAll ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(true);setIsPublic(false);setIsArchived(false);setIsDraft(false);setPagingData({...pagingData, index: 1} as Paging ); }}><Translation tid="label_all" /></a>
                         </li>
                         <li className="nav-item">
-                            <a className={"nav-link " + (isPublic ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(false);setIsPublic(true);setIsArchived(false);setIsDraft(false); }} data-group="bag"><Translation tid="label_public" /></a>
+                            <a className={"nav-link " + (isPublic ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(false);setIsPublic(true);setIsArchived(false);setIsDraft(false); setPagingData({...pagingData, index: 1} as Paging );}} data-group="bag"><Translation tid="label_public" /></a>
                         </li>
                         <li className="nav-item">
-                            <a className={"nav-link " + (isDraft ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(false);setIsDraft(true);setIsPublic(false);setIsArchived(false); }} data-group="bag"><Translation tid="label_draft" /></a>
+                            <a className={"nav-link " + (isDraft ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(false);setIsDraft(true);setIsPublic(false);setIsArchived(false); setPagingData({...pagingData, index: 1} as Paging );}} data-group="bag"><Translation tid="label_draft" /></a>
                         </li>
                         <li className="nav-item">
-                            <a className={"nav-link " + (isArchived ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(false);setIsArchived(true);setIsPublic(false);setIsDraft(false); }} data-group="bag"><Translation tid="archived" /></a>
+                            <a className={"nav-link " + (isArchived ? "active" : "")} href="#" data-shuffle="button" onClick={() => { setIsAll(false);setIsArchived(true);setIsPublic(false);setIsDraft(false);setPagingData({...pagingData, index: 1} as Paging ); }} data-group="bag"><Translation tid="archived" /></a>
                         </li>
                     </ul>
                     <div className="row gap-y gap-2" data-shuffle="list">
@@ -122,11 +126,11 @@ const BlogPostList: React.FC = () => {
                                 </div> 
                             </div> 
                         </div>
-                        {BlogPostList.map(p => <BlogPostItem key={v4().toString()} dataItem={p} onSelected={onEditHandler} />)}
+                        {BlogPostList.map(p => <BlogPostItem key={v4().toString()} dataItem={p} onSelected={onEditHandler} onChangeStatus={onChangeStatusHandler} />)}
                     </div>
 
                     <div className="mt-7">
-                        <Pagination totalRows={totalRows} pageChangeEvent={pagingChangeEvent} />
+                        <Pagination totalRows={totalRows} pagingData={pagingData} pageChangeEvent={pagingChangeEvent} />
                     </div>
                 </div>
             </div>

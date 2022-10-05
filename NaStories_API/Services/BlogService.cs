@@ -4,6 +4,7 @@ using NaStories.API.Domain.Entities;
 using NaStories.API.Domain.Helpers;
 using NaStories.API.Domain.Repositories;
 using NaStories.API.Domain.Services;
+using NaStories.API.Domain.Services.Communication.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,9 +27,24 @@ namespace NaStories.API.Services
             _appSettings = appSettings.Value;
         }
 
-        public Task<List<Category>> GetCategory()
+        public async Task<(List<Category>, ResultCode)> GetCategory()
         {
-            throw new System.NotImplementedException();
+            return await _blogRepository.GetCategory();
+        }
+
+        public async Task<(List<BlogPost>, ResultCode)> GetPosts(BaseRequest<BlogPostSearchRequest> request)
+        {
+            return await _blogRepository.GetPosts(request);
+        }
+
+        public async Task<(List<Tag>, ResultCode)> GetTags()
+        {
+            return await _blogRepository.GetTags();
+        }
+
+        public async Task<(List<BlogPost>, ResultCode)> GetTopPost()
+        {
+            return await _blogRepository.GetTopPost();
         }
     }
 }

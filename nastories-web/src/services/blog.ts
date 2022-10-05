@@ -1,8 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ApiRequest, ApiResponse, AppSetting } from "../types/type";
 import { getLoggedUser } from '../utils/functions'; 
-import * as FormDataFile from "form-data";
-import { Category } from './models/admin/category';
+import * as FormDataFile from "form-data"; 
+import { CategoryResource } from './resources/categoryResource';
+import { TagResource } from './resources/tagResource';
+import { BlogPostResource } from './resources/blogPostResource';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -21,19 +23,46 @@ export const BlogService = createApi({
         },
     }),
     endpoints: (builder) => ({
-        GetCategory: builder.mutation<ApiResponse<Category[]>, ApiRequest<{ isArchived: boolean }>>({
-            query: (payload) => ({
+        GetCategory: builder.query<ApiResponse<CategoryResource[]>, null>({
+            query: () => ({
                 url: 'blog/getCategory',
-                method: 'post',
-                body: payload
+                method: 'GET'
             }),
-            transformResponse(response: ApiResponse<Category[]>) {
+            transformResponse(response: ApiResponse<CategoryResource[]>) {
                 return response;
             },
         }),
-         
+        GetTags: builder.query<ApiResponse<TagResource[]>, null>({
+            query: () => ({
+                url: 'blog/getTags',
+                method: 'GET'
+            }),
+            transformResponse(response: ApiResponse<TagResource[]>) {
+                return response;
+            },
+        }),
+        GetTopPost: builder.query<ApiResponse<BlogPostResource[]>, null>({
+            query: () => ({
+                url: 'blog/getTopPost',
+                method: 'GET'
+            }),
+            transformResponse(response: ApiResponse<BlogPostResource[]>) {
+                return response;
+            },
+        }),
+        GetBlogPost: builder.mutation<ApiResponse<BlogPostResource[]>, ApiRequest<{ keywords: any }>>({
+            query: (payload) => ({
+                url: 'blog/getBlogPost',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<BlogPostResource[]>) {
+                return response;
+            },
+        }),
+        
 
     })
 });
 
-export const { useGetCategoryMutation  } = BlogService;
+export const { useGetCategoryQuery, useGetTagsQuery, useGetTopPostQuery, useGetBlogPostMutation  } = BlogService;

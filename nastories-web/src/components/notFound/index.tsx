@@ -12,7 +12,7 @@ const NotFound: React.FC = ({ }): ReactElement => {
             <div className="container">
                 <div className="row ">
                     <div className="col-md-12">
-                        <p className="lead text-center"><Translation tid="result_notfound" /></p>
+                        <p className="lead text-center"><small><Translation tid="result_notfound" /></small></p>
                     </div>
                 </div>
             </div>

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace NaStories_API.Controllers
 {
+    [AllowAnonymous]
     [Route("[controller]")]
     [ApiController]
     public class BlogController : BaseController
@@ -39,27 +40,94 @@ namespace NaStories_API.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
-        [HttpPost("GetCategory")]
+        
+        [HttpGet("GetCategory")]
         public async Task<BaseResponse<List<CategoryResource>>> GetCategory()
         {
             if (ModelState.IsValid)
-            { 
-                var categories = await _blogServices.GetCategory();
-                if (categories != null)
+            {
+                var (data, resultCode) = await _blogServices.GetCategory();
+                if (data != null)
                 {
-                    var resources = _mapper.Map<List<Category>, List<CategoryResource>>(categories);
-                    return new BaseResponse<List<CategoryResource>>(resources);
+                    return new BaseResponse<List<CategoryResource>>(_mapper.Map<List<Category>, List<CategoryResource>>(data));
                 }
                 else
                 {
-                    return new BaseResponse<List<CategoryResource>>(Constants.UnknowMsg, ResultCode.Unknown);
+                    return new BaseResponse<List<CategoryResource>>(Constants.ErrorMsg, resultCode);
                 }
             }
             else
             {
                 return new BaseResponse<List<CategoryResource>>(Constants.InvalidMsg, ResultCode.Invalid);
             }
-        }   
+        }
+
+        [HttpGet("GetTags")]
+        public async Task<BaseResponse<List<TagResource>>> GetTags()
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetTags();
+                if (data != null)
+                {
+                    return new BaseResponse<List<TagResource>>(_mapper.Map<List<Tag>, List<TagResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<TagResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<TagResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpGet("GetTopPost")]
+        public async Task<BaseResponse<List<BlogPostResource>>> GetTopPost()
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetTopPost();
+                if (data != null)
+                {
+                    return new BaseResponse<List<BlogPostResource>>(_mapper.Map<List<BlogPost>, List<BlogPostResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<BlogPostResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<BlogPostResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("GetBlogPost")]
+        public async Task<BaseResponse<List<BlogPostResource>>> GetBlogPost(BaseRequest<BlogPostSearchRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetPosts(request);
+                if (data != null)
+                {
+                    return new BaseResponse<List<BlogPostResource>>(_mapper.Map<List<BlogPost>, List<BlogPostResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<BlogPostResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<BlogPostResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
+
+
+
     }
 }
