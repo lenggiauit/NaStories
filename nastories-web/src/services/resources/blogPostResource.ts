@@ -1,5 +1,6 @@
 import { CategoryResource } from "./categoryResource";
 import { TagResource } from "./tagResource";
+import { UserResource } from "./userResource";
 
  
 export type BlogPostResource = {
@@ -10,8 +11,11 @@ export type BlogPostResource = {
     url: any,
     view: any,
     comment: any,
+    user: UserResource,
     category: CategoryResource,
-    Tags: TagResource[],
-    totalRows: any 
+    tags: TagResource[],
+    totalRows: any,
+    createdDate: Date,
+    updatedDate?: Date
 }
  

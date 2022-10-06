@@ -60,9 +60,18 @@ export const BlogService = createApi({
                 return response;
             },
         }),
+        GetPostDetail: builder.query<ApiResponse<BlogPostResource>, {postUrl: string}>({
+            query: (params) => ({
+                url: 'blog/GetBlogPostDetail?postUrl=' + params.postUrl,
+                method: 'GET'
+            }),
+            transformResponse(response: ApiResponse<BlogPostResource>) {
+                return response;
+            },
+        }),
         
 
     })
 });
 
-export const { useGetCategoryQuery, useGetTagsQuery, useGetTopPostQuery, useGetBlogPostMutation  } = BlogService;
+export const { useGetCategoryQuery, useGetTagsQuery, useGetTopPostQuery, useGetBlogPostMutation, useGetPostDetailQuery  } = BlogService;
