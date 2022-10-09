@@ -4,7 +4,10 @@ import { getLoggedUser } from '../utils/functions';
 import * as FormDataFile from "form-data"; 
 import { CategoryResource } from './resources/categoryResource';
 import { TagResource } from './resources/tagResource';
-import { BlogPostResource } from './resources/blogPostResource';
+import { BlogPostRelatedResource, BlogPostResource } from './resources/blogPostResource';
+import { CommentResource } from './resources/commentResource';
+ 
+ 
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -68,10 +71,36 @@ export const BlogService = createApi({
             transformResponse(response: ApiResponse<BlogPostResource>) {
                 return response;
             },
+        }), 
+        GetRelatedPost: builder.query<ApiResponse<BlogPostRelatedResource[]>, {category: string, notIn: string}>({
+            query: (params) => ({
+                url: `blog/GetRelatedPost?category=${params.category}&notIn=${params.notIn}`,
+                method: 'GET'
+            }),
+            transformResponse(response: ApiResponse<BlogPostRelatedResource[]>) {
+                return response;
+            },
         }),
-        
+        UserPostComment: builder.mutation<ApiResponse<CommentResource>, ApiRequest<{ postId: any, parentId: any, comment: any }>>({
+            query: (payload) => ({
+                url: 'blog/userPostComment',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<CommentResource>) {
+                return response;
+            },
+        }),
 
+ 
     })
 });
 
-export const { useGetCategoryQuery, useGetTagsQuery, useGetTopPostQuery, useGetBlogPostMutation, useGetPostDetailQuery  } = BlogService;
+
+export const { useGetCategoryQuery, 
+    useGetTagsQuery, 
+    useGetTopPostQuery, 
+    useGetBlogPostMutation, 
+    useGetPostDetailQuery, 
+    useGetRelatedPostQuery,
+    useUserPostCommentMutation  } = BlogService;

@@ -1,3 +1,4 @@
+import { User } from "../services/models/user";
 import { ResultCode } from "../utils/enums";
 
 export interface Dictionary<T> {
@@ -32,6 +33,14 @@ export type MetaData = {
     orderBy?: string[],
 }
 
+export type LoginFormValues ={
+    username: string;
+    password: string;
+}
+
+export interface CurrentUserState {
+    currentUser: User
+}
 
 
 

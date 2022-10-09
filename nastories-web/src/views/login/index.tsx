@@ -5,13 +5,14 @@ import * as Yup from "yup";
 import { dictionaryList } from '../../locales';
 import { useAppContext } from '../../contexts/appContext';
 import { GoogleLoginButton } from 'ts-react-google-login-component';
-import { AppSetting } from '../../types/type';
+import { AppSetting, CurrentUserState } from '../../types/type';
 import { useUserLoginMutation } from '../../services/account';
 import { Md5 } from "md5-typescript";
 import PageLoading from '../../components/pageLoading';
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { logout, setLoggedUser } from '../../utils/functions';
 import { ResultCode } from '../../utils/enums';
+import userSlice from '../../store/userSlice';
 let appSetting: AppSetting = require('../../appSetting.json');
 
 interface FormValues {
@@ -22,7 +23,7 @@ interface FormValues {
 const Login: React.FC = (): ReactElement => {
     logout();
     const { locale, } = useAppContext();
-    const dispatch = useDispatch();
+ 
     let initialValues: FormValues = { username: '', password: '' };
     const rememberMeStr = localStorage.getItem("RememberMe");
 
@@ -76,6 +77,7 @@ const Login: React.FC = (): ReactElement => {
     }
     if (data && data.resultCode == ResultCode.Success) {
         setLoggedUser(data.resource);
+        
         window.location.href = "/";
     }
     return (

@@ -165,7 +165,7 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                             </ul>
                         </div>
                         {isPublic && currentUser == null && <>
-                            <a className="btn btn-sm btn-success" href="/login"><Translation tid="nav_login" /></a>
+                            <a className="btn btn-xs btn-round btn-success" href="/login"><Translation tid="nav_login" /></a>
                         </>}
                     </div>
                 </div>

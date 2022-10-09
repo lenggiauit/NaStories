@@ -125,6 +125,50 @@ namespace NaStories_API.Controllers
             }
         }
 
+        [HttpGet("GetBlogPostDetail")]
+        public async Task<BaseResponse<BlogPostResource>> GetBlogPostDetail(string postUrl)
+        {
+            if (!string.IsNullOrEmpty(postUrl))
+            {
+                var (data, resultCode) = await _blogServices.GetBlogPostDetail(postUrl);
+                if (data != null)
+                {
+                    return new BaseResponse<BlogPostResource>(_mapper.Map<BlogPost, BlogPostResource>(data));
+                }
+                else
+                {
+                    return new BaseResponse<BlogPostResource>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<BlogPostResource>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpGet("GetRelatedPost")]
+        public async Task<BaseResponse<List<BlogPostResource>>> GetRelatedPost(string category, string notIn)
+        {
+            if (!string.IsNullOrEmpty(category))
+            {
+                var (data, resultCode) = await _blogServices.GetRelatedPost(category, notIn);
+                if (data != null)
+                {
+                    return new BaseResponse<List<BlogPostResource>>(_mapper.Map< List<BlogPost>, List<BlogPostResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<BlogPostResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<BlogPostResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        
+
 
 
 

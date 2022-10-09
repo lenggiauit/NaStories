@@ -27,6 +27,11 @@ namespace NaStories.API.Services
             _appSettings = appSettings.Value;
         }
 
+        public async Task<(BlogPost, ResultCode)> GetBlogPostDetail(string postUrl)
+        {
+            return await _blogRepository.GetBlogPostDetail(postUrl);
+        }
+
         public async Task<(List<Category>, ResultCode)> GetCategory()
         {
             return await _blogRepository.GetCategory();
@@ -35,6 +40,11 @@ namespace NaStories.API.Services
         public async Task<(List<BlogPost>, ResultCode)> GetPosts(BaseRequest<BlogPostSearchRequest> request)
         {
             return await _blogRepository.GetPosts(request);
+        }
+
+        public async Task<(List<BlogPost>, ResultCode)> GetRelatedPost(string categoryUrl, string notIn)
+        {
+            return await _blogRepository.GetRelatedPost(categoryUrl, notIn);
         }
 
         public async Task<(List<Tag>, ResultCode)> GetTags()

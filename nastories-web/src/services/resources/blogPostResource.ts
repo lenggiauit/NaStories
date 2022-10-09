@@ -18,4 +18,9 @@ export type BlogPostResource = {
     createdDate: Date,
     updatedDate?: Date
 }
+
+export type BlogPostRelatedResource = {
+    title: any, 
+    url: any, 
+}
  

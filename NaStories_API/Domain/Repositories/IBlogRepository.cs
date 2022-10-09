@@ -12,5 +12,7 @@ namespace NaStories.API.Domain.Repositories
         Task<(List<Tag>, ResultCode)> GetTags();
         Task<(List<BlogPost>, ResultCode)> GetTopPost();
         Task<(List<BlogPost>, ResultCode)> GetPosts(BaseRequest<BlogPostSearchRequest> request);
+        Task<(BlogPost, ResultCode)> GetBlogPostDetail(string postUrl);
+        Task<(List<BlogPost>, ResultCode)> GetRelatedPost(string categoryUrl, string notIn);
     }
 }

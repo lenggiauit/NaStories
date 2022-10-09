@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
+import { useParams, useRouteMatch } from "react-router-dom";
 import { v4 } from "uuid";
 import BlogPostItem from "../../components/blog/blogPostItem";
 import Categories from "../../components/blog/categories";
@@ -14,17 +15,19 @@ import { useGetBlogPostMutation } from "../../services/blog";
 import { PostDataItem } from "../../services/models/postDataItem";
 import { BlogPostResource } from "../../services/resources/blogPostResource";
 import { AppSetting, MetaData, Paging } from "../../types/type";
-import { ResultCode } from "../../utils/enums";
+import { DisplayType, ResultCode } from "../../utils/enums";
+import { useQuery } from "../../utils/functions";
 const appSetting: AppSetting = require('../../appSetting.json');
 
 const Blog: React.FC = (): ReactElement => {
-    const [keyWords, setKeyWords] = useState<string | null>(); 
+    let query = useQuery();
+    const [keyWords, setKeyWords] = useState<string | null>(query.get("s")); 
     const [getBlogPostList, getBlogPostStatus] = useGetBlogPostMutation();
     const [metaData, setMetaData] = useState<MetaData>({ paging: { index: 1, size: appSetting.PageSize } });
     const [pagingData, setPagingData] = useState<Paging>({ index: 1, size: appSetting.PageSize });
     const [totalRows, setTotalRows] = useState<number>(0);
     const [BlogPostList, setBlogPostList] = useState<BlogPostResource[]>([]);
-     
+ 
     const pagingChangeEvent: any = (p: Paging) => {
 
         let mp: Paging = {
@@ -40,7 +43,10 @@ const Blog: React.FC = (): ReactElement => {
         setMetaData(md);
     }, [pagingData]);
 
-
+    useEffect(() => {
+        console.log(query.get("s"));
+    }, []);
+ 
     useEffect(() => {
         getBlogPostList({ payload: { keywords:keyWords}, metaData: metaData });
     }, [metaData]);
@@ -76,7 +82,7 @@ const Blog: React.FC = (): ReactElement => {
                                 <div className="row gap-y"> 
                                 {getBlogPostStatus.isLoading && <LocalSpinner /> }
                                     {BlogPostList.map((p) => (
-                                     <BlogPostItem key={v4().toString()} postData={p} />
+                                     <BlogPostItem key={v4().toString()} displayType={DisplayType.List} postData={p} />
                                     ))}  
                                     {(getBlogPostStatus.isSuccess && BlogPostList.length == 0 ) && <NotFound />}
                                 </div> 

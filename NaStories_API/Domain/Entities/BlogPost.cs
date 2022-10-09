@@ -19,6 +19,10 @@ namespace NaStories.API.Domain.Entities
         [ForeignKey("Category")]
         public Guid CategoryId { get; set; }
         public virtual Category Category { get; set; }
+
+        [ForeignKey("User")]
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; } 
         public virtual ICollection<Tag> Tags { get; set; }
          
         public string ShortDescription { get; set; }

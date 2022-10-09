@@ -12,3 +12,8 @@ export enum ResultCode {
     NotExistEmail = 51,
     Expired = 6,
 }
+
+export enum DisplayType {
+    Grid = 1,
+    List = 2
+}
