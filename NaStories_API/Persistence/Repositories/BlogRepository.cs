@@ -21,6 +21,60 @@ namespace NaStories.API.Persistence.Repositories
             _logger = logger;
         }
 
+        public async Task<(Comment, ResultCode)> AddComment(BaseRequest<AddCommmentRequest> request, Guid userId)
+        {
+            try
+            { 
+                var comment = new Comment()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    PostId = request.Payload.PostId,
+                    ParentId = request.Payload.ParentId,
+                    CommentContent = request.Payload.CommentContent, 
+                    CreatedBy = userId,
+                    CreatedDate = DateTime.Now, 
+                };
+                await _context.Comment.AddAsync(comment);
+                await _context.SaveChangesAsync();
+                return (comment, ResultCode.Success);
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at AddComment method: " + ex.Message);
+                return (null, ResultCode.Error);
+
+            }
+        }
+
+        public async Task<ResultCode> RemoveComment(BaseRequest<RemoveCommmentRequest> request, Guid userId)
+        {
+            try
+            {
+                var comment = await _context.Comment.Where(c => c.Id.Equals(request.Payload.CommentId)).FirstOrDefaultAsync();
+                if(comment != null)
+                {
+                    comment.IsDeleted = true;
+                    comment.UpdatedBy = userId;
+                    comment.UpdatedDate = DateTime.Now;
+                    _context.Comment.Update(comment);
+                    await _context.SaveChangesAsync();
+                    return (ResultCode.Success);
+                }
+                else
+                {
+                    return (ResultCode.Invalid);
+                } 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RemoveComment method: " + ex.Message);
+                return ( ResultCode.Error);
+
+            }
+        }
+
         public async Task<(BlogPost, ResultCode)> GetBlogPostDetail(string postUrl)
         {
             try
@@ -78,6 +132,40 @@ namespace NaStories.API.Persistence.Repositories
             catch (Exception ex)
             {
                 _logger.LogError("Error at GetCategory method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(List<Comment>, ResultCode)> GetComments(BaseRequest<CommmentRequest> request)
+        {
+            try
+            {
+                var query = _context.Comment.AsQueryable(); 
+                var totalRow = await query.Where(c => !c.IsDeleted).CountAsync();
+
+                return (await query
+                    .Include(c => c.User)
+                    
+                    .AsNoTracking()
+                    .Where(c => !c.IsDeleted)
+                    .Select(c => new Comment()
+                    {
+                        Id = c.Id,
+                        ParentId = c.ParentId,
+                        CreatedDate = c.CreatedDate,
+                        CommentContent = c.CommentContent,
+                        PostId = c.PostId,
+                        User = c.User, 
+                        TotalRows = totalRow
+                    })
+                    .OrderBy(p => p.CreatedDate) 
+                    .GetPagingQueryable(request.MetaData)
+                    .ToListAsync(), ResultCode.Success);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetComments method: " + ex.Message);
                 return (null, ResultCode.Error);
             }
         }
@@ -216,6 +304,8 @@ namespace NaStories.API.Persistence.Repositories
                 return (null, ResultCode.Error);
             }
         }
+
+        
     }
 }
 

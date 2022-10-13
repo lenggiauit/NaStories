@@ -106,7 +106,7 @@ namespace NaStories_API
 
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddHttpClient();
-
+              
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

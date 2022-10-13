@@ -5,6 +5,7 @@ using NaStories.API.Domain.Helpers;
 using NaStories.API.Domain.Repositories;
 using NaStories.API.Domain.Services;
 using NaStories.API.Domain.Services.Communication.Request;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,6 +28,11 @@ namespace NaStories.API.Services
             _appSettings = appSettings.Value;
         }
 
+        public async Task<(Comment, ResultCode)> AddComment(BaseRequest<AddCommmentRequest> request, Guid userId)
+        {
+            return await _blogRepository.AddComment(request, userId);
+        }
+
         public async Task<(BlogPost, ResultCode)> GetBlogPostDetail(string postUrl)
         {
             return await _blogRepository.GetBlogPostDetail(postUrl);
@@ -35,6 +41,11 @@ namespace NaStories.API.Services
         public async Task<(List<Category>, ResultCode)> GetCategory()
         {
             return await _blogRepository.GetCategory();
+        }
+
+        public async Task<(List<Comment>, ResultCode)> GetComments(BaseRequest<CommmentRequest> request)
+        {
+            return await _blogRepository.GetComments(request);
         }
 
         public async Task<(List<BlogPost>, ResultCode)> GetPosts(BaseRequest<BlogPostSearchRequest> request)
@@ -55,6 +66,11 @@ namespace NaStories.API.Services
         public async Task<(List<BlogPost>, ResultCode)> GetTopPost()
         {
             return await _blogRepository.GetTopPost();
+        }
+
+        public async Task<ResultCode> RemoveComment(BaseRequest<RemoveCommmentRequest> request, Guid userId)
+        {
+            return await _blogRepository.RemoveComment(request, userId);
         }
     }
 }

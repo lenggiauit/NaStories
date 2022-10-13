@@ -11,6 +11,7 @@ using NaStories.API.Domain.Services.Communication.Request;
 using NaStories.API.Domain.Services.Communication.Response;
 using NaStories.API.Infrastructure;
 using NaStories.API.Resources;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -167,8 +168,63 @@ namespace NaStories_API.Controllers
             }
         }
 
-        
+        [HttpGet("GetComments")]
+        public async Task<BaseResponse<List<CommentResource>>> GetComments(BaseRequest<CommmentRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetComments(request);
+                if (data != null)
+                {
+                    return new BaseResponse<List<CommentResource>>(_mapper.Map<List<Comment>, List<CommentResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<CommentResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<CommentResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
 
+        [HttpGet("AddComment")]
+        public async Task<BaseResponse<CommentResource>> AddComment(BaseRequest<AddCommmentRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.AddComment(request, GetCurrentUserId());
+                if (data != null)
+                {
+                    return new BaseResponse<CommentResource>(_mapper.Map<Comment, CommentResource>(data));
+                }
+                else
+                {
+                    return new BaseResponse<CommentResource>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<CommentResource>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpGet("RemoveComment")]
+        public async Task<BaseResponse<ResultCode>> RemoveComment(BaseRequest<RemoveCommmentRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var resultCode = await _blogServices.RemoveComment(request, GetCurrentUserId());
+                
+                return new BaseResponse<ResultCode>(resultCode);
+               
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
 
 
 
