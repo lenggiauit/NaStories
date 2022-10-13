@@ -28,6 +28,7 @@ namespace NaStories.API.Mapping
             CreateMap<Category, CategoryResource>();
             CreateMap<Tag, TagResource>();
             CreateMap<BlogPost, BlogPostResource>();
+            CreateMap<Comment, CommentResource>();
         }
     }
 }
