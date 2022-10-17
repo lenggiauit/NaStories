@@ -29,6 +29,13 @@ namespace NaStories.API.Mapping
             CreateMap<Tag, TagResource>();
             CreateMap<BlogPost, BlogPostResource>();
             CreateMap<Comment, CommentResource>();
+            CreateMap<YoutubeVideo, YoutubeVideoResource>();
+            CreateMap<EventBookingDate, EventBookingDateResource>();
+            CreateMap<PrivateTalk, PrivateTalkResource>();
+
+            
+
+
         }
     }
 }

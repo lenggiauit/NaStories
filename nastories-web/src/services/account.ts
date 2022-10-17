@@ -10,6 +10,7 @@ import { AuthenticateResponse } from './communication/response/authenticateRespo
 import { CommonResponse } from './communication/response/commonResponse';
 import { ForgotpasswordResponse } from './communication/response/forgotpasswordResponse';
 import { RegisterResponse } from './communication/response/registerResponse';
+import { PrivateTalkResource } from './resources/privateTalkResource';
 
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -48,10 +49,25 @@ export const UserService = createApi({
                 return response;
             },
         }),
+        GetPrivateTalkList: builder.query<ApiResponse<PrivateTalkResource[]>, ApiRequest<{  }>>({
+            query: (payload) => ({
+                url: 'account/GetPrivateTalkList',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<PrivateTalkResource[]>) {
+                return response;
+            },
+        }),
 
     })
 });
-export const { useUserUpdateProfileMutation, useUserUpdateAvatarMutation } = UserService;
+export const { 
+    useUserUpdateProfileMutation, 
+    useUserUpdateAvatarMutation,
+    useGetPrivateTalkListQuery 
+
+} = UserService;
 
 export const AccountService = createApi({
     reducerPath: 'AccountService',

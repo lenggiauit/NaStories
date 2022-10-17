@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import BlogPostItem from "../../components/blog/blogPostItem";
 import Categories from "../../components/blog/categories";
 import PostComment from "../../components/blog/comment";
+import PostDetail from "../../components/blog/detail";
 import RelatedPost from "../../components/blog/related";
 import BlogSearch from "../../components/blog/search";
 import SharePost from "../../components/blog/share";
@@ -20,63 +21,13 @@ import ConverterLocaleDateString from "../../utils/converter";
 import { ResultCode } from "../../utils/enums";
 
 const appSetting: AppSetting = require('../../appSetting.json');
-
-
+ 
 const BlogDetail: React.FC = (): ReactElement => {
-
-    const route = useRouteMatch();
-    const { postUrl }: any = useParams();
-    const match = matchPath(route.url, {
-        path: "/blog/:postUrl",
-        exact: true,
-        strict: false
-    });
-
-    const getPostDetailStatus = useGetPostDetailQuery({ postUrl });
-
-    useEffect(() => {
-        if (match != null) {
-
-
-        }
-        else {
-            window.location.href = "/notfound";
-        }
-    }, [])
-
+ 
     return (
         <>
             <Layout isPublic={true}>
-                {getPostDetailStatus.isLoading && <PageLoading />}
-                {getPostDetailStatus.isSuccess && getPostDetailStatus.data.resultCode == ResultCode.Success && <>
-                    <div className="section">
-                        <div className="container">
-                            <div className="text-center">
-                                <h2>{getPostDetailStatus.data.resource.title}</h2>
-                                <p>{ConverterLocaleDateString(getPostDetailStatus.data.resource.createdDate)} by {getPostDetailStatus.data.resource.user.fullName}</p>
-                            </div>
-                            <div className="gap-xy-2 mt-6">
-                                {getPostDetailStatus.data.resource.shortDescription}
-                            </div>
-                            <div dangerouslySetInnerHTML={{ __html: getPostDetailStatus.data.resource.content }} />
-                            <div className="gap-xy-2 mt-6">
-                                {getPostDetailStatus.data.resource.tags.map((t) =>
-                                    <a key={v4().toString()} className="badge badge-pill badge-secondary" href={`/blog/tag/${t.url}`}>{t.name}</a>
-                                )}
-                            </div>
-                            <div className="mt-6">
-                                <RelatedPost category={getPostDetailStatus.data.resource.category.url} notIn={getPostDetailStatus.data.resource.url} />
-                            </div>
-                            <div className="mt-6">
-                                <SharePost  postData={getPostDetailStatus.data.resource} />  
-                            </div>
-                            <div className="mt-6">
-                                <PostComment  postData={getPostDetailStatus.data.resource} />  
-                            </div>  
-                        </div>
-                    </div>
-                </>}
-                 
+                 <PostDetail /> 
                 <Footer />
             </Layout>
         </>

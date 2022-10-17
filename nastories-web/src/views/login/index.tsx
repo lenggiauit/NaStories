@@ -126,10 +126,10 @@ const Login: React.FC = (): ReactElement => {
                             </Form>
                         </Formik>
                         
-                        <div className="divider"><Translation tid="OrLoginWith" /></div>
+                        {/* <div className="divider"><Translation tid="OrLoginWith" /></div>
                         <div className="form-group">
                             <button className="btn btn-block btn-primary" type="button" disabled={isLoading} onClick={handleOnSubmitWithDemoAccount} ><Translation tid="LoginWithDemoAccount" /></button>
-                        </div>
+                        </div> */}
                         <div className="divider"><Translation tid="OrLoginWith" /></div>
                         <div className="text-center">
                             <GoogleLoginButton

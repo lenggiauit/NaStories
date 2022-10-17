@@ -76,6 +76,11 @@ namespace NaStories.API.Services
             return await _accountServiceRepository.GetById(id);
         }
 
+        public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId)
+        {
+            return await _accountServiceRepository.GetPrivateTalkList(userId);
+        }
+
         public async Task<User> Login(string name, string password)
         {
             return await _accountServiceRepository.Login(name, password);

@@ -18,5 +18,8 @@ namespace NaStories.API.Domain.Services
         Task<ResultCode> CheckBlogPostTitle(string title, Guid? blogPostId);
         Task<(BlogPost, ResultCode)> CreateEditBlogPost(BaseRequest<CreateEditBlogPostRequest> request, Guid guid);
         Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId);
+        Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate();
+        Task<(EventBookingDate, ResultCode)> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request, Guid userId);
+        Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid guid);
     }
 }

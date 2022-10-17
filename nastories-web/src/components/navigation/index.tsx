@@ -63,17 +63,25 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                 <a className={`nav-link ${(location.pathname == '/') ? "active" : ""}`} href="/">
                                     <Translation tid="nav_home" />
                                 </a>
-                            </li>
-                            <li>
-                                <a className={`nav-link ${(location.pathname == '/about') ? "active" : ""}`} href="/about">
-                                    <Translation tid="nav_about" />
-                                </a>
-                            </li>
+                            </li> 
                             <li>
                                 <a className={`nav-link ${(location.pathname == '/blog') ? "active" : ""}`} href="/blog">
                                     <Translation tid="nav_blog" />
                                 </a>
                             </li>
+
+                            <li>
+                                <a className={`nav-link ${(location.pathname == '/private-talk') ? "active" : ""}`} href="/private-talk">
+                                    <Translation tid="nav_private_talk" />
+                                </a>
+                            </li>
+
+                            <li>
+                                <a className={`nav-link ${(location.pathname == '/mock-interview') ? "active" : ""}`} href="/mock-interview">
+                                    <Translation tid="nav_mock_interview" />
+                                </a>
+                            </li>
+
                             <li>
                                 <a className={`nav-link ${(location.pathname == '/contact') ? "active" : ""}`} href="/contact">
                                     <Translation tid="nav_contact" />
@@ -99,7 +107,16 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                                         <li><a className="dropdown-item" href="/admin/blog/post"><Translation tid="nav_admin_managePost" /></a> </li>
                                                     </ul> 
                                                 </li>
-                                               <li><hr className="dropdown-divider" /></li> 
+ 
+                                                <li><hr className="dropdown-divider" /></li> 
+                                                <li className="dropdown-submenu">
+                                                    <i className="bi bi-calendar-week" style={{ fontSize: 18 }}></i><b><span className="ml-2"><Translation tid="nav_admin_bookingdate" /></span></b>
+                                                    <ul >
+                                                        <li><a className="dropdown-item" href="/admin/bookingdate"><Translation tid="nav_admin_manageBookingdate" /></a> </li> 
+                                                    </ul> 
+                                                </li> 
+
+                                                <li><hr className="dropdown-divider" /></li> 
                                                 <li className="dropdown-submenu">
                                                 <a className="dropdown-item" href="/admin/users">
                                                     <i className="bi bi-people-fill" style={{ fontSize: 18 }}></i>
@@ -144,9 +161,9 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                                 </a>
                                             </li>
                                             <li>
-                                                <a className="dropdown-item" href="/yourappointment">
+                                                <a className="dropdown-item" href="/user/private-talk">
                                                     <i className="bi bi-calendar-check-fill" style={{ fontSize: 16 }}></i>
-                                                    <span className="ml-2">Your appointment </span>
+                                                    <span className="ml-2">Private Talk</span>
                                                 </a>
                                             </li>
 
@@ -166,6 +183,7 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                         </div>
                         {isPublic && currentUser == null && <>
                             <a className="btn btn-xs btn-round btn-success" href="/login"><Translation tid="nav_login" /></a>
+                            <a className="btn btn-xs btn-round btn-primary ml-1" href="/register"><Translation tid="nav_register" /></a>
                         </>}
                     </div>
                 </div>
@@ -175,3 +193,4 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
 };
 
 export default Navigation;
+ 

@@ -19,4 +19,5 @@ export enum PermissionKeys {
     CreateEditCategory = "CreateEditCategory",
     CreateEditBlogPost = "CreateEditBlogPost",
     ManageUser = "ManageUser",
+    CreateEditBooking = "CreateEditBooking"
 }

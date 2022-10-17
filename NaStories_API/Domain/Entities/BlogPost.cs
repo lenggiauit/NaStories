@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NaStories.API.Domain.Entities
 {
     public class BlogPost : BaseEntity
     {
+        [MaxLength(250)]
         public string Title { get; set; }
-        public string Thumbnail { get; set; }
-        public string Content { get; set; } 
+        [MaxLength(250)]
+        public string Thumbnail { get; set; } 
+        public string Content { get; set; }
+        [MaxLength(250)]
         public string Url { get; set; }
         public int View { get; set; }
         public int Comment { get; set; }
@@ -24,7 +28,7 @@ namespace NaStories.API.Domain.Entities
         public Guid UserId { get; set; }
         public virtual User User { get; set; } 
         public virtual ICollection<Tag> Tags { get; set; }
-         
+        [MaxLength(250)]
         public string ShortDescription { get; set; }
 
         [NotMapped]

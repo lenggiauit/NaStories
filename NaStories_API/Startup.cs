@@ -83,19 +83,22 @@ namespace NaStories_API
             services.AddScoped<ConversationServiceHub>();
             services.AddSignalR();
             // services
+            services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<IAccountService, AccountService>(); 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IRefService, RefService>();
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IAdminService, AdminService>();
-             
+            services.AddScoped<IEventService, EventService>();
+
             // Repositories
             services.AddScoped<IAccountRepository, AccountRepository>();  
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<IRefRepository, RefRepository>();
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // File Service

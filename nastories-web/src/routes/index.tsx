@@ -133,6 +133,23 @@ const BlogTags = lazy(() => {
     ])
         .then(([moduleExports]) => moduleExports);
 });
+
+const PrivateTalk = lazy(() => {
+    return Promise.all([
+        import("../views/event/privateTalk"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const MockInterview = lazy(() => {
+    return Promise.all([
+        import("../views/event/mockInterview"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
  
 // Admin 
 const AdminBlogCategory = lazy(() => {
@@ -159,6 +176,14 @@ const AdminUsers = lazy(() => {
         .then(([moduleExports]) => moduleExports);
 });
 
+const AdminBookingDate = lazy(() => {
+    return Promise.all([
+        import("../views/admin/bookingDate"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
 const Page404 = lazy(() => {
     return Promise.all([
         import("../views/pageNotFound"),
@@ -166,6 +191,17 @@ const Page404 = lazy(() => {
     ])
         .then(([moduleExports]) => moduleExports);
 });
+
+//user
+const UserPrivateTalk = lazy(() => {
+    return Promise.all([
+        import("../views/user/privateTalk"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+
 
 const IndexRouter: React.FC = (): ReactElement => {
     return (
@@ -189,13 +225,20 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/blog/:postUrl" exact component={BlogDetail} />
                         <Route path="/blog/category/:categoryUrl" exact component={BlogCategory} />
                         <Route path="/blog/tag/:tagUrl" exact component={BlogTags} />
-                        {/* <Route path="/blog/(page)?/:page?/(sort)?/:sort?" component={Blog} /> */}
+                         
+                        <Route path="/private-talk" exact component={PrivateTalk} /> 
+                        <Route path="/mock-interview" exact component={MockInterview} /> 
 
                         <Route path="/termOfService" exact component={TermOfService} />
                         {/* Admin  */} 
                         <Route path="/admin/blog/category" exact component={AdminBlogCategory} />
                         <Route path="/admin/blog/post" exact component={AdminBlogPost} />
                         <Route path="/admin/users" exact component={AdminUsers} />
+                        <Route path="/admin/bookingdate" exact component={AdminBookingDate} />
+                        {/* User  */} 
+                        <Route path="/user/private-talk" exact component={UserPrivateTalk} />
+                        <Route path="/user/private-talk/:id" exact component={UserPrivateTalk} />
+                        {/* 404 */}
                         <Route path="/404" component={Page404} />
                         <Redirect to="/404" />
                     </Switch>

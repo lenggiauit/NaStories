@@ -1,4 +1,5 @@
 {
+    "SiteUrl":"http://localhost:3000/", 
     "BaseUrl": "https://localhost:44333/",
     "GoogleClientId": "522351386373-vd9iv3qesca501vuv0ccbhmth4ema178.apps.googleusercontent.com",
     "PageSize": 10

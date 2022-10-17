@@ -20,7 +20,7 @@ const RelatedPost: React.FC<Props> = ({ category, notIn }): ReactElement => {
             {getRelatedPostQueryStatus.data && getRelatedPostQueryStatus.data.resultCode == ResultCode.Success && <>
                 <ul className="related-post">
                 {getRelatedPostQueryStatus.data.resource.map((p) => (
-                    <li>
+                    <li key={v4().toString()}>
                         <a key={v4().toString()} href={`/blog/${p.url}`}>{p.title}</a> 
                     </li>
                 ))}

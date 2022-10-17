@@ -33,6 +33,12 @@ namespace NaStories.API.Domain.Helpers
         public string AllowOriginUrl4 { get; set; } 
         public int DefaultPageSize { get; set; }
 
+        public string YoutubeAPIUrl { get; set; }
+        public string YoutubeChannelId { get; set; }
+        public string YoutubeAPIKey { get; set; }
+
+        public int BookingAdjustmentDay { get; set; }
+
 
     }
 }

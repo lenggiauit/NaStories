@@ -8,8 +8,11 @@
     "nav_logout": "Logout",
     "nav_home": "Home",
     "nav_login": "Login",
+    "nav_register": "Register",
     "nav_about": "About",
     "nav_blog": "Blog",
+    "nav_private_talk": "Private talk",
+    "nav_mock_interview": "Mock interview",
     "nav_contact": "Contact",
     "nav_admin": "Admin", 
     "nav_termsOfService": "Terms Of Service",
@@ -101,6 +104,19 @@
     "btnSaveDraft": "Save Draft",
     "label_all" : "All",
     "label_draft": "Draft",
-    "label_public": "Published"
+    "label_public": "Published",
+    "header_cover_title": "Na’s Stories",
+    "header_cover_description": "Chào mừng bạn đã đến thăm nhà của Na, nơi đây có rất nhiều câu chuyện mang lại cho bạn năng lượng tích cực và những chia sẻ chân thật của Na về nhiều khía cạnh từ công việc cho đến cuộc sống.",
+    "header_about_title": "Về Na’s Stories",
+    "header_about_name": "VẠN THỊ KIM CHI",
+    "header_about_description": "Vì chuyên môn của Na là về IT Business Analyst và Product Owner, nên bạn sẽ thấy khá nhiều nội dung xoay quanh hai mảng nghề nghiệp này, nếu bạn cũng là dân trong ngành hoặc đang tìm kiếm cơ hội liên quan thì mong là Na có thể đồng hành cùng bạn nhé. Hiện tại, Na đang du học tại Canada để theo đuổi những trải nghiệm mới nơi xứ người, nên sẽ có rất nhiều điều Na muốn kể cho bạn nghe dưới góc nhìn của một du học sinh “nhiều tuổi”, nếu bạn cũng tò mò thì nhớ ghé thăm Na thường xuyên nha. Còn bây giờ thì mời bạn tham quan một vòng để khám phá những nội dung hữu ích mà Na gửi đến bạn nhé!",
+    "header_event_title": "Chương trình dành cho cá nhân",
+    "header_youtube_title" : "Youtube videos",
+    "header_private_talk_title": "Private talk",
+    "header_private_talk_register_form_title": "Đặt hẹn đăng ký Private Talk",
+    "nav_admin_bookingdate": "Booking date",
+    "nav_admin_manageBookingdate": "Manage booking date",
+    "heading_bookingdateList": "Booking date list"
+
     
 }

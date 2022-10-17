@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +39,31 @@ namespace NaStories.API.Domain.Helpers
         Row =13,
         Col = 14,
         EditLabel = 15
+
+    }
+
+    public enum CacheKeys
+    {
+        [Description("YoutubeVideos")]
+        YoutubeVideos
+    }
+
+    public enum EventStatus
+    {
+        [Description("Submitted")]
+        Submitted,
+        [Description("Reviewing")]
+        Reviewing,
+        [Description("RequestPay")]
+        RequestPay,
+        [Description("Paid")]
+        Paid,
+        [Description("Confirmed")]
+        Confirmed,
+        [Description("Completed")]
+        Completed,
+        [Description("Rejected")]
+        Rejected,
 
     }
 

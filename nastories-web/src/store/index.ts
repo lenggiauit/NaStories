@@ -4,7 +4,9 @@ import { AccountService, UserService } from '../services/account';
 import { AdminService } from '../services/admin';
 import { BlogService } from '../services/blog';
 import { ChatService } from '../services/chat';
+import { EventService } from '../services/event';
 import { FileService } from '../services/fileService'; 
+import { HomeService } from '../services/home';
 import { RefService } from '../services/refService'; 
 import userReducer from './userSlice';
 export const store = configureStore({
@@ -18,6 +20,8 @@ export const store = configureStore({
         [RefService.reducerPath]: RefService.reducer, 
         [BlogService.reducerPath]: BlogService.reducer, 
         [AdminService.reducerPath]: AdminService.reducer, 
+        [HomeService.reducerPath]: HomeService.reducer, 
+        [EventService.reducerPath]: EventService.reducer, 
     },
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
@@ -30,6 +34,8 @@ export const store = configureStore({
             .concat(RefService.middleware) 
             .concat(BlogService.middleware)
             .concat(AdminService.middleware)
+            .concat(HomeService.middleware)
+            .concat(EventService.middleware)
             ;
     }
 });

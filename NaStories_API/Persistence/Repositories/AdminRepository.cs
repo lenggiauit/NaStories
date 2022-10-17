@@ -370,5 +370,82 @@ namespace NaStories.API.Persistence.Repositories
                 return (ResultCode.Error);
             }
         }
+
+        public async Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate()
+        {
+            try
+            {
+                return (await _context.EventBookingDate 
+                    .AsNoTracking()
+                    .OrderByDescending(x => x.UpdatedDate) 
+                    .ToListAsync(), ResultCode.Success); 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetEventAvailableDate method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async  Task<(EventBookingDate, ResultCode)> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request, Guid userId)
+        {
+            try
+            {
+                var bookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(request.Payload.Id)).FirstOrDefaultAsync();
+
+                if (bookingDate != null)
+                {
+                    bookingDate.Title = request.Payload.Title;
+                    bookingDate.Start = request.Payload.Start;
+                    bookingDate.End = request.Payload.End;
+                    _context.EventBookingDate.Update(bookingDate);
+                }
+                else
+                {
+                    bookingDate = new EventBookingDate()
+                    {
+                        Id = Guid.NewGuid(),
+                        Title = request.Payload.Title,
+                        Start = request.Payload.Start,
+                        End = request.Payload.End,
+                    };
+
+                    await _context.EventBookingDate.AddAsync(bookingDate);
+                }
+                await _context.SaveChangesAsync();
+                return (null, ResultCode.Error);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at AddEditEventAvailableDate method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+
+        }
+
+        public async Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid userId)
+        {
+            try
+            {
+                var bookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(request.Payload.Id)).FirstOrDefaultAsync();
+
+                if (bookingDate != null)
+                { 
+                    _context.EventBookingDate.Remove(bookingDate);
+                    await _context.SaveChangesAsync();
+                    return (ResultCode.Success);
+                }
+                else
+                {
+                    return (ResultCode.Invalid);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RemoveEventAvailableDate method: " + ex.Message);
+                return (ResultCode.Error);
+            }
+        }
     }
 }

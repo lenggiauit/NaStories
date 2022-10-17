@@ -16,4 +16,4 @@ function ConverterLocaleDateString(date: any) {
     return (new Date(date)).toLocaleDateString(lang, { day: "numeric", month: "long", year: "numeric" });
 }
 
-export default ConverterLocaleDateString;
+export default ConverterLocaleDateString; 

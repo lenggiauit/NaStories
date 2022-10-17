@@ -1,5 +1,4 @@
 
-
 export type CategoryResource = { 
     name: any; 
     description: any;

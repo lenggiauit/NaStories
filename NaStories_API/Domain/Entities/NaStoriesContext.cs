@@ -33,6 +33,9 @@ namespace NaStories.API.Domain.Entities
         public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<PostComment> PostComment { get; set; }
 
+        public virtual DbSet<EventBookingDate> EventBookingDate { get; set; }
+        public virtual DbSet<PrivateTalk> PrivateTalk { get; set; }
+        public virtual DbSet<MockInterview> MockInterview { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

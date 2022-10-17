@@ -6,6 +6,7 @@ import { CategoryResource } from './resources/categoryResource';
 import { TagResource } from './resources/tagResource';
 import { BlogPostRelatedResource, BlogPostResource } from './resources/blogPostResource';
 import { CommentResource } from './resources/commentResource';
+import { ResultCode } from '../utils/enums';
  
  
  
@@ -81,13 +82,33 @@ export const BlogService = createApi({
                 return response;
             },
         }),
-        UserPostComment: builder.mutation<ApiResponse<CommentResource>, ApiRequest<{ postId: any, parentId: any, comment: any }>>({
+        AddComment: builder.mutation<ApiResponse<CommentResource>, ApiRequest<{ postId: any, parentId: any, comment: any }>>({
             query: (payload) => ({
-                url: 'blog/userPostComment',
+                url: 'blog/AddComment',
                 method: 'POST',
                 body: payload
             }),
             transformResponse(response: ApiResponse<CommentResource>) {
+                return response;
+            },
+        }),
+        RemoveComment: builder.mutation<ApiResponse<ResultCode>, ApiRequest<{ commentId: any}>>({
+            query: (payload) => ({
+                url: 'blog/RemoveComment',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        GetComment: builder.mutation<ApiResponse<CommentResource[]>, ApiRequest<{ postId: any }>>({
+            query: (payload) => ({
+                url: 'blog/GetComments',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<CommentResource[]>) {
                 return response;
             },
         }),
@@ -103,4 +124,6 @@ export const { useGetCategoryQuery,
     useGetBlogPostMutation, 
     useGetPostDetailQuery, 
     useGetRelatedPostQuery,
-    useUserPostCommentMutation  } = BlogService;
+    useAddCommentMutation,
+    useGetCommentMutation,
+    useRemoveCommentMutation  } = BlogService;

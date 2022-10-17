@@ -220,5 +220,28 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [HttpPost("GetPrivateTalkList")]
+        public async Task<BaseResponse<List<PrivateTalkResource>>> GetPrivateTalkList()
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _accountServices.GetPrivateTalkList(GetCurrentUserId());
+                if (data != null)
+                {
+                    return new BaseResponse<List<PrivateTalkResource>>(_mapper.Map<List<PrivateTalk>, List<PrivateTalkResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<PrivateTalkResource>>(Constants.ErrorMsg, resultCode);
+                }
+
+            }
+            else
+            {
+                return new BaseResponse<List<PrivateTalkResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
     }
 }

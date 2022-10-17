@@ -30,6 +30,11 @@ namespace NaStories.API.Services
             _appSettings = appSettings.Value;
         }
 
+        public async  Task<(EventBookingDate, ResultCode)> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request, Guid userId)
+        {
+            return await _adminRepository.AddEditEventAvailableDate(request, userId);
+        }
+
         public async Task<ResultCode> CheckBlogPostTitle(string title, Guid? blogPostId)
         {
             return await _adminRepository.CheckBlogPostTitle(title, blogPostId);
@@ -58,6 +63,16 @@ namespace NaStories.API.Services
         public async Task<(List<Category>, ResultCode)> GetCategory(BaseRequest<CategoryFilterRequest> request)
         {
             return await _adminRepository.GetCategory(request);
+        }
+
+        public async Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate()
+        {
+            return await _adminRepository.GetEventAvailableDate();
+        }
+
+        public async Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid userId)
+        {
+            return await _adminRepository.RemoveEventAvailableDate(request, userId);
         }
 
         public async Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId)

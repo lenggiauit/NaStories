@@ -632,6 +632,31 @@ label.btn {
   padding-bottom: 0 !important;
 }
 
-/* sub menu */
+.price-unit {
+  margin-right: 0px !important;
+}
+ 
+ul.list-infor {
+  list-style: none;
+  padding: 0px;
+}
+ul.list-infor li{
+  margin-right: 15px;
+  margin-left: 15px;
+}
+ 
+ul.list-infor li:before {
+  content: '✓';
+  margin-right: 5px;
+}
+.pricing-1{
+  min-height: 545px;
+  cursor: pointer;
+}
+.bottom {
+  position: absolute;
+  bottom: 0; 
+}
+ 
  
  

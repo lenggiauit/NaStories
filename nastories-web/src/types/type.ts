@@ -6,8 +6,9 @@ export interface Dictionary<T> {
 }
 
 export interface AppSetting {
-    BaseUrl: string;
-    GoogleClientId: string;
+    SiteUrl: any,
+    BaseUrl: any;
+    GoogleClientId: any;
     PageSize: number
 }
 

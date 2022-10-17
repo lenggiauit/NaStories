@@ -168,7 +168,7 @@ namespace NaStories_API.Controllers
             }
         }
 
-        [HttpGet("GetComments")]
+        [HttpPost("GetComments")]
         public async Task<BaseResponse<List<CommentResource>>> GetComments(BaseRequest<CommmentRequest> request)
         {
             if (ModelState.IsValid)

@@ -4,7 +4,9 @@ import { getLoggedUser } from '../utils/functions';
 import * as FormDataFile from "form-data";
 import { Category } from './models/admin/category';
 import { BlogPost } from './models/admin/blogPost';
-import { Tag } from './models/tag';
+import { Tag } from './models/tag'; 
+import { EventBookingDate } from './models/admin/eventBookingDate';
+import { ResultCode } from '../utils/enums';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -102,6 +104,37 @@ export const AdminService = createApi({
             },
         }),
 
+        AddEditEventAvailableDate: builder.mutation<ApiResponse<EventBookingDate>, ApiRequest<{id: any, title: any, start: any, end: any }>>({
+            query: (payload) => ({
+                url: 'admin/AddEditEventAvailableDate',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<EventBookingDate>) {
+                return response;
+            },
+        }),
+        RemoveEventAvailableDate: builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any }>>({
+            query: (payload) => ({
+                url: 'admin/RemoveEventAvailableDate',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        GetEventAvailableDate: builder.mutation<ApiResponse<EventBookingDate[]>, ApiRequest<null>>({
+            query: (payload) => ({
+                url: 'admin/GetEventAvailableDate',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<EventBookingDate[]>) {
+                return response;
+            },
+        }),
+
     })
 });
 
@@ -110,4 +143,7 @@ export const { useGetCategoryMutation,
     useGetBlogPostMutation, 
     useCreateEditBlogPostMutation, 
     useGetQueryCategoryQuery,  
-    useUpdateBlogPostStatusMutation  } = AdminService;
+    useUpdateBlogPostStatusMutation,
+    useAddEditEventAvailableDateMutation,
+    useGetEventAvailableDateMutation,
+    useRemoveEventAvailableDateMutation  } = AdminService;

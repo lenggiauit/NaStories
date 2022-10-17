@@ -138,6 +138,45 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [HttpPost("GetEventAvailableDate")]
+        public async Task<BaseResponse<List<EventBookingDate>>> GetEventAvailableDate()
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<List<EventBookingDate>>(await _adminServices.GetEventAvailableDate());
+            }
+            else
+            {
+                return new BaseResponse<List<EventBookingDate>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
+        [HttpPost("AddEditEventAvailableDate")]
+        public async Task<BaseResponse<EventBookingDate>> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<EventBookingDate>(await _adminServices.AddEditEventAvailableDate(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<EventBookingDate>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("RemoveEventAvailableDate")]
+        public async Task<BaseResponse<ResultCode>> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.RemoveEventAvailableDate(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
 
     }
 }
