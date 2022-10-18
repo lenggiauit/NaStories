@@ -560,5 +560,81 @@ namespace NaStories.API.Persistence.Repositories
                 return (null, ResultCode.Error);
             }
         }
+
+        public async Task<ResultCode> UpdatePrivateTalkStatus(UpdatePrivateTalkStatusRequest payload, Guid userId)
+        {
+            try
+            {
+               
+                var privateTalk = await _context.PrivateTalk.Where(c => c.Id.Equals(payload.Id)).FirstOrDefaultAsync();
+                if (privateTalk != null)
+                {
+                    var oldEventBookingDateId = privateTalk.EventBookingDateId;
+                    if (!string.IsNullOrEmpty(payload.Status))
+                        privateTalk.EventStatus = payload.Status;
+                    if ( payload.EventBookingDateId != null && payload.EventBookingDateId != Guid.Empty)
+                        privateTalk.EventBookingDateId = payload.EventBookingDateId;
+
+                    _context.PrivateTalk.Update(privateTalk);
+
+                    if (payload.EventBookingDateId != null && !payload.EventBookingDateId.Equals(Guid.Empty))
+                    {
+                        var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
+                        if(oldBookingDate != null)
+                        {
+                            oldBookingDate.UserId = null;
+                            oldBookingDate.Title = "Available time";
+                            oldBookingDate.EventName = "";
+                            oldBookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(oldBookingDate);
+                        }
+                        var bookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(payload.EventBookingDateId)).FirstOrDefaultAsync();
+
+                        if (bookingDate != null)
+                        {
+                            bookingDate.UserId = userId;
+                            bookingDate.Title = "Private Talk - " + privateTalk.FullName;
+                            bookingDate.EventName = "Private Talk";
+                            bookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(bookingDate);
+                        } 
+                    }
+
+
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+                else
+                {
+                    return ResultCode.Error;
+                } 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at UpdatePrivateTalkStatus method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
+        public async Task<Guid> GetPrivateTalkIdByEventBookingDate(GetPrivateTalkIdByEventBookingDateRequest payload, Guid userId)
+        {
+            try
+            { 
+                var privateTalk = await _context.PrivateTalk.Where(c => c.EventBookingDateId.Equals(payload.EventBookingDateId)).FirstOrDefaultAsync();
+                if (privateTalk != null)
+                { 
+                    return privateTalk.Id;
+                }
+                else
+                {
+                    return Guid.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetPrivateTalkIdByEventBookingDate method: " + ex.Message);
+                return Guid.Empty;
+            }
+        }
     }
 }

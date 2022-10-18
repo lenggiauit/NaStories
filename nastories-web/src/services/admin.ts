@@ -8,6 +8,7 @@ import { Tag } from './models/tag';
 import { EventBookingDate } from './models/admin/eventBookingDate';
 import { ResultCode } from '../utils/enums';
 import { PrivateTalk } from './models/admin/privateTalk';
+import { EventBookingDateResource } from './resources/eventBookingDateResource';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -125,6 +126,18 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+        UpdatePrivateTalkStatus: builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any, status?: any, eventBookingDateId?: any }>>({
+            query: (payload) => ({
+                url: 'admin/UpdatePrivateTalkStatus',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+
+
         GetEventAvailableDate: builder.mutation<ApiResponse<EventBookingDate[]>, ApiRequest<null>>({
             query: (payload) => ({
                 url: 'admin/GetEventAvailableDate',
@@ -135,7 +148,16 @@ export const AdminService = createApi({
                 return response;
             },
         }),
-
+        GetEventAvailableDateQuery: builder.query<ApiResponse<EventBookingDate[]>, ApiRequest<null>>({
+            query: (payload) => ({
+                url: 'admin/GetEventAvailableDate',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<EventBookingDate[]>) {
+                return response;
+            },
+        }), 
         GetPrivateTalkList: builder.mutation<ApiResponse<PrivateTalk[]>, ApiRequest<{eventStatus?: any}>>({
             query: (payload) => ({
                 url: 'admin/GetPrivateTalkList',
@@ -155,6 +177,16 @@ export const AdminService = createApi({
             transformResponse(response: ApiResponse<PrivateTalk>) {
                 return response;
             },
+        }), 
+        GetPrivateTalkIdByEventBookingDate: builder.mutation<ApiResponse<{ }>, ApiRequest<{eventBookingDateId: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetPrivateTalkIdByEventBookingDate',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<{}>) {
+                return response;
+            },
         }),
 
     })
@@ -170,4 +202,7 @@ export const { useGetCategoryMutation,
     useGetEventAvailableDateMutation,
     useRemoveEventAvailableDateMutation,
     useGetPrivateTalkListMutation,
-    useGetPrivateTalkDetailQuery  } = AdminService;
+    useGetPrivateTalkDetailQuery,
+    useGetEventAvailableDateQueryQuery,
+    useUpdatePrivateTalkStatusMutation,
+    useGetPrivateTalkIdByEventBookingDateMutation  } = AdminService;

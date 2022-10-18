@@ -28,6 +28,12 @@ const BookingConfirmModal: React.FC<Props> = ({ options }) => {
         removeModalComponent();
         options.onSave();
     }
+    const onViewHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
+        removeModalComponent();
+        options.onView();
+    }
+
+    
     const onDeleteHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
         removeModalComponent();
         options.onDelete();
@@ -52,6 +58,7 @@ const BookingConfirmModal: React.FC<Props> = ({ options }) => {
                     </div>
                     <div className="modal-footer border-0">
                         <button type="button" className="btn btn-secondary" onClick={onCancelHandler} data-dismiss="modal"><Translation tid="btnClose" /></button>
+                        <button type="button" className="btn btn-success" onClick={onViewHandler} ><Translation tid="btnView" /></button>
                         <button type="button" className="btn btn-danger" onClick={onDeleteHandler} ><Translation tid="btnDelete" /></button>
                         <button type="button" className="btn btn-primary" onClick={onSaveHandler} ><Translation tid="btnSave" /></button>
                         
@@ -67,6 +74,7 @@ type PropTypes = {
     message1: any,
     message2: any,
     message3: any,
+    onView: () => void,
     onSave: () => void,
     onDelete: () => void,
     onCancel?: () => void,

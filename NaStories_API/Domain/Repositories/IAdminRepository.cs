@@ -23,5 +23,7 @@ namespace NaStories.API.Domain.Repositories
         Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid userId);
         Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request);
         Task<(PrivateTalk, ResultCode)> GetPrivateTalkDetail(Guid id);
+        Task<ResultCode> UpdatePrivateTalkStatus(UpdatePrivateTalkStatusRequest payload, Guid userId);
+        Task<Guid> GetPrivateTalkIdByEventBookingDate(GetPrivateTalkIdByEventBookingDateRequest payload, Guid userId);
     }
 }

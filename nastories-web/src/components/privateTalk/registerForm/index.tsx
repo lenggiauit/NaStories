@@ -128,7 +128,8 @@ const PrivateTalkRegisterForm: React.FC = () => {
     }, [addEditPrivateTalkStatus]);
 
     const privateTalkHeader = () => {
-        return (<section className="section text-white bg-primary">
+        // style={{ backgroundImage: `url(../../assets/images/privatetalk_cover.jpg)` }}
+        return (<section className="section text-white bg-primary" > 
             <div className="container">
                 <header className="section-header">
                     <h2><Translation tid="header_private_talk_title" /></h2>

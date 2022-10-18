@@ -57,9 +57,7 @@ namespace NaStories.API.Persistence.Repositories
                             bookingDate.EventName = "Private Talk";
                             bookingDate.UpdatedDate = DateTime.Now;
                              _context.EventBookingDate.Update(bookingDate);
-                        }
-
-
+                        } 
                     }
 
                     await _context.SaveChangesAsync();

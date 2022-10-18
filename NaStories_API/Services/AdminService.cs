@@ -75,6 +75,11 @@ namespace NaStories.API.Services
             return await _adminRepository.GetPrivateTalkDetail(id);
         }
 
+        public async Task<Guid> GetPrivateTalkIdByEventBookingDate(GetPrivateTalkIdByEventBookingDateRequest payload, Guid userId)
+        {
+            return await _adminRepository.GetPrivateTalkIdByEventBookingDate(payload, userId);
+        }
+
         public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request)
         {
             return await _adminRepository.GetPrivateTalkList(request);
@@ -88,6 +93,11 @@ namespace NaStories.API.Services
         public async Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId)
         {
             return await _adminRepository.UpdateBlogPostStatus(request, userId);
+        }
+
+        public async Task<ResultCode> UpdatePrivateTalkStatus(UpdatePrivateTalkStatusRequest payload, Guid userId)
+        {
+            return await _adminRepository.UpdatePrivateTalkStatus(payload, userId);
         }
     }
 }

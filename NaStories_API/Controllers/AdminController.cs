@@ -208,6 +208,36 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [Permissions(PermissionConstant.UpdatePrivateTalkStatus)]
+
+        [HttpPost("UpdatePrivateTalkStatus")]
+        public async Task<BaseResponse<ResultCode>> UpdatePrivateTalkStatus(BaseRequest<UpdatePrivateTalkStatusRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.UpdatePrivateTalkStatus(request.Payload, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("GetPrivateTalkIdByEventBookingDate")]
+        public async Task<BaseResponse<Guid>> GetPrivateTalkIdByEventBookingDate(BaseRequest<GetPrivateTalkIdByEventBookingDateRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<Guid>(await _adminServices.GetPrivateTalkIdByEventBookingDate(request.Payload, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<Guid>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        
+
 
 
     }

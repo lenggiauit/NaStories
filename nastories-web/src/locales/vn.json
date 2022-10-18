@@ -76,6 +76,7 @@
     "requestChangePrivateTalkSuccess_msg": "Gửi yêu cầu thành công",
     "nav_admin_events": "Quản lý sự kiện",
     "btnPrev": "Quay lại",
-    "btnNext": "Tiếp theo"
+    "btnNext": "Tiếp theo",
+    "btnView": "View"
     
 }

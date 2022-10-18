@@ -4,8 +4,7 @@ import { matchPath, Redirect, useHistory, useParams, useRouteMatch } from "react
 import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
 import { useRemovePrivateTalkMutation, useRequestChangePrivateTalkMutation } from "../../../services/account";
-import { useGetPrivateTalkDetailQuery } from "../../../services/admin";
-import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
+import { useGetEventAvailableDateQueryQuery, useGetPrivateTalkDetailQuery, useUpdatePrivateTalkStatusMutation } from "../../../services/admin"; 
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
 import { AppSetting } from "../../../types/type";
@@ -41,15 +40,18 @@ const AdminPrivateTalkDetail: React.FC = () => {
     }, [])
 
     const getdetailStatus = useGetPrivateTalkDetailQuery({ payload: id });
+    const [UpdatePrivateTalk, UpdatePrivateTalkStatus] = useUpdatePrivateTalkStatusMutation();
 
-    const getEventBookingAvaiableDateQueryStatus = useGetEventBookingAvaiableDateQuery({ payload: null });
+    const getEventBookingAvaiableDateQueryStatus = useGetEventAvailableDateQueryQuery({ payload: null });
 
-    const [eventStatus, setEventStatus] = useState<string>("");
+    const [eventStatus, setEventStatus] = useState<string | null>(null);
+    const [eventDateId, setEventDateId] = useState<string | null>(null);
+
     const [bookingId, setBookingId] = useState<string>("");
 
     useEffect(()=>{
         if(getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null){
-            setEventStatus(getdetailStatus.data.resource.eventStatus);
+            //setEventStatus(getdetailStatus.data.resource.eventStatus);
         }
 
     }, [getdetailStatus]);
@@ -70,6 +72,22 @@ const AdminPrivateTalkDetail: React.FC = () => {
         }
 
     }, [getdetailStatus, getEventBookingAvaiableDateQueryStatus]);
+
+    const handleOnSaveChange = useCallback(() =>{
+        UpdatePrivateTalk({payload: { id: getdetailStatus.data?.resource.id, status: eventStatus, eventBookingDateId: eventDateId }}); 
+    }, [eventStatus, eventDateId]);
+
+
+    useEffect(()=>{
+        if(UpdatePrivateTalkStatus.data && UpdatePrivateTalkStatus.data.resultCode == ResultCode.Success)
+        {
+            setEventStatus(null);
+            setEventDateId(null);
+            showDialogModal({ message : "Cập nhật thành công" });
+        }
+        
+
+    }, [UpdatePrivateTalkStatus]);
   
     return (<>
         {getdetailStatus.isLoading && <PageLoading />}
@@ -77,7 +95,7 @@ const AdminPrivateTalkDetail: React.FC = () => {
             
             <div className="section">
                 <div className="container">
-                    <a href="#" onClick={() => history.goBack()}> Back </a>
+                    <a href="#" onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk" }> Back </a>
                     <div className="text-center">
                         <h2>{getdetailStatus.data.resource.eventBookingDate ? getdetailStatus.data.resource .eventBookingDate.title : getdetailStatus.data.resource .fullName }</h2> 
                     </div>
@@ -94,9 +112,17 @@ const AdminPrivateTalkDetail: React.FC = () => {
                             <tr className="border-top border-light">
                                 <td>Start Date:</td>
                                 <td colSpan={2}>
-                                    {getdetailStatus.data.resource.eventBookingDate ? dateFormat(calcTime(new Date(getdetailStatus.data.resource.eventBookingDate.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"  : "---"}
-                                    <br />
-                                    {getdetailStatus.data.resource.eventBookingDate ? dateFormat( getdetailStatus.data.resource.eventBookingDate.start, "dd, mm, yyyy - h:MM:ss TT") + " Canada" : "---"}
+                                <select name="eventStartDateId" onChange={(e)=>{ setEventDateId(e.target.value) }}
+                                        className="form-control" placeholder="Booking date"> 
+                                        <option value="" label="Chọn ngày">Chọn ngày</option>
+                                        {getEventBookingAvaiableDateQueryStatus.data != null &&
+                                            getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success && 
+                                            getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
+                                                <option key={b.id} value={b.id} selected={ getdetailStatus.data.resource.eventBookingDate?.id == b.id} > 
+                                                    {dateFormat( b.start, "dd, mm, yyyy - h:MM:ss TT")} 
+                                                </option>
+                                            ))}  
+                                </select> 
                                 </td>
                             </tr> 
                             
@@ -123,11 +149,10 @@ const AdminPrivateTalkDetail: React.FC = () => {
                             <tr className="border-top border-light">
                                 <td>Status:</td>
                                 <td colSpan={2}>  
-                                    <select name="eventStatus" className="form-control form-control-sm" onChange={(e)=>{ setEventStatus(e.target.value) }}>
-                                        
+                                    <select name="eventStatus" className="form-control form-control-sm" onChange={(e)=>{ setEventStatus(e.target.value) }}> 
                                         {Object.keys(PrivateTalkEnumStatus).map((status) => 
                                         (
-                                            <option value={status} selected={ eventStatus == status} >{status}</option>
+                                            <option value={status} selected={ getdetailStatus.data.resource.eventStatus == status} >{status}</option>
                                         )
                                         )}
                                     </select> 
@@ -164,8 +189,8 @@ const AdminPrivateTalkDetail: React.FC = () => {
                         <hr />
                         <div className="row">
                             <div className="col-md-12 text-center">
-                            <button className="btn btn-secondary " onClick={() => history.goBack()}>Back to list</button>
-                            <button className="btn btn-primary ml-2" > Save change</button>
+                            <button className="btn btn-secondary " onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk" }>Back to list</button>
+                            <button className="btn btn-primary ml-2" onClick={handleOnSaveChange} disabled={!(eventStatus != null || eventDateId != null)} > Save change</button>
                             </div>
                         </div>
                     </div>  

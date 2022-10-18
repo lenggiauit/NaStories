@@ -8,7 +8,7 @@ import LocalSpinner from "../../localSpinner";
 import { hasPermission } from "../../../utils/functions"; 
 import { PermissionKeys } from "../../../utils/constants"; 
 import { EventBookingDate } from "../../../services/models/admin/eventBookingDate";
-import { useAddEditEventAvailableDateMutation, useGetEventAvailableDateMutation, useRemoveEventAvailableDateMutation } from "../../../services/admin"; 
+import { useAddEditEventAvailableDateMutation, useGetEventAvailableDateMutation, useGetPrivateTalkIdByEventBookingDateMutation, useRemoveEventAvailableDateMutation } from "../../../services/admin"; 
  
 import FullCalendar, {
   DateSelectArg,
@@ -36,7 +36,8 @@ const BookingList: React.FC = () => {
     // get list
     const [getBookingList, getBookingStatus] = useGetEventAvailableDateMutation();
     const [addEventAvailableDate, addEventAvailableDateStatus] = useAddEditEventAvailableDateMutation();
-    const [removeEventAvailableDate, removeEventAvailableDateStatus] = useRemoveEventAvailableDateMutation()
+    const [removeEventAvailableDate, removeEventAvailableDateStatus] = useRemoveEventAvailableDateMutation();
+    const [GetPrivateTalkIdByEventBookingDate, GetPrivateTalkIdByEventBookingDateStatus] = useGetPrivateTalkIdByEventBookingDateMutation();
 
     const [metaData, setMetaData] = useState<MetaData>({ paging: { index: 1, size: appSetting.PageSize } });
     const [pagingData, setPagingData] = useState<Paging>({ index: 1, size: appSetting.PageSize });
@@ -53,7 +54,14 @@ const BookingList: React.FC = () => {
 
     }, []);
 
-     
+    useEffect(() => {
+
+        if(GetPrivateTalkIdByEventBookingDateStatus.data  && GetPrivateTalkIdByEventBookingDateStatus.data.resource != '00000000-0000-0000-0000-000000000000'){
+             
+            window.open(appSetting.SiteUrl + "admin/private-talk/" + GetPrivateTalkIdByEventBookingDateStatus.data.resource);
+        }
+
+    }, [GetPrivateTalkIdByEventBookingDateStatus]);
 
     useEffect(()=>{
         if(getBookingStatus.data?.resultCode == ResultCode.Success){
@@ -62,10 +70,7 @@ const BookingList: React.FC = () => {
                 return { title: i.title, start: i.start, end: i.end }
             });
             setEvents(a);
-        }
-
-            
-        
+        } 
 
     }, [getBookingStatus]);
 
@@ -101,6 +106,11 @@ const BookingList: React.FC = () => {
             onDelete: () => {
                 removeEventAvailableDate({ payload: { id: clickInfo.event.id}});
                 clickInfo.event.remove(); 
+            },
+            onView: () =>{
+
+                GetPrivateTalkIdByEventBookingDate({payload: {eventBookingDateId : clickInfo.event.id }});
+
             },
             onSave:()=>{
                 let calendarApi = clickInfo.view.calendar;
