@@ -70,6 +70,16 @@ namespace NaStories.API.Services
             return await _adminRepository.GetEventAvailableDate();
         }
 
+        public async Task<(PrivateTalk, ResultCode)> GetPrivateTalkDetail(Guid id)
+        {
+            return await _adminRepository.GetPrivateTalkDetail(id);
+        }
+
+        public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request)
+        {
+            return await _adminRepository.GetPrivateTalkList(request);
+        }
+
         public async Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid userId)
         {
             return await _adminRepository.RemoveEventAvailableDate(request, userId);

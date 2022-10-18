@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ApiRequest, ApiResponse, AppSetting } from "../types/type";
+import { ResultCode } from '../utils/enums';
 import { getLoggedUser } from '../utils/functions';
 import { AuthenticateRequest } from './communication/request/authenticateRequest';
 import { ForgotpasswordRequest } from './communication/request/forgotpasswordRequest';
@@ -39,6 +40,7 @@ export const UserService = createApi({
                 return response;
             },
         }),
+
         UserUpdateAvatar: builder.mutation<ApiResponse<CommonResponse>, ApiRequest<UpdateAvatarRequest>>({
             query: (payload) => ({
                 url: 'account/updateUserAvatar',
@@ -49,7 +51,8 @@ export const UserService = createApi({
                 return response;
             },
         }),
-        GetPrivateTalkList: builder.query<ApiResponse<PrivateTalkResource[]>, ApiRequest<{  }>>({
+
+        GetPrivateTalkList: builder.query<ApiResponse<PrivateTalkResource[]>, ApiRequest<{}>>({
             query: (payload) => ({
                 url: 'account/GetPrivateTalkList',
                 method: 'POST',
@@ -60,12 +63,42 @@ export const UserService = createApi({
             },
         }),
 
+        RemovePrivateTalk: builder.mutation<ApiResponse<ResultCode>, ApiRequest<{ id: any, reason: any}>>({
+            query: (payload) => ({
+                url: 'account/RemovePrivateTalk',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        RequestChangePrivateTalk: builder.mutation<ApiResponse<ResultCode>, ApiRequest<
+        { 
+            eventId: any,
+            eventBookingDateId: any,
+            reason: any
+        }>>({
+            query: (payload) => ({
+                url: 'account/RequestChangePrivateTalk',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+
+    
+
     })
 });
-export const { 
-    useUserUpdateProfileMutation, 
+export const {
+    useUserUpdateProfileMutation,
     useUserUpdateAvatarMutation,
-    useGetPrivateTalkListQuery 
+    useGetPrivateTalkListQuery,
+    useRemovePrivateTalkMutation,
+    useRequestChangePrivateTalkMutation
 
 } = UserService;
 

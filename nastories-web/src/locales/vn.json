@@ -61,6 +61,21 @@
     "header_private_talk_register_form_title": "Đặt hẹn đăng ký Private Talk",
     "nav_admin_bookingdate": "Booking date",
     "nav_admin_manageBookingdate": "Manage booking date",
-    "heading_bookingdateList": "Booking date list"
+    "heading_bookingdateList": "Booking date list",
+    "header_notification_title": "Notification",
+    "notification_notfound": "Bạn không có thông báo nào",
+    "action_privatetalk_requestchangetime": "Yêu cầu đổi ngày",
+    "deletePrivateTalkmsg": "Bạn có chắc bạn muốn xóa?",
+    "btnDelete": "Xóa",
+    "maxLengthField": "",
+    "btnCancel" : "Hủy đăng ký",
+    "btnSave" : "Lưu",
+    "btnClose" : "Đóng",
+    "btnConfirm": "Xác nhận",
+    "requestChangePrivateTalk_msg": "Bạn cần chọn ngày cần thay đổi và nhập lý do muốn thay đổi:",
+    "requestChangePrivateTalkSuccess_msg": "Gửi yêu cầu thành công",
+    "nav_admin_events": "Quản lý sự kiện",
+    "btnPrev": "Quay lại",
+    "btnNext": "Tiếp theo"
     
 }

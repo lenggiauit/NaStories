@@ -11,7 +11,7 @@ export type AppContextType = {
 }
 
 export const AppContext = createContext<AppContextType>({
-    locale: 'en',
+    locale: 'vn',
     setLocale: locale => console.warn('No locale provider'),
     appSetting: appSetting
 });

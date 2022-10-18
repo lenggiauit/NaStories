@@ -15,14 +15,16 @@ namespace NaStories.API.Services
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountServiceRepository;
+        private readonly INotificationRepository _notifyRepository;
         private readonly IEmailService _emailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly AppSettings _appSettings;
         private readonly ILogger<AccountService> _logger;
 
-        public AccountService(IAccountRepository accountServiceRepository, IEmailService emailService, ILogger<AccountService> logger, IUnitOfWork unitOfWork, IOptions<AppSettings> appSettings)
+        public AccountService(IAccountRepository accountServiceRepository, INotificationRepository notificationRepository, IEmailService emailService, ILogger<AccountService> logger, IUnitOfWork unitOfWork, IOptions<AppSettings> appSettings)
         {
             _accountServiceRepository = accountServiceRepository;
+            _notifyRepository = notificationRepository;
             _emailService = emailService;
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -56,7 +58,7 @@ namespace NaStories.API.Services
                     await _emailService.Send(email,
                         _appSettings.MailForgotPasswordSubject,
                         string.Format(_appSettings.MailForgotPasswordContent, user.UserName, resetPasswordUrl));
-
+                    await _notifyRepository.SendNotification("[SendEmailForgotPasswordSuccess]", user.Id);
                     return ResultCode.Success;
                 }
                 catch (Exception e)
@@ -75,12 +77,7 @@ namespace NaStories.API.Services
         {
             return await _accountServiceRepository.GetById(id);
         }
-
-        public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId)
-        {
-            return await _accountServiceRepository.GetPrivateTalkList(userId);
-        }
-
+         
         public async Task<User> Login(string name, string password)
         {
             return await _accountServiceRepository.Login(name, password);
@@ -111,6 +108,7 @@ namespace NaStories.API.Services
                     {
                         await _accountServiceRepository.UpdateUserPasword(userId, newPassword);
                         await _unitOfWork.CompleteAsync();
+                        await _notifyRepository.SendNotification("[ResetPasswordSuccess]", userId);
                         return ResultCode.Success;
                     }
                     else
@@ -137,6 +135,7 @@ namespace NaStories.API.Services
                 if (await _accountServiceRepository.UpdateProfile(userId, request.Payload))
                 { 
                     await _unitOfWork.CompleteAsync();
+                    await _notifyRepository.SendNotification("[UpdateProfileSuccess]", userId);
                     return ResultCode.Success;
                 }
                 else
@@ -158,6 +157,7 @@ namespace NaStories.API.Services
                 if (await _accountServiceRepository.UpdateUserAvatar(userId, request.Payload.Avatar))
                 { 
                     await _unitOfWork.CompleteAsync();
+                    await _notifyRepository.SendNotification("[UpdateUserAvatarSuccess]", userId);
                     return (ResultCode.Success);
                 }
                 else

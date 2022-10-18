@@ -13,4 +13,5 @@ export type PrivateTalkResource =
     yourExpectationDescription  : any, 
     eventBookingDate? : EventBookingDateResource,  
     eventStatus  : any,
+    isEnableEequestChange: boolean
 }

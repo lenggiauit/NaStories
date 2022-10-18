@@ -19,10 +19,11 @@ using System.Threading.Tasks;
 namespace NaStories.API.Controllers
 {
     [Authorize]
-    [Route("Account")]
+    [Route("[controller]")]
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountServices;
+        private readonly IEventService _eventServices;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly ILogger<AccountController> _logger;
         private readonly AppSettings _appSettings;
@@ -31,10 +32,12 @@ namespace NaStories.API.Controllers
             ILogger<AccountController> logger,
             IMapper mapper,
             IAccountService accountService,
+            IEventService eventService,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<AppSettings> appSettings)
         {
             _accountServices = accountService;
+            _eventServices = eventService;
             _httpClientFactoryService = httpClientFactoryService;
             _logger = logger;
             _mapper = mapper;
@@ -225,7 +228,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var (data, resultCode) = await _accountServices.GetPrivateTalkList(GetCurrentUserId());
+                var (data, resultCode) = await _eventServices.GetPrivateTalkList(GetCurrentUserId());
                 if (data != null)
                 {
                     return new BaseResponse<List<PrivateTalkResource>>(_mapper.Map<List<PrivateTalk>, List<PrivateTalkResource>>(data));
@@ -239,6 +242,32 @@ namespace NaStories.API.Controllers
             else
             {
                 return new BaseResponse<List<PrivateTalkResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("RemovePrivateTalk")]
+        public async Task<BaseResponse<ResultCode>> RemovePrivateTalk([FromBody] BaseRequest<RemovePrivateTalkRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _eventServices.RemovePrivateTalk(request.Payload.Id, request.Payload.Reason, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("RequestChangePrivateTalk")]
+        public async Task<BaseResponse<ResultCode>> RequestChangePrivateTalk([FromBody] BaseRequest<RequestChangePrivateTalkRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _eventServices.RequestChangePrivateTalk(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
             }
         }
 

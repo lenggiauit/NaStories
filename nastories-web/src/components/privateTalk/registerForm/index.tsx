@@ -56,18 +56,23 @@ const PrivateTalkRegisterForm: React.FC = () => {
 
     const validationSchema = () => {
         return Yup.object().shape({
-            fullname: Yup.string().required(dictionaryList[locale]["RequiredField"]),
-            email: Yup.string().email().required(dictionaryList[locale]["RequiredField"]),
-            agerange: Yup.string().required(dictionaryList[locale]["RequiredField"]),
+            fullname: Yup.string().required(dictionaryList[locale]["RequiredField"])
+            .max(100), 
+            email: Yup.string().email().required(dictionaryList[locale]["RequiredField"])
+            .max(150),
+            agerange: Yup.string().required(dictionaryList[locale]["RequiredField"]), 
             problem: Yup.string().required(dictionaryList[locale]["RequiredField"]),
             problemOther: Yup.string().when('problem', (problem, schema) => {
                 if (problem == "Khác") {
                     return schema.required(dictionaryList[locale]["RequiredField"])
                 }
-            }),
-            problemDescription: Yup.string().required(dictionaryList[locale]["RequiredField"]),
-            yourSolutionDescription: Yup.string().required(dictionaryList[locale]["RequiredField"]),
-            yourExpectationDescription: Yup.string().required(dictionaryList[locale]["RequiredField"]),
+            }).max(150),
+            problemDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
+            .max(500),
+            yourSolutionDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
+            .max(500),
+            yourExpectationDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
+            .max(500),
         });
     }
 

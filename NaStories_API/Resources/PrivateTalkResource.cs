@@ -16,5 +16,6 @@ namespace NaStories.API.Resources
         public Guid? EventBookingDateId { get; set; }
         public EventBookingDateResource EventBookingDate { get; set; }  
         public string EventStatus { get; set; }
+        public bool IsEnableEequestChange { get; set; }
     }
 }

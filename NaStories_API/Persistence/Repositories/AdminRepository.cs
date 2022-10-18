@@ -184,7 +184,7 @@ namespace NaStories.API.Persistence.Repositories
                         IsDraft = request.Payload.IsDraft,
                         IsPublic = request.Payload.IsPublic,
                     };
-                     
+
                     await _context.BlogPost.AddAsync(post);
                     if (request.Payload.Tags != null)
                     {
@@ -197,7 +197,7 @@ namespace NaStories.API.Persistence.Repositories
                                 Name = name,
                                 Url = Regex.Replace(name, "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
                                 BlogPostId = postId
-                            }) ; 
+                            });
                         }
                         await _context.Tag.AddRangeAsync(tags);
                     }
@@ -287,34 +287,35 @@ namespace NaStories.API.Persistence.Repositories
 
                 var totalRow = await query.CountAsync();
 
-                return (await query 
+                return (await query
                   .AsNoTracking()
                   .OrderByDescending(x => x.UpdatedDate)
                   .Include(p => p.Category)
                   .Include(p => p.Tags)
-                  .Select(p =>  new BlogPost() { 
-                    Id = p.Id,
-                    Title = p.Title,    
-                    CategoryId = p.CategoryId,
-                    Category = p.Category,
-                    Content = p.Content,
-                    TotalRows = totalRow,
-                    Thumbnail = p.Thumbnail,
-                    ShortDescription = p.ShortDescription,
-                    CreatedBy = p.CreatedBy,
-                    UpdatedBy  = p.UpdatedBy,
-                    CreatedDate = p.CreatedDate,
-                    UpdatedDate = p.UpdatedDate,
-                    Url = p.Url,
-                    IsArchived = p.IsArchived,
-                    IsDraft = p.IsDraft,
-                    IsPublic = p.IsPublic,
-                    View = p.View,
-                    Comment = p.Comment,
-                    Tags = p.Tags
+                  .Select(p => new BlogPost()
+                  {
+                      Id = p.Id,
+                      Title = p.Title,
+                      CategoryId = p.CategoryId,
+                      Category = p.Category,
+                      Content = p.Content,
+                      TotalRows = totalRow,
+                      Thumbnail = p.Thumbnail,
+                      ShortDescription = p.ShortDescription,
+                      CreatedBy = p.CreatedBy,
+                      UpdatedBy = p.UpdatedBy,
+                      CreatedDate = p.CreatedDate,
+                      UpdatedDate = p.UpdatedDate,
+                      Url = p.Url,
+                      IsArchived = p.IsArchived,
+                      IsDraft = p.IsDraft,
+                      IsPublic = p.IsPublic,
+                      View = p.View,
+                      Comment = p.Comment,
+                      Tags = p.Tags
                   })
-                  
-                  .GetPagingQueryable(request.MetaData) 
+
+                  .GetPagingQueryable(request.MetaData)
                   .ToListAsync(), ResultCode.Success);
 
 
@@ -358,7 +359,7 @@ namespace NaStories.API.Persistence.Repositories
                             }
                     }
 
-                    
+
                 }
                 _context.BlogPost.Update(post);
                 await _context.SaveChangesAsync();
@@ -375,10 +376,10 @@ namespace NaStories.API.Persistence.Repositories
         {
             try
             {
-                return (await _context.EventBookingDate 
+                return (await _context.EventBookingDate
                     .AsNoTracking()
-                    .OrderByDescending(x => x.UpdatedDate) 
-                    .ToListAsync(), ResultCode.Success); 
+                    .OrderByDescending(x => x.UpdatedDate)
+                    .ToListAsync(), ResultCode.Success);
             }
             catch (Exception ex)
             {
@@ -387,7 +388,7 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
-        public async  Task<(EventBookingDate, ResultCode)> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request, Guid userId)
+        public async Task<(EventBookingDate, ResultCode)> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request, Guid userId)
         {
             try
             {
@@ -430,7 +431,7 @@ namespace NaStories.API.Persistence.Repositories
                 var bookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(request.Payload.Id)).FirstOrDefaultAsync();
 
                 if (bookingDate != null)
-                { 
+                {
                     _context.EventBookingDate.Remove(bookingDate);
                     await _context.SaveChangesAsync();
                     return (ResultCode.Success);
@@ -439,12 +440,124 @@ namespace NaStories.API.Persistence.Repositories
                 {
                     return (ResultCode.Invalid);
                 }
-                
+
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error at RemoveEventAvailableDate method: " + ex.Message);
                 return (ResultCode.Error);
+            }
+        }
+
+        public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request)
+        {
+            try
+            {
+                var query = _context.PrivateTalk.AsQueryable();
+
+                if (!string.IsNullOrEmpty(request.Payload.EventStatus))
+                {
+                    query = query
+                    .Where(p => p.EventStatus.ToLower().Equals(request.Payload.EventStatus.ToLower()));
+
+                }
+
+
+                var totalRow = await query.CountAsync();
+
+                return (await query
+                  .AsNoTracking()
+                  .OrderByDescending(x => x.CreatedDate)
+                  .Include(x => x.User)
+                  .Include(x => x.EventBookingDate) 
+                  .Select(x => new PrivateTalk()
+                  {
+                      Id = x.Id,
+                      EventRequestChangeReason = x.EventRequestChangeReason,
+                      EventBookingDate = x.EventBookingDate,
+                      EventCancelReason = x.EventCancelReason,
+                      AgeRange = x.AgeRange,
+                      CreatedBy = x.CreatedBy,
+                      CreatedDate = x.CreatedDate,
+                      Email = x.Email,
+                      EventStatus = x.EventStatus,
+                      FullName = x.FullName,
+                      IsDeleted = x.IsDeleted,
+                      Problem = x.Problem,
+                      ProblemDescription = x.ProblemDescription,
+                      ProblemOther = x.ProblemOther,
+                      RequestChangeCount = x.RequestChangeCount,
+                      User = x.User,
+                      UpdatedBy = x.UpdatedBy,
+                      UpdatedDate = x.UpdatedDate,
+                      YourExpectationDescription = x.YourExpectationDescription,
+                      YourSolutionDescription = x.YourSolutionDescription,
+                      TotalRows = totalRow,
+
+                  })
+                  .GetPagingQueryable(request.MetaData)
+                  .ToListAsync(), ResultCode.Success);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetPrivateTalkList method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(PrivateTalk, ResultCode)> GetPrivateTalkDetail(Guid id)
+        {
+            try
+            {
+
+                var eventRequestChangeReason = await _context.EventRequestChangeReason.Where(e => e.PrivateTalkId.Equals(id)).FirstOrDefaultAsync();
+                if (eventRequestChangeReason != null) {
+                    
+                    var eventBookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(eventRequestChangeReason.EventBookingDateId)).FirstOrDefaultAsync();
+                    eventRequestChangeReason.EventBookingDate = eventBookingDate;
+                }
+                 
+                var eventCancelReason = await _context.EventCancelReason.Where(e => e.PrivateTalkId.Equals(id)).FirstOrDefaultAsync();
+                 
+                return (await _context.PrivateTalk
+                  .AsNoTracking() 
+                  .Include(x => x.User)
+                  .Include(x => x.EventBookingDate)
+                  .Select(x => new PrivateTalk()
+                  {
+                      Id = x.Id,
+                      EventRequestChangeReason = eventRequestChangeReason,
+                      EventBookingDate = x.EventBookingDate,
+                      EventCancelReason = eventCancelReason,
+                      AgeRange = x.AgeRange,
+                      CreatedBy = x.CreatedBy,
+                      CreatedDate = x.CreatedDate,
+                      Email = x.Email,
+                      EventStatus = x.EventStatus,
+                      FullName = x.FullName,
+                      IsDeleted = x.IsDeleted,
+                      Problem = x.Problem,
+                      ProblemDescription = x.ProblemDescription,
+                      ProblemOther = x.ProblemOther,
+                      RequestChangeCount = x.RequestChangeCount,
+                      User = x.User,
+                      UpdatedBy = x.UpdatedBy,
+                      UpdatedDate = x.UpdatedDate,
+                      YourExpectationDescription = x.YourExpectationDescription,
+                      YourSolutionDescription = x.YourSolutionDescription, 
+
+                  }) 
+                  .Where(x => x.Id.Equals(id))
+                  .FirstOrDefaultAsync(), ResultCode.Success);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetPrivateTalkDetail method: " + ex.Message);
+                return (null, ResultCode.Error);
             }
         }
     }

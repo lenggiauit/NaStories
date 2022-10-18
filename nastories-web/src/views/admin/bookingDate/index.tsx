@@ -6,7 +6,7 @@ import * as bt from 'react-bootstrap';
 import BookingDateList from '../../../components/admin/booking';
 
 
-const Category: React.FC = (): ReactElement => {
+const BookingDate: React.FC = (): ReactElement => {
 
     return (
         <>
@@ -17,4 +17,4 @@ const Category: React.FC = (): ReactElement => {
     );
 }
 
-export default Category;
+export default BookingDate;

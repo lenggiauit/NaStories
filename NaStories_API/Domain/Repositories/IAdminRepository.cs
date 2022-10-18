@@ -21,5 +21,7 @@ namespace NaStories.API.Domain.Repositories
         Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate();
         Task<(EventBookingDate, ResultCode)> AddEditEventAvailableDate(BaseRequest<AddEventAvailableDateRequest> request, Guid userId);
         Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid userId);
+        Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request);
+        Task<(PrivateTalk, ResultCode)> GetPrivateTalkDetail(Guid id);
     }
 }

@@ -184,6 +184,23 @@ const AdminBookingDate = lazy(() => {
         .then(([moduleExports]) => moduleExports);
 });
 
+const AdminPrivateTalk = lazy(() => {
+    return Promise.all([
+        import("../views/admin/privateTalk"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const AdminPrivateTalkDetailPage = lazy(() => {
+    return Promise.all([
+        import("../views/admin/privateTalk/detail"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+
 const Page404 = lazy(() => {
     return Promise.all([
         import("../views/pageNotFound"),
@@ -235,6 +252,8 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/admin/blog/post" exact component={AdminBlogPost} />
                         <Route path="/admin/users" exact component={AdminUsers} />
                         <Route path="/admin/bookingdate" exact component={AdminBookingDate} />
+                        <Route path="/admin/private-talk" exact component={AdminPrivateTalk} /> 
+                        <Route path="/admin/private-talk/:id" exact component={AdminPrivateTalkDetailPage} /> 
                         {/* User  */} 
                         <Route path="/user/private-talk" exact component={UserPrivateTalk} />
                         <Route path="/user/private-talk/:id" exact component={UserPrivateTalk} />

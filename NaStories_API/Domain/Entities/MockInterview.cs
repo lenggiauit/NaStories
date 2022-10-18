@@ -26,5 +26,7 @@ namespace NaStories.API.Domain.Entities
         public virtual User User { get; set; }
         [MaxLength(50)]
         public string EventStatus { get; set; }
+        public bool IsDeleted { get; set; }
+        public int RequestChangeCount { get; set; }
     }
 }

@@ -19,5 +19,21 @@ export enum PermissionKeys {
     CreateEditCategory = "CreateEditCategory",
     CreateEditBlogPost = "CreateEditBlogPost",
     ManageUser = "ManageUser",
-    CreateEditBooking = "CreateEditBooking"
+    CreateEditBooking = "CreateEditBooking",
+    GetPrivateTalkList = "GetPrivateTalkList",
+    UpdatePrivateTalkStatus = "UpdatePrivateTalkStatus",
+    RemovePrivateTalk = "RemovePrivateTalk",
 }
+
+export enum PrivateTalkEnumStatus { 
+    Submitted = "Submitted",
+    Reviewing = "Reviewing",
+    RequestPay = "RequestPay",
+    Paid = "Paid",
+    Confirmed = "Confirmed",
+    Completed = "Completed",
+    Rejected = "Rejected", 
+    Canceled = "Canceled",
+    Pending = "Pending",
+}
+ 

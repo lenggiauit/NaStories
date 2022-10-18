@@ -36,6 +36,10 @@ namespace NaStories.API.Domain.Entities
         public virtual DbSet<EventBookingDate> EventBookingDate { get; set; }
         public virtual DbSet<PrivateTalk> PrivateTalk { get; set; }
         public virtual DbSet<MockInterview> MockInterview { get; set; }
+        public virtual DbSet<Notification> Notification { get; set; } 
+        public virtual DbSet<EventRequestChangeReason> EventRequestChangeReason { get; set; }
+        public virtual DbSet<EventCancelReason> EventCancelReason { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

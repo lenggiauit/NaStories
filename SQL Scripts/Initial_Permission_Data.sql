@@ -37,6 +37,30 @@ INSERT INTO [dbo].[Permission]
            ,'ManageUser'
            ,1
            ,GETDATE()
+            ),
+			
+			(NEWID()
+           ,'GetPrivateTalkList'
+           ,'GetPrivateTalkList'
+           ,'GetPrivateTalkList'
+           ,1
+           ,GETDATE()
+            ) ,
+
+			(NEWID()
+           ,'UpdatePrivateTalkStatus'
+           ,'UpdatePrivateTalkStatus'
+           ,'UpdatePrivateTalkStatus'
+           ,1
+           ,GETDATE()
+            ) ,
+
+			(NEWID()
+           ,'RemovePrivateTalk'
+           ,'RemovePrivateTalk'
+           ,'RemovePrivateTalk'
+           ,1
+           ,GETDATE()
             ) 
 
 

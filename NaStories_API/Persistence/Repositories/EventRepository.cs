@@ -36,7 +36,7 @@ namespace NaStories.API.Persistence.Repositories
                         Problem = request.Payload.Problem,
                         ProblemOther = request.Payload.ProblemOther,
                         EventBookingDateId = request.Payload.EventBookingDateId,
-                        EventStatus = EventStatus.Submitted.ToDescriptionString(),
+                        EventStatus = EventStatusEnum.Submitted.ToDescriptionString(),
                         ProblemDescription = request.Payload.ProblemDescription, 
                         YourExpectationDescription = request.Payload.YourExpectationDescription,
                         YourSolutionDescription = request.Payload.YourSolutionDescription,
@@ -76,7 +76,7 @@ namespace NaStories.API.Persistence.Repositories
                         privateTalk.Problem = request.Payload.Problem;
                         privateTalk.ProblemOther = request.Payload.ProblemOther;
                         privateTalk.EventBookingDateId = request.Payload.EventBookingDateId;
-                        privateTalk.EventStatus = EventStatus.Submitted.ToDescriptionString();
+                        privateTalk.EventStatus = EventStatusEnum.Submitted.ToDescriptionString();
                         privateTalk.ProblemDescription = request.Payload.ProblemDescription;
                         privateTalk.YourExpectationDescription = request.Payload.YourExpectationDescription;
                         privateTalk.YourSolutionDescription = request.Payload.YourSolutionDescription;
@@ -112,6 +112,114 @@ namespace NaStories.API.Persistence.Repositories
             {
                 _logger.LogError("Error at GetEventBookingAvaiableDate method: " + ex.Message);
                 return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId)
+        {
+            try
+            {
+                return (await _context.PrivateTalk.AsNoTracking()
+                    .Where(p => p.UserId.Equals(userId) && !p.IsDeleted)
+                    .Include(p => p.EventBookingDate)
+                    .Select(p => new PrivateTalk()
+                    {
+                        Id = p.Id,
+                        CreatedBy = p.CreatedBy,
+                        CreatedDate = p.CreatedDate,
+                        Email = p.Email,
+                        FullName = p.FullName,
+                        EventBookingDate = p.EventBookingDate,
+                        ProblemDescription = p.ProblemDescription,
+                        AgeRange = p.AgeRange,
+                        EventStatus = p.EventStatus,
+                        Problem = p.Problem,
+                        ProblemOther = p.ProblemOther,
+                        UpdatedBy = p.UpdatedBy,
+                        YourExpectationDescription = p.YourExpectationDescription,
+                        UpdatedDate = p.UpdatedDate,
+                        YourSolutionDescription = p.YourSolutionDescription,
+
+                    })
+                    .ToListAsync(), ResultCode.Success);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<ResultCode> RemovePrivateTalk(Guid id, string reason, Guid userId)
+        {
+            try
+            {
+                var privateTalk = await _context.PrivateTalk.Where(n => n.UserId.Equals(userId) && n.Id.Equals(id)).FirstOrDefaultAsync();
+                if (privateTalk != null)
+                {
+                    privateTalk.IsDeleted = true; 
+                    _context.PrivateTalk.Update(privateTalk);
+
+                    var cancelReason = new EventCancelReason()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateBy = userId,
+                        CreateDate = DateTime.Now,
+                        PrivateTalkId = id,
+                        Reason = reason,
+                    };
+
+                    await _context.EventCancelReason.AddAsync(cancelReason);
+
+                    var changeReason = await _context.EventRequestChangeReason.Where(e => e.PrivateTalkId.Equals(id)).FirstOrDefaultAsync();
+                    if(changeReason != null)
+                    {
+                        _context.EventRequestChangeReason.Remove(changeReason);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                return ResultCode.Success;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RemovePrivateTalk method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
+        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangePrivateTalkRequest> request, Guid userId)
+        {
+            try
+            {
+                var privateTalk = await _context.PrivateTalk.Where(n => n.UserId.Equals(userId) && n.Id.Equals( request.Payload.EventId)).FirstOrDefaultAsync();
+                if (privateTalk != null)
+                {
+                    privateTalk.EventStatus = EventStatusEnum.Pending.ToDescriptionString();
+                    _context.PrivateTalk.Update(privateTalk);
+
+                    var changeReason = new EventRequestChangeReason()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateBy = userId,
+                        CreateDate = DateTime.Now,
+                        PrivateTalkId = request.Payload.EventId,
+                        Reason = request.Payload.Reason,
+                        EventBookingDateId = request.Payload.EventBookingDateId,
+                        IsActive = true,
+                    };
+
+                    await _context.EventRequestChangeReason.AddAsync(changeReason);
+                    await _context.SaveChangesAsync();
+                }
+                return ResultCode.Success;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RemovePrivateTalk method: " + ex.Message);
+                return ResultCode.Error;
             }
         }
     }

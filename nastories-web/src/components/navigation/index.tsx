@@ -9,6 +9,7 @@ import { AnimationLogo } from '../animationLogo';
 import { User } from '../../services/models/user';
 import { PermissionKeys } from '../../utils/constants';
 import { getSignalRHubConnection, StartSignalRHubConnection, StopSignalRHubConnection } from '../../services/chat';
+import { useGetNotificationCountQuery } from '../../services/notification';
 
 type Props = {
     isPublic: boolean,
@@ -20,6 +21,7 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
     const location = useLocation();
     const signalRHubConnection = null;
     const [messageCount, setMessageCount] = useState<Number>(0);
+    const getNotificationCountStatus = useGetNotificationCountQuery({  payload: {}});
     // Start onload 
     useEffect(() => {
         StartSignalRHubConnection();
@@ -110,9 +112,13 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
  
                                                 <li><hr className="dropdown-divider" /></li> 
                                                 <li className="dropdown-submenu">
-                                                    <i className="bi bi-calendar-week" style={{ fontSize: 18 }}></i><b><span className="ml-2"><Translation tid="nav_admin_bookingdate" /></span></b>
+                                                    <i className="bi bi-calendar-week" style={{ fontSize: 18 }}></i><b><span className="ml-2"><Translation tid="nav_admin_events" /></span></b>
                                                     <ul >
                                                         <li><a className="dropdown-item" href="/admin/bookingdate"><Translation tid="nav_admin_manageBookingdate" /></a> </li> 
+                                                        <li>
+                                                        <a className="dropdown-item" href="/admin/private-talk">Private Talk</a>
+                                                    </li>
+                                                    
                                                     </ul> 
                                                 </li> 
 
@@ -131,14 +137,19 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                     <li className="nav-item">
                                         <a className={`nav-link ${(location.pathname.indexOf('notification') != -1) ? "active" : ""}`} href="/notification">
                                             <i className="bi bi-bell" style={{ fontSize: 24 }}></i>
+                                            <span className="badge badge-number badge-danger">
+                                            {getNotificationCountStatus.isSuccess && getNotificationCountStatus.data.resource &&  
+                                            <>
+                                            {getNotificationCountStatus.data.resource}
+                                            </>
+                                            }
+                                            </span>
                                         </a>
                                     </li>
                                     <li className="nav-item">
                                         <a className={`nav-link ${(location.pathname.indexOf('messages') != -1) ? "active" : ""}`} href="/messages">
-
                                             <i className="bi bi-chat-text" style={{ fontSize: 24 }}></i>
-
-                                            {messageCount == 0 ? "" : <> ({messageCount})</>}</a>
+                                            <span className="badge badge-number badge-danger">{messageCount}</span></a>
                                     </li>
 
                                     <li className="nav-item dropdown">

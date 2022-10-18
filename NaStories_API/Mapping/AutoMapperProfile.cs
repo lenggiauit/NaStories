@@ -32,8 +32,8 @@ namespace NaStories.API.Mapping
             CreateMap<YoutubeVideo, YoutubeVideoResource>();
             CreateMap<EventBookingDate, EventBookingDateResource>();
             CreateMap<PrivateTalk, PrivateTalkResource>();
+            CreateMap<Notification, NotificationResource>();
 
-            
 
 
         }

@@ -158,42 +158,7 @@ namespace NaStories.API.Persistence.Repositories
                 return null;
             }
         }
-
-        public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId)
-        {
-            try
-            {
-                return ( await _context.PrivateTalk.AsNoTracking()
-                    .Where(p => p.UserId.Equals(userId))
-                    .Include(p => p.EventBookingDate) 
-                    .Select(p => new PrivateTalk()
-                    {
-                        Id = p.Id,
-                        CreatedBy = p.CreatedBy,
-                        CreatedDate = p.CreatedDate,
-                        Email = p.Email,
-                        FullName = p.FullName,
-                        EventBookingDate = p.EventBookingDate,
-                        ProblemDescription= p.ProblemDescription,
-                        AgeRange = p.AgeRange,
-                        EventStatus= p.EventStatus,
-                        Problem = p.Problem,
-                        ProblemOther = p.ProblemOther,
-                        UpdatedBy = p.UpdatedBy,
-                        YourExpectationDescription = p.YourExpectationDescription,
-                        UpdatedDate = p.UpdatedDate,
-                        YourSolutionDescription = p.YourSolutionDescription,
-
-                    })
-                    .ToListAsync(), ResultCode.Success);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return (null, ResultCode.Error);
-            }
-        }
-
+         
         public async Task<User> Login(string name, string password)
         {
             try

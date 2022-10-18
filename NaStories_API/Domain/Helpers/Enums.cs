@@ -48,7 +48,7 @@ namespace NaStories.API.Domain.Helpers
         YoutubeVideos
     }
 
-    public enum EventStatus
+    public enum EventStatusEnum
     {
         [Description("Submitted")]
         Submitted,
@@ -64,8 +64,13 @@ namespace NaStories.API.Domain.Helpers
         Completed,
         [Description("Rejected")]
         Rejected,
+        [Description("Canceled")]
+        Canceled,
+        [Description("Pending")]
+        Pending,
 
     }
+
 
 
 }

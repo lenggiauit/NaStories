@@ -34,8 +34,7 @@ const PostDetail: React.FC = ({  }): ReactElement => {
     const getPostDetailStatus = useGetPostDetailQuery({ postUrl });
  
     return (
-        <>
-           
+        <> 
                 {getPostDetailStatus.isLoading && <PageLoading />}
                 {getPostDetailStatus.isSuccess && getPostDetailStatus.data.resultCode == ResultCode.Success && <>
                     <div className="section">

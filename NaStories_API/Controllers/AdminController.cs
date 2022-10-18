@@ -178,5 +178,37 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [Permissions(PermissionConstant.GetPrivateTalkList)]
+
+        [HttpPost("GetPrivateTalkList")]
+        public async Task<BaseResponse<List<PrivateTalk>>> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<List<PrivateTalk>>(await _adminServices.GetPrivateTalkList(request));
+            }
+            else
+            {
+                return new BaseResponse<List<PrivateTalk>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.GetPrivateTalkList)]
+
+        [HttpPost("GetPrivateTalkDetail")]
+        public async Task<BaseResponse<PrivateTalk>> GetPrivateTalkDetail(BaseRequest<Guid> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<PrivateTalk>(await _adminServices.GetPrivateTalkDetail(request.Payload));
+            }
+            else
+            {
+                return new BaseResponse<PrivateTalk>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
+
     }
 }

@@ -7,6 +7,7 @@ import { BlogPost } from './models/admin/blogPost';
 import { Tag } from './models/tag'; 
 import { EventBookingDate } from './models/admin/eventBookingDate';
 import { ResultCode } from '../utils/enums';
+import { PrivateTalk } from './models/admin/privateTalk';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -135,6 +136,27 @@ export const AdminService = createApi({
             },
         }),
 
+        GetPrivateTalkList: builder.mutation<ApiResponse<PrivateTalk[]>, ApiRequest<{eventStatus?: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetPrivateTalkList',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<PrivateTalk[]>) {
+                return response;
+            },
+        }),
+        GetPrivateTalkDetail: builder.query<ApiResponse<PrivateTalk>, ApiRequest<{id: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetPrivateTalkDetail',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<PrivateTalk>) {
+                return response;
+            },
+        }),
+
     })
 });
 
@@ -146,4 +168,6 @@ export const { useGetCategoryMutation,
     useUpdateBlogPostStatusMutation,
     useAddEditEventAvailableDateMutation,
     useGetEventAvailableDateMutation,
-    useRemoveEventAvailableDateMutation  } = AdminService;
+    useRemoveEventAvailableDateMutation,
+    useGetPrivateTalkListMutation,
+    useGetPrivateTalkDetailQuery  } = AdminService;
