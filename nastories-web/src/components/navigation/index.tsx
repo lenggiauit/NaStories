@@ -61,30 +61,34 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <span className="navbar-divider d-mobile-none"></span>
                         <ul className="nav nav-navbar nav-text-normal mr-auto">
-                            <li>
+                            <li className="nav-item">
                                 <a className={`nav-link ${(location.pathname == '/') ? "active" : ""}`} href="/">
                                     <Translation tid="nav_home" />
                                 </a>
                             </li> 
-                            <li>
+                            <li className="nav-item">
                                 <a className={`nav-link ${(location.pathname == '/blog') ? "active" : ""}`} href="/blog">
                                     <Translation tid="nav_blog" />
                                 </a>
                             </li>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link" href="#" role="button" data-bs-toggle="dropdown" data-toggle="dropdown" aria-expanded="false"><Translation tid="nav_events" /></a>
+                                <ul className="dropdown-menu" style={{width: 180}}>
+                                    <li className="dropdown-submenu">
+                                    <a className={`dropdown-item`} href="/private-talk">
+                                        <Translation tid="nav_private_talk" />
+                                    </a>
+                                    </li>
 
-                            <li>
-                                <a className={`nav-link ${(location.pathname == '/private-talk') ? "active" : ""}`} href="/private-talk">
-                                    <Translation tid="nav_private_talk" />
-                                </a>
+                                    <li className="dropdown-submenu">
+                                        <a className={`dropdown-item`} href="/mock-interview">
+                                            <Translation tid="nav_mock_interview" />
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-
-                            <li>
-                                <a className={`nav-link ${(location.pathname == '/mock-interview') ? "active" : ""}`} href="/mock-interview">
-                                    <Translation tid="nav_mock_interview" />
-                                </a>
-                            </li>
-
-                            <li>
+ 
+                            <li className="nav-item">
                                 <a className={`nav-link ${(location.pathname == '/contact') ? "active" : ""}`} href="/contact">
                                     <Translation tid="nav_contact" />
                                 </a>

@@ -33,6 +33,16 @@ namespace NaStories.API.Services
             return await _blogRepository.AddComment(request, userId);
         }
 
+        public async Task<(List<BlogPost>, ResultCode)> GetBlogPostByCategory(BaseRequest<BlogPostByUrlRequest> request)
+        {
+            return await _blogRepository.GetBlogPostByCategory(request);
+        }
+
+        public async Task<(List<BlogPost>, ResultCode)> GetBlogPostByTag(BaseRequest<BlogPostByUrlRequest> request)
+        {
+            return await _blogRepository.GetBlogPostByTag(request);
+        }
+
         public async Task<(BlogPost, ResultCode)> GetBlogPostDetail(string postUrl)
         {
             return await _blogRepository.GetBlogPostDetail(postUrl);

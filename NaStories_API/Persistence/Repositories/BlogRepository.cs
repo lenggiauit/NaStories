@@ -279,6 +279,7 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
                 return (await _context.BlogPost
+                    .Include(p => p.Category)
                     .AsNoTracking()
                     .AsQueryable() 
                     .Where(p => p.IsPublic)
@@ -290,6 +291,7 @@ namespace NaStories.API.Persistence.Repositories
                         Url = p.Url,
                         View = p.View,
                         Comment = p.Comment,
+                        Category = p.Category,
                     })
                     .OrderBy(p => p.View)
                     .OrderBy(p => p.Comment)
@@ -305,7 +307,103 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
-        
+        public async Task<(List<BlogPost>, ResultCode)> GetBlogPostByCategory(BaseRequest<BlogPostByUrlRequest> request)
+        {
+            try
+            {
+                var query = _context.BlogPost.AsQueryable();
+
+                if (!string.IsNullOrEmpty(request.Payload.Keywords))
+                {
+                    query = query
+                    .Where(p => p.Title.Contains(request.Payload.Keywords));
+                }
+
+                var totalRow = await query.Where(p => p.IsPublic).CountAsync();
+
+                return (await query.Join(
+                    
+                    _context.Category.Where( c => c.Url.Equals(request.Payload.Url)),
+                    p => p.CategoryId,
+                    c => c.Id, 
+                    ( p, c) => p )
+                    .Include(p => p.Category)
+                    .Include(p => p.Tags)
+                    .AsNoTracking()
+                    .Where(p => p.IsPublic)
+                    .Select(p => new BlogPost()
+                    {
+                        Title = p.Title,
+                        Thumbnail = p.Thumbnail,
+                        ShortDescription = p.ShortDescription,
+                        Url = p.Url,
+                        View = p.View,
+                        Comment = p.Comment,
+                        UpdatedDate = p.UpdatedDate,
+                        CreatedDate = p.CreatedDate,
+                        Category = p.Category,
+                        Tags = p.Tags,
+                        TotalRows = totalRow
+                    })
+                    .OrderBy(p => p.CreatedDate)
+                    .OrderBy(p => p.UpdatedDate)
+                    .GetPagingQueryable(request.MetaData)
+                    .ToListAsync(), ResultCode.Success);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetBlogPostByCategory method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(List<BlogPost>, ResultCode)> GetBlogPostByTag(BaseRequest<BlogPostByUrlRequest> request)
+        {
+            try
+            {
+                var query = _context.BlogPost.AsQueryable();
+
+                if (!string.IsNullOrEmpty(request.Payload.Keywords))
+                {
+                    query = query
+                    .Where(p => p.Title.Contains(request.Payload.Keywords));
+                }
+
+                var totalRow = await query.Where(p => p.IsPublic).CountAsync();
+
+                return (await query
+                    .Where(p => p.Tags.Where(t => t.Url.Equals(request.Payload.Url ) ).Count() > 0)
+                    .Include(p => p.Category)
+                    .Include(p => p.Tags)
+                    .AsNoTracking()
+                    .Where(p => p.IsPublic)
+                    .Select(p => new BlogPost()
+                    {
+                        Title = p.Title,
+                        Thumbnail = p.Thumbnail,
+                        ShortDescription = p.ShortDescription,
+                        Url = p.Url,
+                        View = p.View,
+                        Comment = p.Comment,
+                        UpdatedDate = p.UpdatedDate,
+                        CreatedDate = p.CreatedDate,
+                        Category = p.Category,
+                        Tags = p.Tags,
+                        TotalRows = totalRow
+                    })
+                    .OrderBy(p => p.CreatedDate)
+                    .OrderBy(p => p.UpdatedDate)
+                    .GetPagingQueryable(request.MetaData)
+                    .ToListAsync(), ResultCode.Success);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetBlogPostByCategory method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
     }
 }
 

@@ -7,6 +7,7 @@
     "nav_profile": "Profile",
     "nav_logout": "Logout",
     "nav_home": "Home",
+    "nav_events": "Events",
     "nav_login": "Login",
     "nav_register": "Register",
     "nav_about": "About",
@@ -126,6 +127,8 @@
     "requestChangePrivateTalkmsg": "You need to choose the date and input reason:",
     "requestChangePrivateTalkSuccess_msg": "Sent your request",
     "nav_admin_events": "Manage event",
-    "btnView": "View"
+    "btnView": "View",
+    "read_more": "Read more",
+    "header_blog_title": "Blog"
     
 }

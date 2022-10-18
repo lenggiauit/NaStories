@@ -6,6 +6,7 @@
     "nav_profile": "Profile",
     "nav_logout": "Logout",
     "nav_home": "Trang chủ",
+    "nav_events": "Sự kiện",
     "nav_login": "Đăng nhập",
     "nav_register": "Đăng ký",
     "nav_about": "Về Na’s Stories",
@@ -36,7 +37,7 @@
     "heading_search": "Tìm kiếm",
     "heading_BlogPostList": "Danh sách bài viết",
     "heading_relatedposts": "Bài viết liên quan",
-    "heading_sharing": "Chia sẽ",
+    "heading_sharing": "Chia sẻ",
     "heading_comment": "Bình luận",
     "nav_admin_blog" : "Danh sách bài viết",
     "nav_admin_manageCategory": "Quản lý danh mục",
@@ -77,6 +78,8 @@
     "nav_admin_events": "Quản lý sự kiện",
     "btnPrev": "Quay lại",
     "btnNext": "Tiếp theo",
-    "btnView": "View"
+    "btnView": "View",
+    "read_more": "Xem thêm",
+    "header_blog_title": "Blog"
     
 }

@@ -18,5 +18,7 @@ namespace NaStories.API.Domain.Repositories
         Task<(List<Comment>, ResultCode)> GetComments(BaseRequest<CommmentRequest> request);
         Task<(Comment, ResultCode)> AddComment(BaseRequest<AddCommmentRequest> request, Guid userIds);
         Task<ResultCode> RemoveComment(BaseRequest<RemoveCommmentRequest> request, Guid userId);
+        Task<(List<BlogPost>, ResultCode)> GetBlogPostByCategory(BaseRequest<BlogPostByUrlRequest> request);
+        Task<(List<BlogPost>, ResultCode)> GetBlogPostByTag(BaseRequest<BlogPostByUrlRequest> request);
     }
 }

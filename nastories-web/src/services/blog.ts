@@ -112,6 +112,26 @@ export const BlogService = createApi({
                 return response;
             },
         }),
+        GetBlogPostByCategory: builder.mutation<ApiResponse<BlogPostResource[]>, ApiRequest<{ url: any, keywords?: any }>>({
+            query: (payload) => ({
+                url: 'blog/GetBlogPostByCategory',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<BlogPostResource[]>) {
+                return response;
+            },
+        }),
+        GetBlogPostByTag: builder.mutation<ApiResponse<BlogPostResource[]>, ApiRequest<{ url: any, keywords?: any }>>({
+            query: (payload) => ({
+                url: 'blog/GetBlogPostByTag',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<BlogPostResource[]>) {
+                return response;
+            },
+        }),
 
  
     })
@@ -126,4 +146,6 @@ export const { useGetCategoryQuery,
     useGetRelatedPostQuery,
     useAddCommentMutation,
     useGetCommentMutation,
-    useRemoveCommentMutation  } = BlogService;
+    useRemoveCommentMutation,
+    useGetBlogPostByCategoryMutation,
+    useGetBlogPostByTagMutation  } = BlogService;

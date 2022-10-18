@@ -126,6 +126,49 @@ namespace NaStories_API.Controllers
             }
         }
 
+        [HttpPost("GetBlogPostByCategory")]
+        public async Task<BaseResponse<List<BlogPostResource>>> GetBlogPostByCategory(BaseRequest<BlogPostByUrlRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetBlogPostByCategory(request);
+                if (data != null)
+                {
+                    return new BaseResponse<List<BlogPostResource>>(_mapper.Map<List<BlogPost>, List<BlogPostResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<BlogPostResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<BlogPostResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("GetBlogPostByTag")]
+        public async Task<BaseResponse<List<BlogPostResource>>> GetBlogPostByTag(BaseRequest<BlogPostByUrlRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetBlogPostByTag(request);
+                if (data != null)
+                {
+                    return new BaseResponse<List<BlogPostResource>>(_mapper.Map<List<BlogPost>, List<BlogPostResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<BlogPostResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<BlogPostResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
         [HttpGet("GetBlogPostDetail")]
         public async Task<BaseResponse<BlogPostResource>> GetBlogPostDetail(string postUrl)
         {

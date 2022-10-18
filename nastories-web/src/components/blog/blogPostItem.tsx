@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import { PostDataItem } from "../../services/models/postDataItem";
 import { BlogPostResource } from "../../services/resources/blogPostResource";
 import { DisplayType } from "../../utils/enums";
+import { Translation } from "../translation";
 
 
 type Props = {
@@ -41,7 +42,7 @@ const BlogPostItem: React.FC<Props> = ({ postData, displayType }): ReactElement 
                             <div className="p-7">
                                 <h4>{postData.title}</h4>
                                 <p>{postData.shortDescription}</p>
-                                <a className="small ls-1" href={`/blog/${postData.url}`}>Read More <span className="pl-1">⟶</span></a>
+                                <a className="small ls-1" href={`/blog/${postData.url}`}><Translation tid="read_more" /><span className="pl-1">⟶</span></a>
                             </div>
                         </div>
                     </div>
