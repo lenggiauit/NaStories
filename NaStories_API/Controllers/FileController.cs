@@ -68,7 +68,7 @@ namespace NaStories.API.Controllers
                         return new BaseResponse<FileResource>(new FileResource
                         {
                             FileName = fileName,
-                            Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, _appSettings.TemplateRequestUrl, fileName)
+                            Url = string.Format("{0}://{1}{2}/{3}", Request.Scheme, Request.Host.Value, _appSettings.FileRequestUrl, fileName)
                         }); ;
                     }
                     else

@@ -80,6 +80,8 @@
     "btnNext": "Tiếp theo",
     "btnView": "View",
     "read_more": "Xem thêm",
-    "header_blog_title": "Blog"
+    "header_blog_title": "Blog",
+    "header_mock_interview_title" : "Mock Interview",
+    "header_mock_interview_register_form_title": "Đặt hẹn đăng ký Mock interview"
     
 }

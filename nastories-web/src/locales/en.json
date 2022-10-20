@@ -129,6 +129,8 @@
     "nav_admin_events": "Manage event",
     "btnView": "View",
     "read_more": "Read more",
-    "header_blog_title": "Blog"
+    "header_blog_title": "Blog",
+    "header_mock_interview_title" : "Mock Interview",
+    "header_mock_interview_register_form_title": "Đặt hẹn đăng ký Mock interview"
     
 }
