@@ -36,4 +36,16 @@ export enum PrivateTalkEnumStatus {
     Canceled = "Canceled",
     Pending = "Pending",
 }
+
+export enum MockInterviewEnumStatus { 
+    Submitted = "Submitted",
+    Reviewing = "Reviewing",
+    RequestPay = "RequestPay",
+    Paid = "Paid",
+    Confirmed = "Confirmed",
+    Completed = "Completed",
+    Rejected = "Rejected", 
+    Canceled = "Canceled",
+    Pending = "Pending",
+}
  

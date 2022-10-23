@@ -31,6 +31,20 @@ namespace NaStories.API.Services
 
         }
 
+        public async Task<(Guid, ResultCode)> AddEditMockInterview(BaseRequest<AddEditMockInterviewRequest> request, Guid userId)
+        {
+            var (data, result) = await _eventRepository.AddEditMockInterview(request, userId);
+            if (result == ResultCode.Success && (request.Payload.Id == null || request.Payload.Id != Guid.Empty))
+            {
+                await _notifyRepository.SendNotification("[RegisterMockInterviewSuccess]", userId);
+            }
+            else
+            {
+                await _notifyRepository.SendNotification("[UpdateMockInterviewSuccess]", userId);
+            }
+            return (data, result);
+        }
+
         public async Task<(Guid, ResultCode)> AddEditPrivateTalk(BaseRequest<AddEditPrivateTalkRequest> request, Guid userId)
         {
             var (data, result ) = await _eventRepository.AddEditPrivateTalk(request, userId);
@@ -50,9 +64,25 @@ namespace NaStories.API.Services
             return await _eventRepository.GetEventBookingAvaiableDate(_appSettings.BookingAdjustmentDay);
         }
 
+        public async Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(Guid userId)
+        {
+            return await _eventRepository.GetMockInterviewList(userId);
+        }
+
         public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId)
         {
             return await _eventRepository.GetPrivateTalkList(userId);
+        }
+
+        public async Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId)
+        {
+            var result = await _eventRepository.RemoveMockInterview(id, reason, userId);
+            if (result == ResultCode.Success)
+            {
+                await _notifyRepository.SendNotification("[RemoveMockInterviewSuccess]", userId);
+            }
+
+            return result;
         }
 
         public async Task<ResultCode> RemovePrivateTalk(Guid id, string reason, Guid userId)
@@ -67,7 +97,18 @@ namespace NaStories.API.Services
 
         }
 
-        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangePrivateTalkRequest> request, Guid userId)
+        public async Task<ResultCode> RequestChangeMockInterview(BaseRequest<RequestChangeEventRequest> request, Guid userId)
+        {
+            var result = await _eventRepository.RequestChangeMockInterview(request, userId);
+            if (result == ResultCode.Success)
+            {
+                await _notifyRepository.SendNotification("[RequestMockInterviewSuccess]", userId);
+            }
+
+            return result;
+        }
+
+        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangeEventRequest> request, Guid userId)
         {
             var result = await _eventRepository.RequestChangePrivateTalk(request, userId);
             if (result == ResultCode.Success)

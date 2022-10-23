@@ -131,6 +131,15 @@
     "read_more": "Read more",
     "header_blog_title": "Blog",
     "header_mock_interview_title" : "Mock Interview",
-    "header_mock_interview_register_form_title": "Đặt hẹn đăng ký Mock interview"
-    
+    "header_mock_interview_register_form_title": "Đặt hẹn Mock interview",
+    "deleteMocinterview_msg": "Are you sure you want to delete?",
+    "requestChangeMockInterview_msg": "You need to choose the date and input reason:",
+    "action_mockinterview_requestchangetime" : "Request change time",
+    "requestChangeMockInterviewSuccess_msg": "Sent your request",
+    "[RemoveMockInterviewSuccess]": "Remove Mock Interview Success",
+    "[RequestMockInterviewSuccess]": "Request change Mock Interview Success",
+    "[RegisterPrivateTalkSuccess]": "Register Private Talk Success",
+    "[RemovePrivateTalkSuccess]": "Cancel Private Talk Successs",
+    "[RegisterMockInterviewSuccess]": "Register Mock Interview Success",
+    "[RequestChangePrivateTalkSuccess]": "Request Change Private Talk Success"
 }

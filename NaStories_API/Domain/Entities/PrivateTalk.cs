@@ -33,9 +33,9 @@ namespace NaStories.API.Domain.Entities
         public bool IsDeleted { get; set; }
         public int RequestChangeCount { get; set; }
         [NotMapped]
-        public bool IsEnableEequestChange {
+        public bool IsEnableRequestChange {
             get {
-                return this.RequestChangeCount <= 2 && this.EventStatus == EventStatusEnum.Submitted.ToDescriptionString();
+                return this.RequestChangeCount <= 2 && this.EventStatus == PrivateTalkStatusEnum.Submitted.ToDescriptionString();
 
             }
         }

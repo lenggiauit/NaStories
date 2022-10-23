@@ -33,7 +33,7 @@ namespace NaStories.API.Mapping
             CreateMap<EventBookingDate, EventBookingDateResource>();
             CreateMap<PrivateTalk, PrivateTalkResource>();
             CreateMap<Notification, NotificationResource>();
-
+            CreateMap<MockInterview, MockInterviewResource>();
 
 
         }

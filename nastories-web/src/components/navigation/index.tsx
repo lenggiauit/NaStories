@@ -120,9 +120,11 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                                     <ul >
                                                         <li><a className="dropdown-item" href="/admin/bookingdate"><Translation tid="nav_admin_manageBookingdate" /></a> </li> 
                                                         <li>
-                                                        <a className="dropdown-item" href="/admin/private-talk">Private Talk</a>
-                                                    </li>
-                                                    
+                                                            <a className="dropdown-item" href="/admin/private-talk">Private Talk</a>
+                                                        </li>
+                                                        <li>
+                                                            <a className="dropdown-item" href="/admin/mock-interview">Mock Interview</a>
+                                                        </li>
                                                     </ul> 
                                                 </li> 
 
@@ -179,6 +181,12 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                                 <a className="dropdown-item" href="/user/private-talk">
                                                     <i className="bi bi-calendar-check-fill" style={{ fontSize: 16 }}></i>
                                                     <span className="ml-2">Private Talk</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a className="dropdown-item" href="/user/mock-interview">
+                                                    <i className="bi bi-calendar-check-fill" style={{ fontSize: 16 }}></i>
+                                                    <span className="ml-2">Mock Interview</span>
                                                 </a>
                                             </li>
 

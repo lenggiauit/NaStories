@@ -66,7 +66,7 @@
     "header_notification_title": "Notification",
     "notification_notfound": "Bạn không có thông báo nào",
     "action_privatetalk_requestchangetime": "Yêu cầu đổi ngày",
-    "deletePrivateTalkmsg": "Bạn có chắc bạn muốn xóa?",
+    "deletePrivateTalkmsg": "Bạn có chắc bạn muốn hủy?",
     "btnDelete": "Xóa",
     "maxLengthField": "",
     "btnCancel" : "Hủy đăng ký",
@@ -82,6 +82,17 @@
     "read_more": "Xem thêm",
     "header_blog_title": "Blog",
     "header_mock_interview_title" : "Mock Interview",
-    "header_mock_interview_register_form_title": "Đặt hẹn đăng ký Mock interview"
+    "header_mock_interview_register_form_title": "Đặt hẹn đăng ký Mock interview",
+    "deleteMocinterview_msg": "Bạn có chắc bạn muốn hủy?",
+    "requestChangeMockInterview_msg": "Bạn cần chọn ngày cần thay đổi và nhập lý do muốn thay đổi:",
+    "action_mockinterview_requestchangetime" : "Yêu cầu đổi ngày",
+    "requestChangeMockInterviewSuccess_msg": "Gửi yêu cầu thành công",
+
+    "[RemoveMockInterviewSuccess]": "Yêu cầu hủy Mock Interview thành công",
+    "[RequestMockInterviewSuccess]": "Yêu cầu thay đổi Mock Interview thành công",
+    "[RegisterPrivateTalkSuccess]": "Đăng ký Private Talk thành công",
+    "[RemovePrivateTalkSuccess]": "Yêu cầu hủy Private Talk thành công",
+    "[RegisterMockInterviewSuccess]": "Đăng ký Mock Interview thành công",
+    "[RequestChangePrivateTalkSuccess]": "Yêu cầu thay đổi Private Talk thành công"
     
 }

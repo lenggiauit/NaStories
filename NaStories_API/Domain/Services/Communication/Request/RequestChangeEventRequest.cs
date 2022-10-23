@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NaStories.API.Domain.Services.Communication.Request
 {
-    public class RequestChangePrivateTalkRequest
+    public class RequestChangeEventRequest
     {
         [Required]
         public Guid EventId { get; set; }

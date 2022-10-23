@@ -15,6 +15,9 @@ import calcTime from "../../../utils/time";
 import dateFormat from "dateformat";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
+import { NIL as NIL_UUID } from 'uuid';
+
+
 let appSetting: AppSetting = require('../../../appSetting.json');
 
 interface FormValues {
@@ -120,7 +123,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
             showDialogModal({
                 message: "Đăng ký Private Talk thành công!",
                 onClose: () => {
-                    window.location.href = appSetting.SiteUrl + "user/private-talk/" + addEditPrivateTalkStatus.data?.resource;
+                    window.location.href = appSetting.SiteUrl + "user/private-talk/";// + addEditPrivateTalkStatus.data?.resource;
                 }
             });
         }
@@ -303,10 +306,8 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                                         <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"}</option>
                                                     ))}
                                                 </>
-                                                }
-                                                {getEventBookingAvaiableDateQueryStatus.data && getEventBookingAvaiableDateQueryStatus.data.resource.length == 0 &&
-                                                    <option value="" label="Để sau">Để sau</option>
-                                                }
+                                                } 
+                                                <option value={NIL_UUID} label="Để sau">Để sau</option> 
 
                                             </Field>
                                             <ErrorMessage

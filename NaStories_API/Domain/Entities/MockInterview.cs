@@ -1,5 +1,8 @@
-﻿using System;
+﻿using NaStories.API.Domain.Helpers;
+using NaStories.API.Extensions;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NaStories.API.Domain.Entities
 {
@@ -11,6 +14,8 @@ namespace NaStories.API.Domain.Entities
         public string Email { get; set; }
         [MaxLength(150)]
         public string AgeRange { get; set; }
+        [MaxLength(50)]
+        public string Language { get; set; }
         [MaxLength(250)]
         public string Resume { get; set; }
         [MaxLength(250)]
@@ -28,5 +33,21 @@ namespace NaStories.API.Domain.Entities
         public string EventStatus { get; set; }
         public bool IsDeleted { get; set; }
         public int RequestChangeCount { get; set; }
+        [NotMapped]
+        public bool IsEnableRequestChange
+        {
+            get
+            {
+                return this.RequestChangeCount <= 2 && this.EventStatus == MockInterviewStatusEnum.Submitted.ToDescriptionString();
+
+            }
+        }
+        [NotMapped]
+        public virtual EventRequestChangeReason EventRequestChangeReason { get; set; }
+        [NotMapped]
+        public virtual EventCancelReason EventCancelReason { get; set; }
+
+        [NotMapped]
+        public int TotalRows { get; set; }
     }
 }

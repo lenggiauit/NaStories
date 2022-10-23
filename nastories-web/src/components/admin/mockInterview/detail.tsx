@@ -3,31 +3,29 @@ import React, { useCallback, useEffect, useState } from "react";
 import { matchPath, Redirect, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
-import { useRemovePrivateTalkMutation, useRequestChangePrivateTalkMutation } from "../../../services/account";
-import { useCancelPrivateTalkMutation, useGetEventAvailableDateQueryQuery, useGetPrivateTalkDetailQuery, useUpdatePrivateTalkStatusMutation } from "../../../services/admin"; 
+import { useRemoveMockInterviewMutation, useRequestChangeMockInterviewMutation } from "../../../services/account";
+import { useCancelMockInterviewMutation, useGetEventAvailableDateQueryQuery, useGetMockInterviewDetailQuery, useUpdateMockInterviewStatusMutation } from "../../../services/admin"; 
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
-import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
+import { MockInterviewResource } from "../../../services/resources/mockInterviewResource";
 import { AppSetting } from "../../../types/type";
-import { PrivateTalkEnumStatus } from "../../../utils/constants";
+import { MockInterviewEnumStatus } from "../../../utils/constants";
 import { ResultCode } from "../../../utils/enums";
 import calcTime from "../../../utils/time";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
 import NotFound from "../../notFound";
 import PageLoading from "../../pageLoading";
-import { Translation } from "../../translation";
-import showDeleteConfirmModal from "./modalDelete";
-import showRequestChangeModal from "./modalRequestChange";
+import { Translation } from "../../translation"; 
 const appSetting: AppSetting = require('../../../appSetting.json');
 
 
 
-const AdminPrivateTalkDetail: React.FC = () => {
+const AdminMockInterviewDetail: React.FC = () => {
     let history = useHistory();
     const route = useRouteMatch();
     const { id }: any = useParams();
     const match = matchPath(route.url, {
-        path: "/admin/private-talk/:id",
+        path: "/admin/mock-interview/:id",
         exact: true,
         strict: false
     });
@@ -39,9 +37,10 @@ const AdminPrivateTalkDetail: React.FC = () => {
          
     }, [])
 
-    const getdetailStatus = useGetPrivateTalkDetailQuery({ payload: id });
-    const [UpdatePrivateTalk, UpdatePrivateTalkStatus] = useUpdatePrivateTalkStatusMutation();
-    const [CancelPrivateTalk, CancelPrivateTalkStatus] = useCancelPrivateTalkMutation();
+    const getdetailStatus = useGetMockInterviewDetailQuery({ payload: id });
+    const [UpdateMockInterview, UpdateMockInterviewStatus] = useUpdateMockInterviewStatusMutation();
+    const [CancelMockInterview, CancelMockInterviewStatus] = useCancelMockInterviewMutation();
+
     const getEventBookingAvaiableDateQueryStatus = useGetEventAvailableDateQueryQuery({ payload: null });
 
     const [eventStatus, setEventStatus] = useState<string | null>(null);
@@ -74,22 +73,22 @@ const AdminPrivateTalkDetail: React.FC = () => {
     }, [getdetailStatus, getEventBookingAvaiableDateQueryStatus]);
 
     const handleOnSaveChange = useCallback(() =>{
-        UpdatePrivateTalk({payload: { id: getdetailStatus.data?.resource.id, status: eventStatus, eventBookingDateId: eventDateId }}); 
+        UpdateMockInterview({payload: { id: getdetailStatus.data?.resource.id, status: eventStatus, eventBookingDateId: eventDateId }}); 
     }, [eventStatus, eventDateId]);
 
     const handleOnCancel = useCallback(() =>{
-        CancelPrivateTalk({payload: { id: id }}); 
+        CancelMockInterview({payload: { id: id }}); 
     }, []);
-
+    
     useEffect(()=>{
-        if(CancelPrivateTalkStatus.data && CancelPrivateTalkStatus.data.resultCode == ResultCode.Success)
+        if(CancelMockInterviewStatus.data && CancelMockInterviewStatus.data.resultCode == ResultCode.Success)
         { 
             showDialogModal({ message : "Cập nhật thành công" });
         } 
-    }, [CancelPrivateTalkStatus]);
+    }, [CancelMockInterviewStatus]);
 
     useEffect(()=>{
-        if(UpdatePrivateTalkStatus.data && UpdatePrivateTalkStatus.data.resultCode == ResultCode.Success)
+        if(UpdateMockInterviewStatus.data && UpdateMockInterviewStatus.data.resultCode == ResultCode.Success)
         {
             setEventStatus(null);
             setEventDateId(null);
@@ -97,7 +96,7 @@ const AdminPrivateTalkDetail: React.FC = () => {
         }
         
 
-    }, [UpdatePrivateTalkStatus]);
+    }, [UpdateMockInterviewStatus]);
   
     return (<>
         {getdetailStatus.isLoading && <PageLoading />}
@@ -105,7 +104,7 @@ const AdminPrivateTalkDetail: React.FC = () => {
             
             <div className="section">
                 <div className="container">
-                    <a href="#" onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk" }> Back </a>
+                    <a href="#" onClick={() => window.location.href = appSetting.SiteUrl + "admin/mock-interview" }> Back </a>
                     <div className="text-center">
                         <h2>{getdetailStatus.data.resource.eventBookingDate ? getdetailStatus.data.resource .eventBookingDate.title : getdetailStatus.data.resource .fullName }</h2> 
                     </div>
@@ -141,26 +140,30 @@ const AdminPrivateTalkDetail: React.FC = () => {
                                 <td colSpan={2}>{getdetailStatus.data.resource.ageRange}</td>
                             </tr>
                             <tr className="border-top border-light">
-                                <td>Vấn đề:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.problem}</td>
+                                <td>Language:</td>
+                                <td>{getdetailStatus.data.resource.language}</td>
                             </tr>
                             <tr className="border-top border-light">
-                                <td>Mô tả vấn đề:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.problemDescription}</td>
+                                <td>Resume:</td>
+                                <td><a target="_blank" href={getdetailStatus.data.resource.resume}>Download</a></td>
                             </tr>
                             <tr className="border-top border-light">
-                                <td>Giải pháp:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.yourSolutionDescription}</td>
+                                <td>Cover letter:</td>
+                                <td><a target="_blank" href={getdetailStatus.data.resource.coverLetter}>Download</a></td>
                             </tr>
                             <tr className="border-top border-light">
-                                <td>Mong muốn:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.yourExpectationDescription}</td>
+                                <td>Job description:</td>
+                                <td><a target="_blank" href={getdetailStatus.data.resource.jobDescription}>Download</a></td>
+                            </tr>
+                            <tr className="border-top border-light">
+                                <td>Note:</td>
+                                <td>{getdetailStatus.data.resource.note}</td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>
                                 <td colSpan={2}>  
                                     <select name="eventStatus" className="form-control form-control-sm" onChange={(e)=>{ setEventStatus(e.target.value) }}> 
-                                        {Object.keys(PrivateTalkEnumStatus).map((status) => 
+                                        {Object.keys(MockInterviewEnumStatus).map((status) => 
                                         (
                                             <option value={status} selected={ getdetailStatus.data.resource.eventStatus == status} >{status}</option>
                                         )
@@ -199,10 +202,10 @@ const AdminPrivateTalkDetail: React.FC = () => {
                         <hr />
                         <div className="row">
                             <div className="col-md-12 text-center">
-                            <button className="btn btn-secondary " onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk" }>Back to list</button>
+                            <button className="btn btn-secondary " onClick={() => window.location.href = appSetting.SiteUrl + "admin/mock-interview" }>Back to list</button>
                             <button className="btn btn-primary ml-2" onClick={handleOnSaveChange} disabled={!(eventStatus != null || eventDateId != null)} > Save change</button>
-                            <button className="btn btn-danger ml-2" onClick={handleOnCancel} > Hủy ngày</button>    
-                        </div>
+                            <button className="btn btn-danger ml-2" onClick={handleOnCancel} > Hủy ngày</button>
+                            </div>
                         </div>
                     </div>  
                 </div>
@@ -212,4 +215,4 @@ const AdminPrivateTalkDetail: React.FC = () => {
      
 }
 
-export default AdminPrivateTalkDetail;
+export default AdminMockInterviewDetail;

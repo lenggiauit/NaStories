@@ -201,6 +201,23 @@ const AdminPrivateTalkDetailPage = lazy(() => {
 });
 
 
+const AdminMockInterview = lazy(() => {
+    return Promise.all([
+        import("../views/admin/mockInterview"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const AdminMockInterviewDetailPage = lazy(() => {
+    return Promise.all([
+        import("../views/admin/mockInterview/detail"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+
 const Page404 = lazy(() => {
     return Promise.all([
         import("../views/pageNotFound"),
@@ -213,6 +230,14 @@ const Page404 = lazy(() => {
 const UserPrivateTalk = lazy(() => {
     return Promise.all([
         import("../views/user/privateTalk"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const UserMockInterview = lazy(() => {
+    return Promise.all([
+        import("../views/user/mockInterview"),
         new Promise(resolve => setTimeout(resolve, delayTime))
     ])
         .then(([moduleExports]) => moduleExports);
@@ -254,9 +279,13 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/admin/bookingdate" exact component={AdminBookingDate} />
                         <Route path="/admin/private-talk" exact component={AdminPrivateTalk} /> 
                         <Route path="/admin/private-talk/:id" exact component={AdminPrivateTalkDetailPage} /> 
+                        <Route path="/admin/mock-interview" exact component={AdminMockInterview} /> 
+                        <Route path="/admin/mock-interview/:id" exact component={AdminMockInterviewDetailPage} /> 
                         {/* User  */} 
                         <Route path="/user/private-talk" exact component={UserPrivateTalk} />
                         <Route path="/user/private-talk/:id" exact component={UserPrivateTalk} />
+                        <Route path="/user/mock-interview" exact component={UserMockInterview} />
+                        <Route path="/user/mock-interview/:id" exact component={UserMockInterview} />
                         {/* 404 */}
                         <Route path="/404" component={Page404} />
                         <Redirect to="/404" />

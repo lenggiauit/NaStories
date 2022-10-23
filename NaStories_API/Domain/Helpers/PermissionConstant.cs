@@ -15,5 +15,9 @@ namespace NaStories.API.Domain.Helpers
         public const string UpdatePrivateTalkStatus = "UpdatePrivateTalkStatus";
         public const string RemovePrivateTalk = "RemovePrivateTalk";
 
+        public const string GetMockInterviewList = "GetMockInterviewList";
+        public const string UpdateMockInterviewStatus = "UpdateMockInterviewStatus";
+        public const string RemoveMockInterview = "RemoveMockInterview";
+
     }
 }

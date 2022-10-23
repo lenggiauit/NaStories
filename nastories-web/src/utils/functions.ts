@@ -100,11 +100,15 @@ export function checkIfFilesAreTooBig(files?: [File]): boolean {
     let valid = true
     if (files) {
       files.map(file => {
-        if (!['application/pdf', 'image/jpeg', 'image/png'].includes(file.type)) {
+        if (!['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'].includes(file.type)) {
           valid = false
         }
       })
     }
     return valid
+  }
+
+  export function checkValidFileExtention(){
+
   }
 

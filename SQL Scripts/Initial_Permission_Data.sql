@@ -37,8 +37,9 @@ INSERT INTO [dbo].[Permission]
            ,'ManageUser'
            ,1
            ,GETDATE()
-            ),
+            )
 			
+			, 
 			(NEWID()
            ,'GetPrivateTalkList'
            ,'GetPrivateTalkList'
@@ -59,6 +60,31 @@ INSERT INTO [dbo].[Permission]
            ,'RemovePrivateTalk'
            ,'RemovePrivateTalk'
            ,'RemovePrivateTalk'
+           ,1
+           ,GETDATE()
+            ) 
+
+			, 
+			(NEWID()
+           ,'GetMockInterviewList'
+           ,'GetMockInterviewList'
+           ,'GetMockInterviewList'
+           ,1
+           ,GETDATE()
+            ) ,
+
+			(NEWID()
+           ,'UpdateMockInterviewStatus'
+           ,'UpdateMockInterviewStatus'
+           ,'UpdateMockInterviewStatus'
+           ,1
+           ,GETDATE()
+            ) ,
+
+			(NEWID()
+           ,'RemoveMockInterview'
+           ,'RemoveMockInterview'
+           ,'RemoveMockInterview'
            ,1
            ,GETDATE()
             ) 

@@ -5,23 +5,22 @@ import { EventCancelReason } from "./eventCancelReason";
 import { EventRequestChangeReason } from "./eventRequestChangeReason";
  
 
-export type PrivateTalk = BaseModel & {
+export type MockInterview = BaseModel & {
     id: any;
     fullName  : any, 
     email  : any, 
     ageRange  : any, 
-    problem  : any, 
-    problemOther  : any, 
-    problemDescription  : any, 
-    yourSolutionDescription  : any, 
-    yourExpectationDescription  : any, 
+    language  : any, 
+    resume  : any, 
+    coverLetter  : any, 
+    jobDescription  : any, 
+    note  : any, 
     eventBookingDate? : EventBookingDateResource, 
     user: UserResource,
     eventRequestChangeReason: EventRequestChangeReason,
     eventCancelReason: EventCancelReason,
     eventStatus  : any,
     isEnableRequestChange: boolean
-    totalRows: any;
-    
+    totalRows: any; 
 };
  

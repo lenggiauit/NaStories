@@ -59,11 +59,34 @@ export const EventService = createApi({
                 return response;
             },
 
-        })
+        }),
+        AddEditMockInterview: builder.mutation<ApiResponse<{id: any}>, ApiRequest<{
+            id?: any,
+            fullname: any,
+            email: any,
+            agerange: any, 
+            language: any,
+            resume: any,
+            coverLetter: any,
+            jobDescription: any,  
+            note: any,
+            eventBookingDateId: any}
+            >>({
+        query: (payload) => ({
+            url: 'event/AddEditMockInterview',
+            method: 'post',
+            body: payload
+        }),
+        transformResponse(response: ApiResponse<{id: any}>) {
+            return response;
+        },
+
+    }),
+
 
  
     })
 });
 
 
-export const {  useGetEventBookingAvaiableDateQuery, useAddEditPrivateTalkMutation  } = EventService;
+export const {  useGetEventBookingAvaiableDateQuery, useAddEditPrivateTalkMutation, useAddEditMockInterviewMutation  } = EventService;

@@ -35,6 +35,16 @@ namespace NaStories.API.Services
             return await _adminRepository.AddEditEventAvailableDate(request, userId);
         }
 
+        public async Task<ResultCode> CancelMockInterview(Guid payload, Guid userId)
+        {
+            return await _adminRepository.CancelMockInterview(payload, userId);
+        }
+
+        public async Task<ResultCode> CancelPrivateTalk(Guid payload, Guid userId)
+        {
+            return await _adminRepository.CancelPrivateTalk(payload, userId);
+        }
+
         public async Task<ResultCode> CheckBlogPostTitle(string title, Guid? blogPostId)
         {
             return await _adminRepository.CheckBlogPostTitle(title, blogPostId);
@@ -70,6 +80,21 @@ namespace NaStories.API.Services
             return await _adminRepository.GetEventAvailableDate();
         }
 
+        public async Task<(MockInterview, ResultCode)> GetMockInterviewDetail(Guid id)
+        {
+            return await _adminRepository.GetMockInterviewDetail(id);
+        }
+
+        public async Task<Guid> GetMockInterviewIdByEventBookingDate(GetMockInterviewIdByEventBookingDateRequest payload, Guid userId)
+        {
+            return await _adminRepository.GetMockInterviewIdByEventBookingDate(payload, userId);
+        }
+
+        public async Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(BaseRequest<GetMockInterviewListFilterRequest> request)
+        {
+            return await _adminRepository.GetMockInterviewList(request);
+        }
+
         public async Task<(PrivateTalk, ResultCode)> GetPrivateTalkDetail(Guid id)
         {
             return await _adminRepository.GetPrivateTalkDetail(id);
@@ -93,6 +118,11 @@ namespace NaStories.API.Services
         public async Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId)
         {
             return await _adminRepository.UpdateBlogPostStatus(request, userId);
+        }
+
+        public async Task<ResultCode> UpdateMockInterviewStatus(UpdateMockInterviewStatusRequest payload, Guid userId)
+        {
+            return await _adminRepository.UpdateMockInterviewStatus(payload, userId);
         }
 
         public async Task<ResultCode> UpdatePrivateTalkStatus(UpdatePrivateTalkStatusRequest payload, Guid userId)

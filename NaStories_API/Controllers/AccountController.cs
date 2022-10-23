@@ -246,7 +246,7 @@ namespace NaStories.API.Controllers
         }
 
         [HttpPost("RemovePrivateTalk")]
-        public async Task<BaseResponse<ResultCode>> RemovePrivateTalk([FromBody] BaseRequest<RemovePrivateTalkRequest> request)
+        public async Task<BaseResponse<ResultCode>> RemovePrivateTalk([FromBody] BaseRequest<RemoveEventRequest> request)
         {
             if (ModelState.IsValid)
             {
@@ -259,7 +259,7 @@ namespace NaStories.API.Controllers
         }
 
         [HttpPost("RequestChangePrivateTalk")]
-        public async Task<BaseResponse<ResultCode>> RequestChangePrivateTalk([FromBody] BaseRequest<RequestChangePrivateTalkRequest> request)
+        public async Task<BaseResponse<ResultCode>> RequestChangePrivateTalk([FromBody] BaseRequest<RequestChangeEventRequest> request)
         {
             if (ModelState.IsValid)
             {
@@ -270,6 +270,58 @@ namespace NaStories.API.Controllers
                 return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
             }
         }
+
+        [HttpPost("GetMockInterviewList")]
+        public async Task<BaseResponse<List<MockInterviewResource>>> GetMockInterviewList()
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _eventServices.GetMockInterviewList(GetCurrentUserId());
+                if (data != null)
+                {
+                    return new BaseResponse<List<MockInterviewResource>>(_mapper.Map<List<MockInterview>, List<MockInterviewResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<MockInterviewResource>>(Constants.ErrorMsg, resultCode);
+                }
+
+            }
+            else
+            {
+                return new BaseResponse<List<MockInterviewResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("RemoveMockInterview")]
+        public async Task<BaseResponse<ResultCode>> RemoveMockInterview([FromBody] BaseRequest<RemoveEventRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _eventServices.RemoveMockInterview(request.Payload.Id, request.Payload.Reason, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [HttpPost("RequestChangeMockInterview")]
+        public async Task<BaseResponse<ResultCode>> RequestChangeMockInterview([FromBody] BaseRequest<RequestChangeEventRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _eventServices.RequestChangeMockInterview(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
+
+
 
 
     }

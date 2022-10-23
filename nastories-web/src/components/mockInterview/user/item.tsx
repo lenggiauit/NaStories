@@ -1,56 +1,57 @@
 import React, { useCallback, useEffect, useState } from "react"; 
 import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
-import { useRemovePrivateTalkMutation, useRequestChangePrivateTalkMutation } from "../../../services/account";
+import { useRemoveMockInterviewMutation, useRequestChangeMockInterviewMutation } from "../../../services/account";
 import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
-import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
+import { MockInterviewResource } from "../../../services/resources/mockInterviewResource";
+ 
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
 import { Translation } from "../../translation";
 import showDeleteConfirmModal from "./modalDelete";
 import showRequestChangeModal from "./modalRequestChange";
-
+ 
 type Props = {
-    dataItem: PrivateTalkResource,
+    dataItem: MockInterviewResource,
     bookingDate: EventBookingDateResource[],
-    onSelected: (dataItem: PrivateTalkResource) => void,
-    onRequestChange: (dataItem: PrivateTalkResource) => void,
-    onDeleted: (dataItem: PrivateTalkResource) => void,
+    onSelected: (dataItem: MockInterviewResource) => void,
+    onRequestChange: (dataItem: MockInterviewResource) => void,
+    onDeleted: (dataItem: MockInterviewResource) => void,
 }
 
-const UserPrivateTalkItem: React.FC<Props> = ({ dataItem, bookingDate, onSelected, onRequestChange, onDeleted }) => {
+const UserMockInterviewItem: React.FC<Props> = ({ dataItem, bookingDate, onSelected, onRequestChange, onDeleted }) => {
     
     const { locale } = useAppContext();
-    const [RemovePrivateTalk, RemovePrivateTalkStatus] = useRemovePrivateTalkMutation();
-    const [RequestChangePrivateTalk, RequestChangePrivateTalkStatus] = useRequestChangePrivateTalkMutation();
+    const [RemoveMockInterview, RemoveMockInterviewStatus] = useRemoveMockInterviewMutation();
+    const [RequestChangeMockInterview, RequestChangeMockInterviewStatus] = useRequestChangeMockInterviewMutation();
 
     const [isDeleted, setIsDeleted] = useState(false);
     const [isRequestChanged, setIsRequestChanged] = useState(false);
      
-    const onDeletePrivateTalk = useCallback((e)  => {
+    const onDeleteMockInterview = useCallback((e)  => {
         e.preventDefault();
         showDeleteConfirmModal({
-            message: dictionaryList[locale]["deletePrivateTalkmsg"],
+            message: dictionaryList[locale]["deleteMocinterview_msg"],
             onConfirm: (r) => {
-                RemovePrivateTalk({ payload: {id: dataItem.id, reason: r } });
+                RemoveMockInterview({ payload: {id: dataItem.id, reason: r } });
                 setIsDeleted(true);
                 onDeleted(dataItem);
             }
         });
     }, []);
 
-    const onRequestChangePrivateTalk = useCallback((e)  => {
+    const onRequestChangeMockInterview = useCallback((e)  => {
         e.preventDefault();  
         showRequestChangeModal({
-            message: dictionaryList[locale]["requestChangePrivateTalk_msg"],
+            message: dictionaryList[locale]["requestChangeMockInterview_msg"],
             bookingDate: bookingDate,
             onConfirm: (bookingId, r) => {
-                RequestChangePrivateTalk({ payload: {eventId: dataItem.id, eventBookingDateId: bookingId, reason: r } });
+                RequestChangeMockInterview({ payload: {eventId: dataItem.id, eventBookingDateId: bookingId, reason: r } });
                 setIsRequestChanged(true);
                 onRequestChange(dataItem);
                 showDialogModal({ 
-                    message: dictionaryList[locale]["requestChangePrivateTalkSuccess_msg"]
+                    message: dictionaryList[locale]["requestChangeMockInterviewSuccess_msg"]
                 });
             }
         });
@@ -74,13 +75,13 @@ const UserPrivateTalkItem: React.FC<Props> = ({ dataItem, bookingDate, onSelecte
                 </div>
                 <div className="col-md-4 text-right" >
                     {(dataItem.isEnableRequestChange && !isRequestChanged) && 
-                        <a className="btn btn-xs btn-round btn-success mr-1" href="#" onClick={onRequestChangePrivateTalk} ><Translation tid="action_privatetalk_requestchangetime" /></a> 
+                        <a className="btn btn-xs btn-round btn-success mr-1" href="#" onClick={onRequestChangeMockInterview} ><Translation tid="action_mockinterview_requestchangetime" /></a> 
                     }
-                    <a className="btn btn-xs btn-round btn-danger" href="#" onClick={onDeletePrivateTalk}><Translation tid="btnCancel" /></a>
+                    <a className="btn btn-xs btn-round btn-danger" href="#" onClick={onDeleteMockInterview}><Translation tid="btnCancel" /></a>
                 </div>
             </div>
         </div>
     </>)
 }
 
-export default UserPrivateTalkItem;
+export default UserMockInterviewItem;

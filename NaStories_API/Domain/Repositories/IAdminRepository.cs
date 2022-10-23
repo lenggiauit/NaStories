@@ -24,6 +24,12 @@ namespace NaStories.API.Domain.Repositories
         Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request);
         Task<(PrivateTalk, ResultCode)> GetPrivateTalkDetail(Guid id);
         Task<ResultCode> UpdatePrivateTalkStatus(UpdatePrivateTalkStatusRequest payload, Guid userId);
+        Task<ResultCode> CancelMockInterview(Guid payload, Guid userId);
         Task<Guid> GetPrivateTalkIdByEventBookingDate(GetPrivateTalkIdByEventBookingDateRequest payload, Guid userId);
+        Task<ResultCode> CancelPrivateTalk(Guid payload, Guid userId);
+        Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(BaseRequest<GetMockInterviewListFilterRequest> request);
+        Task<(MockInterview, ResultCode)> GetMockInterviewDetail(Guid id);
+        Task<ResultCode> UpdateMockInterviewStatus(UpdateMockInterviewStatusRequest payload, Guid userId);
+        Task<Guid> GetMockInterviewIdByEventBookingDate(GetMockInterviewIdByEventBookingDateRequest payload, Guid userId);
     }
 }

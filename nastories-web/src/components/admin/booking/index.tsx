@@ -8,7 +8,7 @@ import LocalSpinner from "../../localSpinner";
 import { hasPermission } from "../../../utils/functions"; 
 import { PermissionKeys } from "../../../utils/constants"; 
 import { EventBookingDate } from "../../../services/models/admin/eventBookingDate";
-import { useAddEditEventAvailableDateMutation, useGetEventAvailableDateMutation, useGetPrivateTalkIdByEventBookingDateMutation, useRemoveEventAvailableDateMutation } from "../../../services/admin"; 
+import { useAddEditEventAvailableDateMutation, useGetEventAvailableDateMutation, useGetMockInterviewIdByEventBookingDateMutation, useGetPrivateTalkIdByEventBookingDateMutation, useRemoveEventAvailableDateMutation } from "../../../services/admin"; 
  
 import FullCalendar, {
   DateSelectArg,
@@ -38,7 +38,7 @@ const BookingList: React.FC = () => {
     const [addEventAvailableDate, addEventAvailableDateStatus] = useAddEditEventAvailableDateMutation();
     const [removeEventAvailableDate, removeEventAvailableDateStatus] = useRemoveEventAvailableDateMutation();
     const [GetPrivateTalkIdByEventBookingDate, GetPrivateTalkIdByEventBookingDateStatus] = useGetPrivateTalkIdByEventBookingDateMutation();
-
+    const [GetMockInterviewIdByEventBookingDate, GetMockInterviewIdByEventBookingDateStatus] = useGetMockInterviewIdByEventBookingDateMutation();
     const [metaData, setMetaData] = useState<MetaData>({ paging: { index: 1, size: appSetting.PageSize } });
     const [pagingData, setPagingData] = useState<Paging>({ index: 1, size: appSetting.PageSize });
     const [totalRows, setTotalRows] = useState<number>(0);
@@ -62,6 +62,15 @@ const BookingList: React.FC = () => {
         }
 
     }, [GetPrivateTalkIdByEventBookingDateStatus]);
+
+    useEffect(() => {
+
+        if(GetMockInterviewIdByEventBookingDateStatus.data  && GetMockInterviewIdByEventBookingDateStatus.data.resource != '00000000-0000-0000-0000-000000000000'){
+             
+            window.open(appSetting.SiteUrl + "admin/mock-interview/" + GetMockInterviewIdByEventBookingDateStatus.data.resource);
+        }
+
+    }, [GetMockInterviewIdByEventBookingDateStatus]);
 
     useEffect(()=>{
         if(getBookingStatus.data?.resultCode == ResultCode.Success){
@@ -109,7 +118,10 @@ const BookingList: React.FC = () => {
             },
             onView: () =>{
 
-                GetPrivateTalkIdByEventBookingDate({payload: {eventBookingDateId : clickInfo.event.id }});
+                if(clickInfo.event.title.indexOf("Private Talk") != -1)    
+                    GetPrivateTalkIdByEventBookingDate({payload: {eventBookingDateId : clickInfo.event.id }});
+                if(clickInfo.event.title.indexOf("Mock Interview") != -1)    
+                    GetMockInterviewIdByEventBookingDate({payload: {eventBookingDateId : clickInfo.event.id }});    
 
             },
             onSave:()=>{

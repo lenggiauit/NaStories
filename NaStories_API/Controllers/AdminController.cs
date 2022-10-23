@@ -236,7 +236,93 @@ namespace NaStories.API.Controllers
             }
         }
 
-        
+        [HttpPost("GetMockInterviewIdByEventBookingDate")]
+        public async Task<BaseResponse<Guid>> GetMockInterviewIdByEventBookingDate(BaseRequest<GetMockInterviewIdByEventBookingDateRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<Guid>(await _adminServices.GetMockInterviewIdByEventBookingDate(request.Payload, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<Guid>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+         
+        [Permissions(PermissionConstant.GetMockInterviewList)]
+
+        [HttpPost("GetMockInterviewList")]
+        public async Task<BaseResponse<List<MockInterview>>> GetMockInterviewList(BaseRequest<GetMockInterviewListFilterRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<List<MockInterview>>(await _adminServices.GetMockInterviewList(request));
+            }
+            else
+            {
+                return new BaseResponse<List<MockInterview>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.GetMockInterviewList)]
+
+        [HttpPost("GetMockInterviewDetail")]
+        public async Task<BaseResponse<MockInterview>> GetMockInterviewDetail(BaseRequest<Guid> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<MockInterview>(await _adminServices.GetMockInterviewDetail(request.Payload));
+            }
+            else
+            {
+                return new BaseResponse<MockInterview>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.UpdateMockInterviewStatus)]
+
+        [HttpPost("UpdateMockInterviewStatus")]
+        public async Task<BaseResponse<ResultCode>> UpdateMockInterviewStatus(BaseRequest<UpdateMockInterviewStatusRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.UpdateMockInterviewStatus(request.Payload, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.UpdatePrivateTalkStatus)]
+
+        [HttpPost("CancelPrivateTalk")]
+        public async Task<BaseResponse<ResultCode>> CancelPrivateTalk(BaseRequest<CancelEventRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.CancelPrivateTalk(request.Payload.Id, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.UpdateMockInterviewStatus)]
+
+        [HttpPost("CancelMockInterview")]
+        public async Task<BaseResponse<ResultCode>> CancelMockInterview(BaseRequest<CancelEventRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.CancelMockInterview(request.Payload.Id, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
 
 
 

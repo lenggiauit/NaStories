@@ -20,6 +20,80 @@ namespace NaStories.API.Persistence.Repositories
             _logger = logger;
         }
 
+        public async Task<(Guid, ResultCode)> AddEditMockInterview(BaseRequest<AddEditMockInterviewRequest> request, Guid userId)
+        {
+            try
+            {
+                if (request.Payload.Id == null || request.Payload.Id.Equals(Guid.Empty))
+                {
+                    Guid newId = Guid.NewGuid();
+                    var mockInterview = new MockInterview()
+                    {
+                        Id = newId,
+                        FullName = request.Payload.FullName,
+                        Email = request.Payload.Email,
+                        AgeRange = request.Payload.AgeRange,
+                        Language  = request.Payload.Language,
+                        Resume = request.Payload.Resume,
+                        JobDescription = request.Payload.Jobdescription,
+                        EventBookingDateId = request.Payload.EventBookingDateId.Equals(Guid.Empty) ? null : request.Payload.EventBookingDateId,
+                        EventStatus = MockInterviewStatusEnum.Submitted.ToDescriptionString(),
+                        CoverLetter = request.Payload.CoverLetter,
+                        Note = request.Payload.Note, 
+                        UserId = userId,
+                        CreatedBy = userId,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _context.MockInterview.AddAsync(mockInterview);
+
+                    if (request.Payload.EventBookingDateId != null && !request.Payload.EventBookingDateId.Equals(Guid.Empty))
+                    {
+                        var bookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(request.Payload.EventBookingDateId)).FirstOrDefaultAsync();
+
+                        if (bookingDate != null)
+                        {
+                            bookingDate.UserId = userId;
+                            bookingDate.Title = "Mock Interview - " + request.Payload.FullName;
+                            bookingDate.EventName = "Mock Interview";
+                            bookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(bookingDate);
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+                    return (newId, ResultCode.Success);
+                }
+                else
+                {
+                    var mockInterview = await _context.MockInterview.Where(c => c.Id.Equals(request.Payload.Id)).FirstOrDefaultAsync();
+                    if (mockInterview != null)
+                    {
+                        mockInterview.FullName = request.Payload.FullName;
+                        mockInterview.Email = request.Payload.Email;
+                        mockInterview.AgeRange = request.Payload.AgeRange;
+                        mockInterview.Language = request.Payload.Language;
+                        mockInterview.Resume = request.Payload.Resume;
+                        mockInterview.CoverLetter = request.Payload.CoverLetter;
+                        mockInterview.EventBookingDateId = request.Payload.EventBookingDateId;
+                        mockInterview.EventStatus = MockInterviewStatusEnum.Submitted.ToDescriptionString();
+                        mockInterview.JobDescription = request.Payload.Jobdescription;
+                        mockInterview.Note = request.Payload.Note; 
+                        mockInterview.UpdatedBy = userId;
+                        mockInterview.UpdatedDate = DateTime.Now; 
+                    }
+                    _context.MockInterview.Update(mockInterview);
+                    await _context.SaveChangesAsync();
+                    return (mockInterview.Id, ResultCode.Success);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at AddEditMockInterview method: " + ex.Message);
+                return (Guid.Empty, ResultCode.Error);
+            }
+        }
+
         public async Task<(Guid, ResultCode)> AddEditPrivateTalk(BaseRequest<AddEditPrivateTalkRequest> request, Guid userId)
         {
             try
@@ -35,8 +109,8 @@ namespace NaStories.API.Persistence.Repositories
                         AgeRange = request.Payload.AgeRange,
                         Problem = request.Payload.Problem,
                         ProblemOther = request.Payload.ProblemOther,
-                        EventBookingDateId = request.Payload.EventBookingDateId,
-                        EventStatus = EventStatusEnum.Submitted.ToDescriptionString(),
+                        EventBookingDateId = request.Payload.EventBookingDateId.Equals(Guid.Empty) ? null : request.Payload.EventBookingDateId,
+                        EventStatus = PrivateTalkStatusEnum.Submitted.ToDescriptionString(),
                         ProblemDescription = request.Payload.ProblemDescription, 
                         YourExpectationDescription = request.Payload.YourExpectationDescription,
                         YourSolutionDescription = request.Payload.YourSolutionDescription,
@@ -74,7 +148,7 @@ namespace NaStories.API.Persistence.Repositories
                         privateTalk.Problem = request.Payload.Problem;
                         privateTalk.ProblemOther = request.Payload.ProblemOther;
                         privateTalk.EventBookingDateId = request.Payload.EventBookingDateId;
-                        privateTalk.EventStatus = EventStatusEnum.Submitted.ToDescriptionString();
+                        privateTalk.EventStatus = PrivateTalkStatusEnum.Submitted.ToDescriptionString();
                         privateTalk.ProblemDescription = request.Payload.ProblemDescription;
                         privateTalk.YourExpectationDescription = request.Payload.YourExpectationDescription;
                         privateTalk.YourSolutionDescription = request.Payload.YourSolutionDescription;
@@ -84,7 +158,7 @@ namespace NaStories.API.Persistence.Repositories
                     }
                     _context.PrivateTalk.Update(privateTalk);
                     await _context.SaveChangesAsync();
-                    return (Guid.Empty, ResultCode.Success);
+                    return (privateTalk.Id, ResultCode.Success);
                 }
 
             }
@@ -109,6 +183,41 @@ namespace NaStories.API.Persistence.Repositories
             catch (Exception ex)
             {
                 _logger.LogError("Error at GetEventBookingAvaiableDate method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(Guid userId)
+        {
+            try
+            {
+                return (await _context.MockInterview.AsNoTracking()
+                    .Where(p => p.UserId.Equals(userId) && !p.IsDeleted)
+                    .Include(p => p.EventBookingDate)
+                    .Select(p => new MockInterview()
+                    {
+                        Id = p.Id,
+                        CreatedBy = p.CreatedBy,
+                        CreatedDate = p.CreatedDate,
+                        Email = p.Email,
+                        FullName = p.FullName,
+                        EventBookingDate = p.EventBookingDate,
+                        Resume = p.Resume,
+                        AgeRange = p.AgeRange,
+                        EventStatus = p.EventStatus,
+                        JobDescription = p.JobDescription,
+                        CoverLetter = p.CoverLetter,
+                        Language = p.Language,
+                        UpdatedBy = p.UpdatedBy,
+                        Note = p.Note,
+                        UpdatedDate = p.UpdatedDate,  
+
+                    })
+                    .ToListAsync(), ResultCode.Success);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
                 return (null, ResultCode.Error);
             }
         }
@@ -148,6 +257,58 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
+        public async Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId)
+        {
+            try
+            {
+                var mockInterview = await _context.MockInterview.Where(n => n.UserId.Equals(userId) && n.Id.Equals(id)).FirstOrDefaultAsync();
+                if (mockInterview != null)
+                {
+                    mockInterview.IsDeleted = true;
+                    mockInterview.EventStatus = MockInterviewStatusEnum.Canceled.ToDescriptionString();
+                    _context.MockInterview.Update(mockInterview);
+
+                    var cancelReason = new EventCancelReason()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateBy = userId,
+                        CreateDate = DateTime.Now,
+                        PrivateTalkId = id,
+                        Reason = reason,
+                    };
+
+                    await _context.EventCancelReason.AddAsync(cancelReason);
+
+                    var changeReason = await _context.EventRequestChangeReason.Where(e => e.MockInterviewId.Equals(id)).FirstOrDefaultAsync();
+                    if (changeReason != null)
+                    {
+                        _context.EventRequestChangeReason.Remove(changeReason);
+                    }
+
+                    var bookingDate = await _context.EventBookingDate.Where(b => b.UserId.Equals(mockInterview.UserId)).FirstOrDefaultAsync();
+
+                    if (bookingDate != null)
+                    {
+                        bookingDate.UserId = null;
+                        bookingDate.Title = "Available time";
+                        bookingDate.EventName = null;
+                        bookingDate.UpdatedDate = DateTime.Now;
+                        _context.EventBookingDate.Update(bookingDate);
+                    }
+
+
+                    await _context.SaveChangesAsync();
+                }
+                return ResultCode.Success;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RemoveMockInterview method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
         public async Task<ResultCode> RemovePrivateTalk(Guid id, string reason, Guid userId)
         {
             try
@@ -155,7 +316,8 @@ namespace NaStories.API.Persistence.Repositories
                 var privateTalk = await _context.PrivateTalk.Where(n => n.UserId.Equals(userId) && n.Id.Equals(id)).FirstOrDefaultAsync();
                 if (privateTalk != null)
                 {
-                    privateTalk.IsDeleted = true; 
+                    privateTalk.IsDeleted = true;
+                    privateTalk.EventStatus = PrivateTalkStatusEnum.Canceled.ToDescriptionString();
                     _context.PrivateTalk.Update(privateTalk);
 
                     var cancelReason = new EventCancelReason()
@@ -175,6 +337,18 @@ namespace NaStories.API.Persistence.Repositories
                         _context.EventRequestChangeReason.Remove(changeReason);
                     }
 
+                     
+                    var bookingDate = await _context.EventBookingDate.Where(b => b.UserId.Equals(privateTalk.UserId)).FirstOrDefaultAsync();
+
+                    if (bookingDate != null)
+                    {
+                        bookingDate.UserId = null;
+                        bookingDate.Title = "Available time";
+                        bookingDate.EventName = null;
+                        bookingDate.UpdatedDate = DateTime.Now;
+                        _context.EventBookingDate.Update(bookingDate);
+                    }
+                     
                     await _context.SaveChangesAsync();
                 }
                 return ResultCode.Success;
@@ -187,14 +361,48 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
-        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangePrivateTalkRequest> request, Guid userId)
+        public async Task<ResultCode> RequestChangeMockInterview(BaseRequest<RequestChangeEventRequest> request, Guid userId)
+        {
+            try
+            {
+                var mockInterview = await _context.MockInterview.Where(n => n.UserId.Equals(userId) && n.Id.Equals(request.Payload.EventId)).FirstOrDefaultAsync();
+                if (mockInterview != null)
+                {
+                    mockInterview.EventStatus = MockInterviewStatusEnum.Pending.ToDescriptionString();
+                    _context.MockInterview.Update(mockInterview);
+
+                    var changeReason = new EventRequestChangeReason()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateBy = userId,
+                        CreateDate = DateTime.Now,
+                        MockInterviewId = request.Payload.EventId,
+                        Reason = request.Payload.Reason,
+                        EventBookingDateId = request.Payload.EventBookingDateId,
+                        IsActive = true,
+                    };
+
+                    await _context.EventRequestChangeReason.AddAsync(changeReason);
+                    await _context.SaveChangesAsync();
+                }
+                return ResultCode.Success;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RequestChangeMockInterview method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
+        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangeEventRequest> request, Guid userId)
         {
             try
             {
                 var privateTalk = await _context.PrivateTalk.Where(n => n.UserId.Equals(userId) && n.Id.Equals( request.Payload.EventId)).FirstOrDefaultAsync();
                 if (privateTalk != null)
                 {
-                    privateTalk.EventStatus = EventStatusEnum.Pending.ToDescriptionString();
+                    privateTalk.EventStatus = PrivateTalkStatusEnum.Pending.ToDescriptionString();
                     _context.PrivateTalk.Update(privateTalk);
 
                     var changeReason = new EventRequestChangeReason()

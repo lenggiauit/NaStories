@@ -75,6 +75,22 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [HttpPost("AddEditMockInterview")]
+        public async Task<BaseResponse<Guid>> AddEditMockInterview(BaseRequest<AddEditMockInterviewRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<Guid>(await _eventService.AddEditMockInterview(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<Guid>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+
+        
+
 
     }
 }

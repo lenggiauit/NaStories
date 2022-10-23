@@ -9,6 +9,7 @@ import { EventBookingDate } from './models/admin/eventBookingDate';
 import { ResultCode } from '../utils/enums';
 import { PrivateTalk } from './models/admin/privateTalk';
 import { EventBookingDateResource } from './resources/eventBookingDateResource';
+import { MockInterview } from './models/admin/mockInterview';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -189,6 +190,69 @@ export const AdminService = createApi({
             },
         }),
 
+        GetMockInterviewList: builder.mutation<ApiResponse<MockInterview[]>, ApiRequest<{eventStatus?: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetMockInterviewList',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<MockInterview[]>) {
+                return response;
+            },
+        }),
+        UpdateMockInterviewStatus: builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any, status?: any, eventBookingDateId?: any }>>({
+            query: (payload) => ({
+                url: 'admin/UpdateMockInterviewStatus',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        GetMockInterviewDetail: builder.query<ApiResponse<MockInterview>, ApiRequest<{id: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetMockInterviewDetail',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<MockInterview>) {
+                return response;
+            },
+        }), 
+        GetMockInterviewIdByEventBookingDate: builder.mutation<ApiResponse<{ }>, ApiRequest<{eventBookingDateId: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetMockInterviewIdByEventBookingDate',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<{}>) {
+                return response;
+            },
+        }), 
+
+        CancelMockInterview : builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any }>>({
+            query: (payload) => ({
+                url: 'admin/CancelMockInterview',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+
+        CancelPrivateTalk : builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any }>>({
+            query: (payload) => ({
+                url: 'admin/CancelPrivateTalk',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+
     })
 });
 
@@ -205,4 +269,10 @@ export const { useGetCategoryMutation,
     useGetPrivateTalkDetailQuery,
     useGetEventAvailableDateQueryQuery,
     useUpdatePrivateTalkStatusMutation,
-    useGetPrivateTalkIdByEventBookingDateMutation  } = AdminService;
+    useGetPrivateTalkIdByEventBookingDateMutation,
+    useGetMockInterviewListMutation,
+    useUpdateMockInterviewStatusMutation,
+    useGetMockInterviewDetailQuery,
+    useGetMockInterviewIdByEventBookingDateMutation,
+    useCancelMockInterviewMutation,
+    useCancelPrivateTalkMutation } = AdminService;

@@ -48,7 +48,29 @@ namespace NaStories.API.Domain.Helpers
         YoutubeVideos
     }
 
-    public enum EventStatusEnum
+    public enum PrivateTalkStatusEnum
+    {
+        [Description("Submitted")]
+        Submitted,
+        [Description("Reviewing")]
+        Reviewing,
+        [Description("RequestPay")]
+        RequestPay,
+        [Description("Paid")]
+        Paid,
+        [Description("Confirmed")]
+        Confirmed,
+        [Description("Completed")]
+        Completed,
+        [Description("Rejected")]
+        Rejected,
+        [Description("Canceled")]
+        Canceled,
+        [Description("Pending")]
+        Pending, 
+    }
+
+    public enum MockInterviewStatusEnum
     {
         [Description("Submitted")]
         Submitted,
@@ -68,7 +90,6 @@ namespace NaStories.API.Domain.Helpers
         Canceled,
         [Description("Pending")]
         Pending,
-
     }
 
 

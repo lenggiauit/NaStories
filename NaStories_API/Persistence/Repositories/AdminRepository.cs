@@ -620,7 +620,7 @@ namespace NaStories.API.Persistence.Repositories
         {
             try
             { 
-                var privateTalk = await _context.PrivateTalk.Where(c => c.EventBookingDateId.Equals(payload.EventBookingDateId)).FirstOrDefaultAsync();
+                var privateTalk = await _context.PrivateTalk.Where(c => !c.IsDeleted && c.EventBookingDateId.Equals(payload.EventBookingDateId)).FirstOrDefaultAsync();
                 if (privateTalk != null)
                 { 
                     return privateTalk.Id;
@@ -634,6 +634,276 @@ namespace NaStories.API.Persistence.Repositories
             {
                 _logger.LogError("Error at GetPrivateTalkIdByEventBookingDate method: " + ex.Message);
                 return Guid.Empty;
+            }
+        }
+
+        public async Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(BaseRequest<GetMockInterviewListFilterRequest> request)
+        {
+            try
+            {
+                var query = _context.MockInterview.AsQueryable();
+
+                if (!string.IsNullOrEmpty(request.Payload.EventStatus))
+                {
+                    query = query
+                    .Where(p => p.EventStatus.ToLower().Equals(request.Payload.EventStatus.ToLower()));
+
+                }
+
+
+                var totalRow = await query.CountAsync();
+
+                return (await query
+                  .AsNoTracking()
+                  .OrderByDescending(x => x.CreatedDate)
+                  .Include(x => x.User)
+                  .Include(x => x.EventBookingDate)
+                  .Select(x => new MockInterview()
+                  {
+                      Id = x.Id,
+                      EventRequestChangeReason = x.EventRequestChangeReason,
+                      EventBookingDate = x.EventBookingDate,
+                      EventCancelReason = x.EventCancelReason,
+                      AgeRange = x.AgeRange,
+                      CreatedBy = x.CreatedBy,
+                      CreatedDate = x.CreatedDate,
+                      Email = x.Email,
+                      EventStatus = x.EventStatus,
+                      FullName = x.FullName,
+                      IsDeleted = x.IsDeleted,
+                      Language = x.Language,
+                      Resume = x.Resume,
+                      CoverLetter = x.CoverLetter,
+                      RequestChangeCount = x.RequestChangeCount,
+                      User = x.User,
+                      UpdatedBy = x.UpdatedBy,
+                      UpdatedDate = x.UpdatedDate,
+                      JobDescription = x.JobDescription,
+                      Note = x.Note,
+                      TotalRows = totalRow,
+
+                  })
+                  .GetPagingQueryable(request.MetaData)
+                  .ToListAsync(), ResultCode.Success);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetMockInterviewList method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(MockInterview, ResultCode)> GetMockInterviewDetail(Guid id)
+        {
+            try
+            {
+
+                var eventRequestChangeReason = await _context.EventRequestChangeReason.Where(e => e.MockInterviewId.Equals(id)).FirstOrDefaultAsync();
+                if (eventRequestChangeReason != null)
+                {
+
+                    var eventBookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(eventRequestChangeReason.EventBookingDateId)).FirstOrDefaultAsync();
+                    eventRequestChangeReason.EventBookingDate = eventBookingDate;
+                }
+
+                var eventCancelReason = await _context.EventCancelReason.Where(e => e.PrivateTalkId.Equals(id)).FirstOrDefaultAsync();
+
+                return (await _context.MockInterview
+                  .AsNoTracking()
+                  .Include(x => x.User)
+                  .Include(x => x.EventBookingDate)
+                  .Select(x => new MockInterview()
+                  {
+                      Id = x.Id,
+                      EventRequestChangeReason = eventRequestChangeReason,
+                      EventBookingDate = x.EventBookingDate,
+                      EventCancelReason = eventCancelReason,
+                      AgeRange = x.AgeRange,
+                      CreatedBy = x.CreatedBy,
+                      CreatedDate = x.CreatedDate,
+                      Email = x.Email,
+                      EventStatus = x.EventStatus,
+                      FullName = x.FullName,
+                      IsDeleted = x.IsDeleted,
+                      Language = x.Language,
+                      Resume = x.Resume,
+                      CoverLetter = x.CoverLetter,
+                      RequestChangeCount = x.RequestChangeCount,
+                      User = x.User,
+                      UpdatedBy = x.UpdatedBy,
+                      UpdatedDate = x.UpdatedDate,
+                      JobDescription = x.JobDescription,
+                      Note = x.Note,
+
+                  })
+                  .Where(x => x.Id.Equals(id))
+                  .FirstOrDefaultAsync(), ResultCode.Success);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetMockInterviewDetail method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<ResultCode> UpdateMockInterviewStatus(UpdateMockInterviewStatusRequest payload, Guid userId)
+        {
+            try
+            {
+
+                var mockInterview = await _context.MockInterview.Where(c => c.Id.Equals(payload.Id)).FirstOrDefaultAsync();
+                if (mockInterview != null)
+                {
+                    var oldEventBookingDateId = mockInterview.EventBookingDateId;
+                    if (!string.IsNullOrEmpty(payload.Status))
+                        mockInterview.EventStatus = payload.Status;
+                    if (payload.EventBookingDateId != null && payload.EventBookingDateId != Guid.Empty)
+                        mockInterview.EventBookingDateId = payload.EventBookingDateId;
+
+                    _context.MockInterview.Update(mockInterview);
+
+                    if (payload.EventBookingDateId != null && !payload.EventBookingDateId.Equals(Guid.Empty))
+                    {
+                        var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
+                        if (oldBookingDate != null)
+                        {
+                            oldBookingDate.UserId = null;
+                            oldBookingDate.Title = "Available time";
+                            oldBookingDate.EventName = "";
+                            oldBookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(oldBookingDate);
+                        }
+                        var bookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(payload.EventBookingDateId)).FirstOrDefaultAsync();
+
+                        if (bookingDate != null)
+                        {
+                            bookingDate.UserId = userId;
+                            bookingDate.Title = "Mock Interview - " + mockInterview.FullName;
+                            bookingDate.EventName = "Mock Interview";
+                            bookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(bookingDate);
+                        }
+                    }
+
+
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+                else
+                {
+                    return ResultCode.Error;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at UpdateMockInterviewStatus method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
+        public async Task<Guid> GetMockInterviewIdByEventBookingDate(GetMockInterviewIdByEventBookingDateRequest payload, Guid userId)
+        {
+            try
+            {
+                var mockInterview = await _context.MockInterview.Where(c => !c.IsDeleted && c.EventBookingDateId.Equals(payload.EventBookingDateId)).FirstOrDefaultAsync();
+                if (mockInterview != null)
+                {
+                    return mockInterview.Id;
+                }
+                else
+                {
+                    return Guid.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetMockInterviewIdByEventBookingDate method: " + ex.Message);
+                return Guid.Empty;
+            }
+        }
+
+        public async Task<ResultCode> CancelMockInterview(Guid payload, Guid userId)
+        {
+            try
+            {
+
+                var mockInterview = await _context.MockInterview.Where(c => c.Id.Equals(payload)).FirstOrDefaultAsync();
+                if (mockInterview != null)
+                {
+                    var oldEventBookingDateId = mockInterview.EventBookingDateId;
+                    mockInterview.EventBookingDateId = null; 
+                    _context.MockInterview.Update(mockInterview);
+
+                    if (oldEventBookingDateId != null && !oldEventBookingDateId.Equals(Guid.Empty))
+                    {
+                        var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
+                        if (oldBookingDate != null)
+                        {
+                            oldBookingDate.UserId = null;
+                            oldBookingDate.Title = "Available time";
+                            oldBookingDate.EventName = "";
+                            oldBookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(oldBookingDate);
+                        }
+                         
+                    }
+                     
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+                else
+                {
+                    return ResultCode.Error;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at CancelMockInterview method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
+        public async Task<ResultCode> CancelPrivateTalk(Guid payload, Guid userId)
+        {
+            try
+            {
+
+                var privateTalk = await _context.PrivateTalk.Where(c => c.Id.Equals(payload)).FirstOrDefaultAsync();
+                if (privateTalk != null)
+                {
+                    var oldEventBookingDateId = privateTalk.EventBookingDateId;
+                    privateTalk.EventBookingDateId = null;
+                    _context.PrivateTalk.Update(privateTalk);
+
+                    if (oldEventBookingDateId != null && !oldEventBookingDateId.Equals(Guid.Empty))
+                    {
+                        var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
+                        if (oldBookingDate != null)
+                        {
+                            oldBookingDate.UserId = null;
+                            oldBookingDate.Title = "Available time";
+                            oldBookingDate.EventName = "";
+                            oldBookingDate.UpdatedDate = DateTime.Now;
+                            _context.EventBookingDate.Update(oldBookingDate);
+                        } 
+                    }
+
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+                else
+                {
+                    return ResultCode.Error;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at CancelMockInterview method: " + ex.Message);
+                return ResultCode.Error;
             }
         }
     }

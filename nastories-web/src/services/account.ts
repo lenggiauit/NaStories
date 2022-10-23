@@ -11,6 +11,7 @@ import { AuthenticateResponse } from './communication/response/authenticateRespo
 import { CommonResponse } from './communication/response/commonResponse';
 import { ForgotpasswordResponse } from './communication/response/forgotpasswordResponse';
 import { RegisterResponse } from './communication/response/registerResponse';
+import { MockInterviewResource } from './resources/mockInterviewResource';
 import { PrivateTalkResource } from './resources/privateTalkResource';
 
 let appSetting: AppSetting = require('../appSetting.json');
@@ -89,6 +90,44 @@ export const UserService = createApi({
             },
         }),
 
+        GetMockInterviewList: builder.query<ApiResponse<MockInterviewResource[]>, ApiRequest<{}>>({
+            query: (payload) => ({
+                url: 'account/GetMockInterviewList',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<MockInterviewResource[]>) {
+                return response;
+            },
+        }),
+
+        RemoveMockInterview: builder.mutation<ApiResponse<ResultCode>, ApiRequest<{ id: any, reason: any}>>({
+            query: (payload) => ({
+                url: 'account/RemoveMockInterview',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        RequestChangeMockInterview: builder.mutation<ApiResponse<ResultCode>, ApiRequest<
+        { 
+            eventId: any,
+            eventBookingDateId: any,
+            reason: any
+        }>>({
+            query: (payload) => ({
+                url: 'account/RequestChangeMockInterview',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+
+
     
 
     })
@@ -98,7 +137,10 @@ export const {
     useUserUpdateAvatarMutation,
     useGetPrivateTalkListQuery,
     useRemovePrivateTalkMutation,
-    useRequestChangePrivateTalkMutation
+    useRequestChangePrivateTalkMutation,
+    useGetMockInterviewListQuery,
+    useRemoveMockInterviewMutation,
+    useRequestChangeMockInterviewMutation
 
 } = UserService;
 

@@ -13,6 +13,10 @@ namespace NaStories.API.Domain.Repositories
         Task<(Guid, ResultCode)> AddEditPrivateTalk(BaseRequest<AddEditPrivateTalkRequest> request, Guid userId);
         Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId);
         Task<ResultCode> RemovePrivateTalk(Guid id, string reason, Guid userId);
-        Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangePrivateTalkRequest> request, Guid userId);
+        Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangeEventRequest> request, Guid userId);
+        Task<(Guid, ResultCode)> AddEditMockInterview(BaseRequest<AddEditMockInterviewRequest> request, Guid userId);
+        Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(Guid userId);
+        Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId);
+        Task<ResultCode> RequestChangeMockInterview(BaseRequest<RequestChangeEventRequest> request, Guid userId);
     }
 }

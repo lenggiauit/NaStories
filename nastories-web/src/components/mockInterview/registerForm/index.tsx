@@ -4,13 +4,14 @@ import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
 import { Translation } from "../../translation";
 import * as Yup from "yup";
-import { getLoggedUser } from "../../../utils/functions";
+import { checkIfFilesAreCorrectType, getLoggedUser } from "../../../utils/functions";
 import * as uuid from "uuid";
+import { NIL as NIL_UUID } from 'uuid';
 import { AppSetting } from "../../../types/type";
 import { ResultCode } from "../../../utils/enums";
 import LoginModal from "../../loginModal";
 import { useEffect, useState } from "react";
-import { useGetEventBookingAvaiableDateQuery, useAddEditPrivateTalkMutation } from "../../../services/event";
+import { useGetEventBookingAvaiableDateQuery, useAddEditPrivateTalkMutation, useAddEditMockInterviewMutation } from "../../../services/event";
 import calcTime from "../../../utils/time";
 import dateFormat from "dateformat";
 import showConfirmModal from "../../modal";
@@ -22,10 +23,12 @@ interface FormValues {
     id: any,
     fullname: any,
     email: any,
+    ageRange: any,
     language: any,
     resume: any,
     coverLetter: any,
     jobDescription: any, 
+    note: any,
     eventBookingDateId: any,
 }
 
@@ -37,7 +40,7 @@ const MockInterviewRegisterForm: React.FC = () => {
     const [showOtherProblem, setshowOtherProblem] = useState<boolean>(false);
     const [isUnderstand, setIsUnderstand] = useState<boolean>(false);
     const getEventBookingAvaiableDateQueryStatus = useGetEventBookingAvaiableDateQuery({ payload: null });
-    const [addEditPrivateTalk, addEditPrivateTalkStatus] = useAddEditPrivateTalkMutation();
+    const [addEditMockInterview, addEditMockInterviewStatus] = useAddEditMockInterviewMutation();
     const [currentFileField, setCurrentFileField] = useState<string>();
     const [currentResume, setCurrentResume] = useState<string>();
     const [uploadFile, uploadFileData] = useUploadPackageFileMutation();
@@ -48,10 +51,12 @@ const MockInterviewRegisterForm: React.FC = () => {
         id: "",
         fullname: currentUser?.fullName,
         email: currentUser?.email,
-        language: "",
+        ageRange: "",
+        language: "Tiếng anh",
         resume: "",
         coverLetter: "",
         jobDescription: "", 
+        note: "",
         eventBookingDateId: "",
     };
 
@@ -61,6 +66,9 @@ const MockInterviewRegisterForm: React.FC = () => {
             .max(100), 
             email: Yup.string().email().required(dictionaryList[locale]["RequiredField"])
             .max(150), 
+            ageRange: Yup.string().required(dictionaryList[locale]["RequiredField"]), 
+            note: Yup.string() 
+            .max(500), 
             resume: Yup.mixed().test("resume", dictionaryList[locale]["RequiredField"], function test(value) {
                 return currentResume != null && currentResume.length > 0;
               }), 
@@ -72,14 +80,7 @@ const MockInterviewRegisterForm: React.FC = () => {
               }), 
         });
     }
-
-    const onChangeProblem = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value;
-        if (value == "Khác") {
-            setshowOtherProblem(true);
-        }
-    };
-
+ 
     const handleIsUnderstandClick: React.MouseEventHandler<HTMLLabelElement> = (e) => {
         setIsUnderstand(!isUnderstand);
     }
@@ -93,64 +94,73 @@ const MockInterviewRegisterForm: React.FC = () => {
         }
         else {
 
-            // addEditPrivateTalk({
-            //     payload:
-            //     {
-            //         id: values.id,
-            //         fullname: values.fullname,
-            //         email: values.email,
-            //         agerange: values.agerange,
-            //         eventBookingDateId: values.eventBookingDateId,
-            //         problem: values.problem,
-            //         problemDescription: values.problemDescription,
-            //         problemOther: values.problemOther,
-            //         yourExpectationDescription: values.yourExpectationDescription,
-            //         yourSolutionDescription: values.yourSolutionDescription
-            //     }
-            // });
+            addEditMockInterview({
+                payload:
+                {
+                    id: values.id,
+                    fullname: values.fullname,
+                    email: values.email,
+                    agerange: values.ageRange,
+                    eventBookingDateId: values.eventBookingDateId,
+                    language: values.language,
+                    resume: currentResume,
+                    coverLetter: currentCoverLetter,
+                    jobDescription: currentJobDescription,
+                    note: values.note
+                }
+            });
         }
 
     }
 
     useEffect(() => {
-        if (addEditPrivateTalkStatus.data && addEditPrivateTalkStatus.data.resultCode == ResultCode.Success) {
+        if (addEditMockInterviewStatus.data && addEditMockInterviewStatus.data.resultCode == ResultCode.Success) {
             showDialogModal({
                 message: "Đăng ký Mock Interview thành công!",
                 onClose: () => {
-                    window.location.href = appSetting.SiteUrl + "user/mock-interview/" + addEditPrivateTalkStatus.data?.resource;
+                    window.location.href = appSetting.SiteUrl + "user/mock-interview/";// + addEditMockInterviewStatus.data?.resource;
                 }
             });
         }
 
-    }, [addEditPrivateTalkStatus]);
+    }, [addEditMockInterviewStatus]);
 
     const handleSelectResume: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         let file = e.target.files?.item(0);
-        if (file) {
+        if (file && checkIfFilesAreCorrectType([file])) {
             setCurrentFileField("Resume");
             const formData = new FormData();
             formData.append("file", file!);
             uploadFile(formData);
         }
+        else{
+            showDialogModal({ message: "Bạn cần chọn file Pdf hoặc Word!"})
+        }
     }
 
     const handleSelectCoverLetter: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         let file = e.target.files?.item(0);
-        if (file) {
+        if (file && checkIfFilesAreCorrectType([file])) {
             setCurrentFileField("CoverLetter");
             const formData = new FormData();
             formData.append("file", file!);
             uploadFile(formData);
         }
+        else{
+            showDialogModal({ message: "Bạn cần chọn file Pdf hoặc Word!"})
+        }
     }
 
     const handleSelectJobDescription: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         let file = e.target.files?.item(0);
-        if (file) {
+        if (file && checkIfFilesAreCorrectType([file])) {
             setCurrentFileField("JobDescription");
             const formData = new FormData();
             formData.append("file", file!);
             uploadFile(formData);
+        }
+        else{
+            showDialogModal({ message: "Bạn cần chọn file Pdf hoặc Word!"})
         }
     } 
 
@@ -249,7 +259,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-6">
-                                            <Field as="select" type="select" name="agerange"
+                                            <Field as="select" type="select" name="ageRange"
                                                 className="form-control" placeholder="Độ tuổi" >
                                                 <option value="" label="Chọn độ tuổi">Chọn độ tuổi</option>
                                                 <option value="< 18 tuổi" >&lt; 18 tuổi</option>
@@ -259,7 +269,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 <option value="> 32 tuổi" > &gt; 32 tuổi</option>
                                             </Field>
                                             <ErrorMessage
-                                                name="agerange"
+                                                name="ageRange"
                                                 component="div"
                                                 className="alert alert-field alert-danger"
                                             />
@@ -275,8 +285,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 className="alert alert-field alert-danger"
                                             />
                                         </div>
-                                        <div className="form-group col-md-6">
-                                           
+                                        <div className="form-group col-md-6"> 
                                             <Field as="select" type="select" name="language"
                                                 className="form-control" placeholder="Ngôn ngữ" > 
                                                 <option value="Tiếng anh" >Tiếng anh</option>
@@ -345,11 +354,8 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                         <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"}</option>
                                                     ))}
                                                 </>
-                                                }
-                                                {getEventBookingAvaiableDateQueryStatus.data && getEventBookingAvaiableDateQueryStatus.data.resource.length == 0 &&
-                                                    <option value="" label="Để sau">Để sau</option>
-                                                }
-
+                                                } 
+                                                <option value={NIL_UUID} label="Để sau">Để sau</option> 
                                             </Field>
                                             <ErrorMessage
                                                 name="eventBookingDateId"

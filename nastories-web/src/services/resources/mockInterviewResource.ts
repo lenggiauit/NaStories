@@ -1,16 +1,18 @@
 import { EventBookingDateResource } from "./eventBookingDateResource";
 
-export type PrivateTalkResource =
+export type MockInterviewResource =
 {
     id  : any,
     fullName  : any, 
     email  : any, 
     ageRange  : any, 
-    problem  : any, 
-    problemOther  : any, 
-    problemDescription  : any, 
-    yourSolutionDescription  : any, 
-    yourExpectationDescription  : any, 
+    fullname: any, 
+    language: any,
+    resume: any,
+    coverLetter: any,
+    jobDescription: any,  
+    note: any,
+    eventBookingDateId: any
     eventBookingDate? : EventBookingDateResource,  
     eventStatus  : any,
     isEnableRequestChange: boolean
