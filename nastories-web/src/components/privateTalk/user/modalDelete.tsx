@@ -73,7 +73,7 @@ const ConfirmModal: React.FC<Props> = ({ options }) => {
                                 <div className="modal-body pb-0">
                                     <p className="m-0 ml-1">{options.message}</p>
                                     <div className="form-group m-2">
-                                        <Field type="text" className="form-control" name="reason" placeholder="reason" />
+                                        <Field type="text" className="form-control" name="reason" placeholder="lý do" />
                                         <ErrorMessage
                                             name="reason"
                                             component="div"

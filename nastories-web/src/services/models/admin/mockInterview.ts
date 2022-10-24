@@ -22,5 +22,7 @@ export type MockInterview = BaseModel & {
     eventStatus  : any,
     isEnableRequestChange: boolean
     totalRows: any; 
+    code: any,
+    redeemCode: any,
 };
  

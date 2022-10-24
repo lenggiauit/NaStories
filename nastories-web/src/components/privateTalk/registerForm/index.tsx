@@ -31,6 +31,7 @@ interface FormValues {
     yourSolutionDescription: any,
     yourExpectationDescription: any,
     eventBookingDateId: any,
+    redeemCode: any
 }
 
 const PrivateTalkRegisterForm: React.FC = () => {
@@ -55,6 +56,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
         yourSolutionDescription: "",
         yourExpectationDescription: "",
         eventBookingDateId: "",
+        redeemCode: ""
     };
 
     const validationSchema = () => {
@@ -76,6 +78,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
             .max(500),
             yourExpectationDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
             .max(500),
+            redeemCode: Yup.string().max(20)
         });
     }
 
@@ -111,7 +114,8 @@ const PrivateTalkRegisterForm: React.FC = () => {
                     problemDescription: values.problemDescription,
                     problemOther: values.problemOther,
                     yourExpectationDescription: values.yourExpectationDescription,
-                    yourSolutionDescription: values.yourSolutionDescription
+                    yourSolutionDescription: values.yourSolutionDescription,
+                    redeemCode: values.redeemCode
                 }
             });
         }
@@ -257,7 +261,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                                         <div className="input-group-prepend">
                                                             <div className="input-group-text" onClick={() => setshowOtherProblem(false)} ><i className="bi bi-backspace" style={{ cursor: "pointer" }}></i></div>
                                                         </div>
-                                                        <Field type="text" className="form-control" name="problemOther" length={250} placeholder="Nhập vấn đề của bạn" />
+                                                        <Field type="text" className="form-control" name="problemOther" maxLength={250} placeholder="Nhập vấn đề của bạn" />
 
                                                         <ErrorMessage
                                                             name="problemOther"
@@ -270,7 +274,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="problemDescription" length={500} placeholder="Mô tả chi tiết về vấn đề của bạn*" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="problemDescription" maxLength={500} placeholder="Mô tả chi tiết về vấn đề của bạn*" />
                                             <ErrorMessage
                                                 name="problemDescription"
                                                 component="div"
@@ -279,7 +283,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourSolutionDescription" length={500} placeholder="Bạn đã tự tìm giải pháp cho vấn đề của mình như thế nào và giải pháp đó là gì?*" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourSolutionDescription" maxLength={500} placeholder="Bạn đã tự tìm giải pháp cho vấn đề của mình như thế nào và giải pháp đó là gì?*" />
                                             <ErrorMessage
                                                 name="yourSolutionDescription"
                                                 component="div"
@@ -288,7 +292,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourExpectationDescription" length={500} placeholder="Bạn kì vọng Na sẽ giúp được bạn những gì và như thế nào?*" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourExpectationDescription" maxLength={500} placeholder="Bạn kì vọng Na sẽ giúp được bạn những gì và như thế nào?*" />
                                             <ErrorMessage
                                                 name="yourExpectationDescription"
                                                 component="div"
@@ -303,7 +307,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                                 <option value="" label="Chọn ngày">Chọn ngày</option>
                                                 {getEventBookingAvaiableDateQueryStatus.data && <>
                                                     {getEventBookingAvaiableDateQueryStatus.data.resource.map((type) => (
-                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"}</option>
+                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"}</option>
                                                     ))}
                                                 </>
                                                 } 
@@ -326,6 +330,11 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                                 <label className="custom-control-label" onClick={handleIsUnderstandClick}>Mình đã rõ</label>
                                             </div>
                                         </div>
+
+                                        <div className="form-group col-md-12 text-center">
+                                            <Field type="text" maxLength={20} className="form-control" style={{width: 150}} name="redeemCode" placeholder="Mã giảm giá" />
+                                        </div> 
+
                                         <div className="form-group col-md-12 text-center">
                                             <button className="btn btn-lg btn-primary " type="submit" style={{ width: 250 }}  >
                                                 <Translation tid="Submit" />

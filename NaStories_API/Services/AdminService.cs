@@ -6,6 +6,7 @@ using NaStories.API.Domain.Repositories;
 using NaStories.API.Domain.Services;
 using NaStories.API.Domain.Services.Communication.Request;
 using NaStories.API.Domain.Services.Communication.Request.Admin;
+using NaStories.API.Resources;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -108,6 +109,11 @@ namespace NaStories.API.Services
         public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(BaseRequest<GetPrivateTalkListFilterRequest> request)
         {
             return await _adminRepository.GetPrivateTalkList(request);
+        }
+
+        public async Task<(List<User>, ResultCode)> GetUserList()
+        {
+            return await _adminRepository.GetUserList();
         }
 
         public async Task<ResultCode> RemoveEventAvailableDate(BaseRequest<RemoveEventAvailableDateRequest> request, Guid userId)

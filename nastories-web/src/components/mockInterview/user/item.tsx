@@ -1,3 +1,4 @@
+import dateFormat from "dateformat";
 import React, { useCallback, useEffect, useState } from "react"; 
 import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
@@ -5,6 +6,7 @@ import { useRemoveMockInterviewMutation, useRequestChangeMockInterviewMutation }
 import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { MockInterviewResource } from "../../../services/resources/mockInterviewResource";
+import calcTime from "../../../utils/time";
  
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
@@ -62,18 +64,24 @@ const UserMockInterviewItem: React.FC<Props> = ({ dataItem, bookingDate, onSelec
     return (<>
         <div className={`col-md-12 ${isDeleted ? "hide": ""}`} >
             <div className="row admin-post-item border-top border-light p-2">
-                <div className="col-md-5">
+                <div className="col-md-3">
                     <a href="#" onClick={(e) => { e.preventDefault(); onSelected(dataItem) }}> 
                         { dataItem.eventBookingDate ? dataItem.eventBookingDate.title : dataItem.fullName }
                     </a>
                 </div>
                 <div className="col-md-2 text-center">
-                    {dataItem.eventBookingDate ? dataItem.eventBookingDate.start : "---"}
+                    {dataItem.code}
+                </div>
+                <div className="col-md-1 text-center">
+                    {dataItem.redeemCode}
+                </div>
+                <div className="col-md-2 text-center">
+                    {dataItem.eventBookingDate ? dateFormat(calcTime(new Date(dataItem.eventBookingDate.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"  : "---"}
                 </div>
                 <div className="col-md-1 text-center">
                     {dataItem.eventStatus}
                 </div>
-                <div className="col-md-4 text-right" >
+                <div className="col-md-3 text-right" >
                     {(dataItem.isEnableRequestChange && !isRequestChanged) && 
                         <a className="btn btn-xs btn-round btn-success mr-1" href="#" onClick={onRequestChangeMockInterview} ><Translation tid="action_mockinterview_requestchangetime" /></a> 
                     }

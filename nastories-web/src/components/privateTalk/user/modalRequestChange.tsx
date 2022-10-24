@@ -87,7 +87,7 @@ const ConfirmModal: React.FC<Props> = ({ options }) => {
                                                 className="form-control" placeholder="Booking date">
                                                 <option value="" label="Na's Stories sẽ chọn ngày sớm nhất có thể">Na's Stories sẽ chọn ngày sớm nhất có thể</option>
                                                 {options.bookingDate.map((type) => (
-                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"}</option>
+                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"}</option>
                                                     ))}  
                                             </Field>
                                             <ErrorMessage
@@ -97,7 +97,7 @@ const ConfirmModal: React.FC<Props> = ({ options }) => {
                                             />
                                         </div>
                                         <div className="form-group col-md-12">
-                                            <Field type="text" className="form-control" name="reason" placeholder="reason" />
+                                            <Field type="text" className="form-control" name="reason" placeholder="lý do" />
                                             <ErrorMessage
                                                 name="reason"
                                                 component="div"

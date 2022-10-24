@@ -422,13 +422,17 @@
   padding: 5px 5px !important;
 }
 .message-content-controls {
-  display: none !important;
+  /* display: none !important; */
+  visibility:hidden;
+  margin-top: 0px;
 }
 .conversation-item-container:hover .message-content-controls {
-  display: inline-block !important;
+  /* display: inline-block !important; */
+  visibility:visible;
 }
 .conversation-item-container:hover .message-content-controls.deleted {
-  display: none !important;
+  /* display: none !important; */
+  visibility:hidden;
 }
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */

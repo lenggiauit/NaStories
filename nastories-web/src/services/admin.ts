@@ -10,6 +10,8 @@ import { ResultCode } from '../utils/enums';
 import { PrivateTalk } from './models/admin/privateTalk';
 import { EventBookingDateResource } from './resources/eventBookingDateResource';
 import { MockInterview } from './models/admin/mockInterview';
+import { User } from './models/user';
+import { UserResource } from './resources/userResource';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -252,6 +254,16 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+        GetUserList:  builder.mutation<ApiResponse<UserResource[]>, ApiRequest<{}>>({
+            query: (payload) => ({
+                url: 'admin/GetUserList',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<UserResource[]>) {
+                return response;
+            },
+        }),
 
     })
 });
@@ -275,4 +287,5 @@ export const { useGetCategoryMutation,
     useGetMockInterviewDetailQuery,
     useGetMockInterviewIdByEventBookingDateMutation,
     useCancelMockInterviewMutation,
-    useCancelPrivateTalkMutation } = AdminService;
+    useCancelPrivateTalkMutation,
+    useGetUserListMutation } = AdminService;

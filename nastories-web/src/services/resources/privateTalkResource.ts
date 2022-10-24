@@ -13,5 +13,7 @@ export type PrivateTalkResource =
     yourExpectationDescription  : any, 
     eventBookingDate? : EventBookingDateResource,  
     eventStatus  : any,
-    isEnableRequestChange: boolean
+    isEnableRequestChange: boolean,
+    code: any,
+    redeemCode: any,
 }

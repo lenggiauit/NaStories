@@ -21,7 +21,9 @@ export type PrivateTalk = BaseModel & {
     eventCancelReason: EventCancelReason,
     eventStatus  : any,
     isEnableRequestChange: boolean
-    totalRows: any;
+    totalRows: any,
+    code: any,
+    redeemCode: any,
     
 };
  

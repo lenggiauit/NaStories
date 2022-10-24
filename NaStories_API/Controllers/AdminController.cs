@@ -11,6 +11,7 @@ using NaStories.API.Domain.Services.Communication.Request;
 using NaStories.API.Domain.Services.Communication.Request.Admin;
 using NaStories.API.Domain.Services.Communication.Response;
 using NaStories.API.Infrastructure;
+using NaStories.API.Resources;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -321,6 +322,29 @@ namespace NaStories.API.Controllers
             else
             {
                 return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.ManageUser)]
+
+        [HttpPost("GetUserList")]
+        public async Task<BaseResponse<List<UserResource>>> GetUserList()
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _adminServices.GetUserList();
+                if (data != null)
+                {
+                    return new BaseResponse<List<UserResource>>(_mapper.Map<List<User>, List<UserResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<UserResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<UserResource>>(Constants.InvalidMsg, ResultCode.Invalid);
             }
         }
 

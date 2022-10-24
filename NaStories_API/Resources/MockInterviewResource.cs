@@ -18,5 +18,7 @@ namespace NaStories.API.Resources
         public EventBookingDateResource EventBookingDate { get; set; }
         public string EventStatus { get; set; }
         public bool IsEnableRequestChange { get; set; }
+        public string RedeemCode { get; set; }
+        public string Code { get; set; }
     }
 }

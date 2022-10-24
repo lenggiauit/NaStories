@@ -36,5 +36,8 @@ namespace NaStories.API.Domain.Services.Communication.Request
         public string Note { get; set; }
         
         public Guid? EventBookingDateId { get; set; }
+
+        [MaxLength(20)]
+        public string RedeemCode { get; set; }
     }
 }

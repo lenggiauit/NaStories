@@ -48,7 +48,8 @@ export const EventService = createApi({
                 problemDescription: any,
                 yourSolutionDescription: any,
                 yourExpectationDescription: any,
-                eventBookingDateId: any}
+                eventBookingDateId: any,
+                redeemCode: any}
                 >>({
             query: (payload) => ({
                 url: 'event/AddEditPrivateTalk',
@@ -70,7 +71,8 @@ export const EventService = createApi({
             coverLetter: any,
             jobDescription: any,  
             note: any,
-            eventBookingDateId: any}
+            eventBookingDateId: any,
+            redeemCode: any}
             >>({
         query: (payload) => ({
             url: 'event/AddEditMockInterview',

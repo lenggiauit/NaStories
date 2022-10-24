@@ -2,6 +2,7 @@
 using NaStories.API.Domain.Helpers;
 using NaStories.API.Domain.Services.Communication.Request;
 using NaStories.API.Domain.Services.Communication.Request.Admin;
+using NaStories.API.Resources;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,5 +32,6 @@ namespace NaStories.API.Domain.Services
         Task<Guid> GetMockInterviewIdByEventBookingDate(GetMockInterviewIdByEventBookingDateRequest payload, Guid userId);
         Task<ResultCode> CancelPrivateTalk(Guid payload, Guid guid);
         Task<ResultCode> CancelMockInterview(Guid payload, Guid guid);
+        Task<(List<User>, ResultCode)> GetUserList();
     }
 }

@@ -1,10 +1,10 @@
 import dateFormat from "dateformat";
-import React, { useCallback, useEffect, useState } from "react"; 
+import React, { useCallback, useEffect, useState } from "react";
 import { matchPath, Redirect, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
 import { useRemovePrivateTalkMutation, useRequestChangePrivateTalkMutation } from "../../../services/account";
-import { useCancelPrivateTalkMutation, useGetEventAvailableDateQueryQuery, useGetPrivateTalkDetailQuery, useUpdatePrivateTalkStatusMutation } from "../../../services/admin"; 
+import { useCancelPrivateTalkMutation, useGetEventAvailableDateQueryQuery, useGetPrivateTalkDetailQuery, useUpdatePrivateTalkStatusMutation } from "../../../services/admin";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
 import { AppSetting } from "../../../types/type";
@@ -34,9 +34,9 @@ const AdminPrivateTalkDetail: React.FC = () => {
 
     useEffect(() => {
         if (match == null) {
-            window.location.href = "/notfound"; 
+            window.location.href = "/notfound";
         }
-         
+
     }, [])
 
     const getdetailStatus = useGetPrivateTalkDetailQuery({ payload: id });
@@ -49,22 +49,21 @@ const AdminPrivateTalkDetail: React.FC = () => {
 
     const [bookingId, setBookingId] = useState<string>("");
 
-    useEffect(()=>{
-        if(getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null){
+    useEffect(() => {
+        if (getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null) {
             //setEventStatus(getdetailStatus.data.resource.eventStatus);
         }
 
     }, [getdetailStatus]);
 
-    useEffect(()=>{
-        if(getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null){
-           
-            if(getEventBookingAvaiableDateQueryStatus.isSuccess && getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success && getEventBookingAvaiableDateQueryStatus.data.resource != null){
-                if(getdetailStatus.data.resource.eventRequestChangeReason?.eventBookingDate != null)
-                {
+    useEffect(() => {
+        if (getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null) {
+
+            if (getEventBookingAvaiableDateQueryStatus.isSuccess && getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success && getEventBookingAvaiableDateQueryStatus.data.resource != null) {
+                if (getdetailStatus.data.resource.eventRequestChangeReason?.eventBookingDate != null) {
                     setBookingId(getdetailStatus.data.resource.eventRequestChangeReason.eventBookingDate?.id);
                 }
-                else{
+                else {
                     setBookingId(getdetailStatus.data.resource.eventBookingDate?.id);
                 }
             }
@@ -73,48 +72,50 @@ const AdminPrivateTalkDetail: React.FC = () => {
 
     }, [getdetailStatus, getEventBookingAvaiableDateQueryStatus]);
 
-    const handleOnSaveChange = useCallback(() =>{
-        UpdatePrivateTalk({payload: { id: getdetailStatus.data?.resource.id, status: eventStatus, eventBookingDateId: eventDateId }}); 
+    const handleOnSaveChange = useCallback(() => {
+        UpdatePrivateTalk({ payload: { id: getdetailStatus.data?.resource.id, status: eventStatus, eventBookingDateId: eventDateId } });
     }, [eventStatus, eventDateId]);
 
-    const handleOnCancel = useCallback(() =>{
-        CancelPrivateTalk({payload: { id: id }}); 
+    const handleOnCancel = useCallback(() => {
+        CancelPrivateTalk({ payload: { id: id } });
     }, []);
 
-    useEffect(()=>{
-        if(CancelPrivateTalkStatus.data && CancelPrivateTalkStatus.data.resultCode == ResultCode.Success)
-        { 
-            showDialogModal({ message : "Cập nhật thành công" });
-        } 
+    useEffect(() => {
+        if (CancelPrivateTalkStatus.data && CancelPrivateTalkStatus.data.resultCode == ResultCode.Success) {
+            showDialogModal({ message: "Cập nhật thành công" });
+        }
     }, [CancelPrivateTalkStatus]);
 
-    useEffect(()=>{
-        if(UpdatePrivateTalkStatus.data && UpdatePrivateTalkStatus.data.resultCode == ResultCode.Success)
-        {
+    useEffect(() => {
+        if (UpdatePrivateTalkStatus.data && UpdatePrivateTalkStatus.data.resultCode == ResultCode.Success) {
             setEventStatus(null);
             setEventDateId(null);
-            showDialogModal({ message : "Cập nhật thành công" });
+            showDialogModal({ message: "Cập nhật thành công" });
         }
-        
+
 
     }, [UpdatePrivateTalkStatus]);
-  
+
     return (<>
         {getdetailStatus.isLoading && <PageLoading />}
         {getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null && <>
-            
+
             <div className="section">
                 <div className="container">
-                    <a href="#" onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk" }> Back </a>
+                    <a href="#" onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk"}> Back </a>
                     <div className="text-center">
-                        <h2>{getdetailStatus.data.resource.eventBookingDate ? getdetailStatus.data.resource .eventBookingDate.title : getdetailStatus.data.resource .fullName }</h2> 
+                        <h2>{getdetailStatus.data.resource.eventBookingDate ? getdetailStatus.data.resource.eventBookingDate.title : getdetailStatus.data.resource.fullName}</h2>
                     </div>
                     <div className="mt-6">
-                    <table style={{width: "100%" }}>
+                        <table style={{ width: "100%" }}>
                             <tr>
-                                <td style={{width: "150px"}}>Full name:</td>
+                                <td style={{ width: "150px" }}>Code:</td>
+                                <td colSpan={2}>{getdetailStatus.data.resource.code}</td>
+                            </tr>
+                            <tr>
+                                <td style={{ width: "150px" }}>Full name:</td>
                                 <td colSpan={2}>{getdetailStatus.data.resource.fullName}</td>
-                            </tr>  
+                            </tr>
                             <tr className="border-top border-light">
                                 <td>Email:</td>
                                 <td colSpan={2}>{getdetailStatus.data.resource.email}</td>
@@ -122,20 +123,20 @@ const AdminPrivateTalkDetail: React.FC = () => {
                             <tr className="border-top border-light">
                                 <td>Start Date:</td>
                                 <td colSpan={2}>
-                                <select name="eventStartDateId" onChange={(e)=>{ setEventDateId(e.target.value) }}
-                                        className="form-control" placeholder="Booking date"> 
+                                    <select name="eventStartDateId" onChange={(e) => { setEventDateId(e.target.value) }}
+                                        className="form-control" placeholder="Booking date">
                                         <option value="" label="Chọn ngày">Chọn ngày</option>
                                         {getEventBookingAvaiableDateQueryStatus.data != null &&
-                                            getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success && 
+                                            getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success &&
                                             getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
-                                                <option key={b.id} value={b.id} selected={ getdetailStatus.data.resource.eventBookingDate?.id == b.id} > 
-                                                    {dateFormat( b.start, "dd, mm, yyyy - h:MM:ss TT")} 
+                                                <option key={b.id} value={b.id} selected={getdetailStatus.data.resource.eventBookingDate?.id == b.id} >
+                                                    {dateFormat(b.start, "dd/mm/yyyy - h:MM:ss TT")}
                                                 </option>
-                                            ))}  
-                                </select> 
+                                            ))}
+                                    </select>
                                 </td>
-                            </tr> 
-                            
+                            </tr>
+
                             <tr className="border-top border-light">
                                 <td>Độ tuổi:</td>
                                 <td colSpan={2}>{getdetailStatus.data.resource.ageRange}</td>
@@ -158,58 +159,62 @@ const AdminPrivateTalkDetail: React.FC = () => {
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>
-                                <td colSpan={2}>  
-                                    <select name="eventStatus" className="form-control form-control-sm" onChange={(e)=>{ setEventStatus(e.target.value) }}> 
-                                        {Object.keys(PrivateTalkEnumStatus).map((status) => 
+                                <td colSpan={2}>
+                                    <select name="eventStatus" className="form-control form-control-sm" onChange={(e) => { setEventStatus(e.target.value) }}>
+                                        {Object.keys(PrivateTalkEnumStatus).map((status) =>
                                         (
-                                            <option value={status} selected={ getdetailStatus.data.resource.eventStatus == status} >{status}</option>
+                                            <option value={status} selected={getdetailStatus.data.resource.eventStatus == status} >{status}</option>
                                         )
                                         )}
-                                    </select> 
-                                </td> 
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style={{ width: "150px" }}>Redeem Code:</td>
+                                <td colSpan={2}>{getdetailStatus.data.resource.redeemCode}</td>
                             </tr>
                             {getdetailStatus.data.resource.eventCancelReason != null &&
                                 <tr className="border-top border-light">
                                     <td>Cancel Reason:</td>
                                     <td colSpan={2}>
-                                        {getdetailStatus.data.resource.eventCancelReason.reason} 
-                                        
-                                    </td> 
-                                </tr> 
+                                        {getdetailStatus.data.resource.eventCancelReason.reason}
+
+                                    </td>
+                                </tr>
                             }
                             {getdetailStatus.data.resource.eventRequestChangeReason != null &&
                                 <tr className="border-top border-light">
                                     <td>Request change Reason:</td>
                                     <td colSpan={2}>
-                                        {getdetailStatus.data.resource.eventRequestChangeReason.reason}  
+                                        {getdetailStatus.data.resource.eventRequestChangeReason.reason}
                                         <br />
                                         <select name="eventBookingDateId"
-                                                className="form-control" placeholder="Booking date">
-                                                <option value="" label="Na's Stories sẽ chọn ngày sớm nhất có thể">Na's Stories sẽ chọn ngày sớm nhất có thể</option>
-                                                {getEventBookingAvaiableDateQueryStatus.data != null &&
-                                                 getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success && 
-                                                    getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
-                                                        <option key={b.id} value={b.id} selected={ bookingId == b.id} >{dateFormat(calcTime(new Date(b.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"}</option>
-                                                    ))}  
+                                            className="form-control" placeholder="Booking date">
+                                            <option value="" label="Na's Stories sẽ chọn ngày sớm nhất có thể">Na's Stories sẽ chọn ngày sớm nhất có thể</option>
+                                            {getEventBookingAvaiableDateQueryStatus.data != null &&
+                                                getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success &&
+                                                getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
+                                                    <option key={b.id} value={b.id} selected={bookingId == b.id} >{dateFormat(calcTime(new Date(b.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"}</option>
+                                                ))}
                                         </select>
-                                    </td> 
-                                </tr> 
+                                    </td>
+                                </tr>
                             }
                         </table>
                         <hr />
                         <div className="row">
                             <div className="col-md-12 text-center">
-                            <button className="btn btn-secondary " onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk" }>Back to list</button>
-                            <button className="btn btn-primary ml-2" onClick={handleOnSaveChange} disabled={!(eventStatus != null || eventDateId != null)} > Save change</button>
-                            <button className="btn btn-danger ml-2" onClick={handleOnCancel} > Hủy ngày</button>    
+                                <button className="btn btn-secondary " onClick={() => window.location.href = appSetting.SiteUrl + "admin/private-talk"}>Back to list</button>
+                                <button className="btn btn-primary ml-2" onClick={handleOnSaveChange} disabled={!(eventStatus != null || eventDateId != null)} > Save change</button>
+                                <button className="btn btn-danger ml-2" onClick={handleOnCancel} > Hủy ngày</button>
+                            </div>
                         </div>
-                        </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
-        </>} 
-    </>) 
-     
+        </>}
+    </>)
+
 }
 
 export default AdminPrivateTalkDetail;

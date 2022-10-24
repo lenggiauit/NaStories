@@ -30,6 +30,7 @@ interface FormValues {
     jobDescription: any, 
     note: any,
     eventBookingDateId: any,
+    redeemCode: any,
 }
 
 const MockInterviewRegisterForm: React.FC = () => {
@@ -58,6 +59,7 @@ const MockInterviewRegisterForm: React.FC = () => {
         jobDescription: "", 
         note: "",
         eventBookingDateId: "",
+        redeemCode: ""
     };
 
     const validationSchema = () => {
@@ -78,6 +80,8 @@ const MockInterviewRegisterForm: React.FC = () => {
             jobDescription: Yup.mixed().test("jobDescription", dictionaryList[locale]["RequiredField"], function test(value) {
                 return currentJobDescription != null && currentJobDescription.length > 0;
               }), 
+              redeemCode: Yup.string() 
+              .max(20)
         });
     }
  
@@ -106,7 +110,8 @@ const MockInterviewRegisterForm: React.FC = () => {
                     resume: currentResume,
                     coverLetter: currentCoverLetter,
                     jobDescription: currentJobDescription,
-                    note: values.note
+                    note: values.note,
+                    redeemCode: values.redeemCode
                 }
             });
         }
@@ -337,7 +342,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="note" length={500} placeholder="Ghi chú thêm" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="note" maxLength={500} placeholder="Ghi chú thêm" />
                                             <ErrorMessage
                                                 name="note"
                                                 component="div"
@@ -351,7 +356,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 <option value="" label="Chọn ngày">Chọn ngày</option>
                                                 {getEventBookingAvaiableDateQueryStatus.data && <>
                                                     {getEventBookingAvaiableDateQueryStatus.data.resource.map((type) => (
-                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd, mm, yyyy - h:MM:ss TT") + " VietNam"}</option>
+                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"}</option>
                                                     ))}
                                                 </>
                                                 } 
@@ -373,6 +378,9 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 <label className="custom-control-label" onClick={handleIsUnderstandClick}>Mình đã rõ</label>
                                             </div>
                                         </div>
+                                        <div className="form-group col-md-12 text-center">
+                                            <Field type="text" maxLength={20} className="form-control" style={{width: 150}} name="redeemCode" placeholder="Mã giảm giá" />
+                                        </div> 
                                         <div className="form-group col-md-12 text-center">
                                             <button className="btn btn-lg btn-primary " type="submit" style={{ width: 250 }}  >
                                                 <Translation tid="Submit" />

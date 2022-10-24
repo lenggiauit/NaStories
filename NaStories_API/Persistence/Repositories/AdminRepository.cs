@@ -7,6 +7,7 @@ using NaStories.API.Domain.Repositories;
 using NaStories.API.Domain.Services.Communication.Request;
 using NaStories.API.Domain.Services.Communication.Request.Admin;
 using NaStories.API.Extensions;
+using NaStories.API.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -473,6 +474,8 @@ namespace NaStories.API.Persistence.Repositories
                   .Select(x => new PrivateTalk()
                   {
                       Id = x.Id,
+                      Code = x.Code,
+                      RedeemCode = x.RedeemCode,
                       EventRequestChangeReason = x.EventRequestChangeReason,
                       EventBookingDate = x.EventBookingDate,
                       EventCancelReason = x.EventCancelReason,
@@ -528,6 +531,8 @@ namespace NaStories.API.Persistence.Repositories
                   .Select(x => new PrivateTalk()
                   {
                       Id = x.Id,
+                      Code = x.Code,
+                      RedeemCode = x.RedeemCode,
                       EventRequestChangeReason = eventRequestChangeReason,
                       EventBookingDate = x.EventBookingDate,
                       EventCancelReason = eventCancelReason,
@@ -661,6 +666,8 @@ namespace NaStories.API.Persistence.Repositories
                   .Select(x => new MockInterview()
                   {
                       Id = x.Id,
+                      Code = x.Code,
+                      RedeemCode = x.RedeemCode,    
                       EventRequestChangeReason = x.EventRequestChangeReason,
                       EventBookingDate = x.EventBookingDate,
                       EventCancelReason = x.EventCancelReason,
@@ -717,6 +724,8 @@ namespace NaStories.API.Persistence.Repositories
                   .Select(x => new MockInterview()
                   {
                       Id = x.Id,
+                      Code = x.Code,
+                      RedeemCode = x.RedeemCode,
                       EventRequestChangeReason = eventRequestChangeReason,
                       EventBookingDate = x.EventBookingDate,
                       EventCancelReason = eventCancelReason,
@@ -904,6 +913,22 @@ namespace NaStories.API.Persistence.Repositories
             {
                 _logger.LogError("Error at CancelMockInterview method: " + ex.Message);
                 return ResultCode.Error;
+            }
+        }
+
+        public async Task<(List<User>, ResultCode)> GetUserList()
+        {
+            try
+            { 
+                return ( await _context.User
+                  .AsNoTracking()
+                  .ToListAsync(),ResultCode.Success); 
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetUserList method: " + ex.Message);
+                return (null, ResultCode.Error);
             }
         }
     }

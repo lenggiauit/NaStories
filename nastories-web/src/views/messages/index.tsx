@@ -43,7 +43,7 @@ const Message: React.FC = (): ReactElement => {
     useEffect(() => {
         if (ConversationalSearchKeywordStatus.isSuccess && ConversationalSearchKeywordStatus.data.resultCode == ResultCode.Success && ConversationalSearchKeywordStatus.data.resource) {
 
-            setCurrentSearchListConversations(ConversationalSearchKeywordStatus.data.resource);
+            setCurrentSearchListConversations(ConversationalSearchKeywordStatus.data.resource); 
         }
     }, [ConversationalSearchKeywordStatus])
 
@@ -231,13 +231,16 @@ const Message: React.FC = (): ReactElement => {
                                     {/* </Scrollbars> */}
                                 </>}
                                 {isSearchingUser && <>
-                                    <Scrollbars key={"message-search-scrollbars-" + v4().toString()} >
+                                    {/* <Scrollbars key={"message-search-scrollbars-" + v4().toString()}>  */}
                                         {
-                                            currentSearchListConversations.map((item, index) => (
+                                           currentSearchListConversations.map((item, index) => (
+                                            
                                                 <Conversationer key={"conversationer-" + index + v4().toString() + item.id} data={item} hubConnection={signalRHubConnection} selectedConversationEvent={createConversationHandler} currentUser={currentUser} selectedConversation={selectedConversation} />
+                                                
                                             ))
                                         }
-                                    </Scrollbars>
+                                    {/* </Scrollbars>   */}
+
                                 </>}
                             </div>
                         </div>

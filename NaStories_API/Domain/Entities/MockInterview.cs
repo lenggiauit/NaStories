@@ -8,6 +8,8 @@ namespace NaStories.API.Domain.Entities
 {
     public class MockInterview : BaseEntity
     {
+        [MaxLength(10)]
+        public string Code { get; set; }
         [MaxLength(100)]
         public string FullName { get; set; }
         [MaxLength(150)]
@@ -33,6 +35,10 @@ namespace NaStories.API.Domain.Entities
         public string EventStatus { get; set; }
         public bool IsDeleted { get; set; }
         public int RequestChangeCount { get; set; }
+
+        [MaxLength(20)]
+        public string RedeemCode { get; set; }
+
         [NotMapped]
         public bool IsEnableRequestChange
         {

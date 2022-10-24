@@ -30,6 +30,8 @@ namespace NaStories.API.Persistence.Repositories
                     var mockInterview = new MockInterview()
                     {
                         Id = newId,
+                        Code = "M-" + newId.ToString().Split('-')[0].ToUpper(),
+                        RedeemCode = request.Payload.RedeemCode.ToUpper(),
                         FullName = request.Payload.FullName,
                         Email = request.Payload.Email,
                         AgeRange = request.Payload.AgeRange,
@@ -104,6 +106,8 @@ namespace NaStories.API.Persistence.Repositories
                     var privateTalk = new PrivateTalk()
                     {
                         Id = newId,
+                        Code = "P-" + newId.ToString().Split('-')[0].ToUpper(),
+                        RedeemCode = request.Payload.RedeemCode.ToUpper(),
                         FullName = request.Payload.FullName,
                         Email = request.Payload.Email,
                         AgeRange = request.Payload.AgeRange,
@@ -197,6 +201,8 @@ namespace NaStories.API.Persistence.Repositories
                     .Select(p => new MockInterview()
                     {
                         Id = p.Id,
+                        Code = p.Code,
+                        RedeemCode = p.RedeemCode,
                         CreatedBy = p.CreatedBy,
                         CreatedDate = p.CreatedDate,
                         Email = p.Email,
@@ -232,6 +238,8 @@ namespace NaStories.API.Persistence.Repositories
                     .Select(p => new PrivateTalk()
                     {
                         Id = p.Id,
+                        Code = p.Code,
+                        RedeemCode = p.RedeemCode,
                         CreatedBy = p.CreatedBy,
                         CreatedDate = p.CreatedDate,
                         Email = p.Email,

@@ -86,7 +86,10 @@ const ConversationMessageItem: React.FC<Props> = ({ hubConnection, message, user
                         }
                         <div className={"message-content-controls " + (isDeleted ? " deleted " : "")}>
                             {!isLoading &&
-                                <a className="btn btn-link m-0 p-2" href="#" onClick={onDeleteMessage}><Translation tid="btnDelete" /></a>
+                                <a className="m-0" href="#" onClick={onDeleteMessage}>
+                                    <i className="bi bi-trash" style={{ fontSize: 16 }} ></i>
+                                    
+                                    </a>
                             }
                             {isLoading &&
                                 <div className="m-2 align-self-center">
@@ -95,6 +98,7 @@ const ConversationMessageItem: React.FC<Props> = ({ hubConnection, message, user
                             }
                         </div>
                     </div>
+                    
                 </>}
             </div>
         </>);

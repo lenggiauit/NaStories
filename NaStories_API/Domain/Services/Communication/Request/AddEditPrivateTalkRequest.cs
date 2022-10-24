@@ -29,6 +29,9 @@ namespace NaStories.API.Domain.Services.Communication.Request
         [Required]
         [MaxLength(500)]
         public string YourExpectationDescription { get; set; }
-        public Guid? EventBookingDateId { get; set; } 
+        public Guid? EventBookingDateId { get; set; }
+
+        [MaxLength(20)]
+        public string RedeemCode { get; set; }
     }
 }
