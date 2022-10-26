@@ -18,10 +18,7 @@ const Event: React.FC = ({ }): ReactElement => {
 
                             <p className="plan-name">Private Talk</p>
                             <br />
-                            <h2 className="price">
-                                <span className="price-unit">VND</span>
-                                <span data-bind-radio="pricing" data-monthly="6.67" data-yearly="75">300k</span>
-                            </h2>
+                           
                             <div className="text-muted p-1">
                                 <ul className="list-infor">
                                     <li>
@@ -34,13 +31,21 @@ const Event: React.FC = ({ }): ReactElement => {
                                         <small>Bạn theo dõi Na cũng được một thời gian và bạn tin rằng những kỹ năng và kinh nghiệm của Na sẽ giúp được cho bạn.</small>
                                     </li>
                                 </ul>
+                                <p className="p-2">Vậy thì tụi mình đặt một cái hẹn nói chuyện với nhau để Na có cơ hội lắng nghe bạn nhiều hơn nhé.</p>
                             </div>
                             <br />
                             <br />
+                            <br />
+                            <br /> 
+                            <br /> 
                             <p className="text-center py-3 align-self-end mt-auto">
                                 <a className="btn btn-primary mt-auto" href="/private-talk">Đăng ký</a>  
                             </p>
-                           
+                            
+                            <h2 className="price">
+                                <span className="price-unit">VND</span>
+                                <span data-bind-radio="pricing" data-monthly="6.67" data-yearly="75">300k</span>
+                            </h2>
                                 
                         </div>
                     </div>
@@ -49,12 +54,7 @@ const Event: React.FC = ({ }): ReactElement => {
                     <div className="col-md-6">
                         <div className="pricing-1">
                             <p className="plan-name">Mock Interview, Real Feedback</p>
-                            <br />
-                            <h2 className="price text-success">
-                                <span className="price-unit">VND</span>
-                                <span data-bind-radio="pricing">500k</span>
-                            </h2>
-
+                            <br /> 
                             <div className="text-muted p-1">
                                 <ul className="list-infor">
                                     <li>
@@ -79,12 +79,17 @@ const Event: React.FC = ({ }): ReactElement => {
                                     </li>
 
                                 </ul>
+                                <p className="p-2">Với kinh nghiệm 10+ năm trong ngành và đã phỏng vấn khá nhiều BA ở tất cả các level, Na sẽ mang đến cho bạn một trải nghiệm như một buổi phỏng vấn thật, giúp bạn đánh giá resume của mình, cách bạn làm assignment và gợi ý những kỹ năng, kiến thức nào bạn cần trau dồi thêm để trở thành ứng viên sáng giá.</p>
                             </div>
 
                             <br />
                             <p className="text-center py-3 align-self-end mt-auto">
                                 <a className="btn btn-success" href="/mock-interview">Đăng ký</a>
                             </p>
+                            <h2 className="price text-success">
+                                <span className="price-unit">VND</span>
+                                <span data-bind-radio="pricing">500k</span>
+                            </h2>
                         </div>
                     </div>
 

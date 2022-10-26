@@ -105,6 +105,27 @@ namespace NaStories_API.Controllers
             }
         }
 
+        [HttpGet("GetNewsPost")]
+        public async Task<BaseResponse<List<BlogPostResource>>> GetNewsPost()
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _blogServices.GetNewsPost();
+                if (data != null)
+                {
+                    return new BaseResponse<List<BlogPostResource>>(_mapper.Map<List<BlogPost>, List<BlogPostResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<BlogPostResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<BlogPostResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
         [HttpPost("GetBlogPost")]
         public async Task<BaseResponse<List<BlogPostResource>>> GetBlogPost(BaseRequest<BlogPostSearchRequest> request)
         {

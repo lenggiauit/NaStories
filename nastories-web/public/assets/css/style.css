@@ -654,13 +654,21 @@ ul.list-infor li:before {
   margin-right: 5px;
 }
 .pricing-1{
-  min-height: 545px;
+  min-height: 710px;
   cursor: pointer;
 }
 .bottom {
   position: absolute;
   bottom: 0; 
 }
+.custom-file-label {
+  color: #999 !important;
+}
+.home-post{
+  height: 350px;
+  overflow: hidden;
+}
+    
  
  
  

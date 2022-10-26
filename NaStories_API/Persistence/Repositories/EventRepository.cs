@@ -24,6 +24,18 @@ namespace NaStories.API.Persistence.Repositories
         {
             try
             {
+                if (request.Payload.EventBookingDateId != null && !request.Payload.EventBookingDateId.Equals(Guid.Empty))
+                {
+                    var bookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(request.Payload.EventBookingDateId)).FirstOrDefaultAsync();
+
+                    if (bookingDate != null && bookingDate.UserId != null)
+                    {
+                        return (Guid.Empty, ResultCode.BookingDateIsInvalid);
+                    }
+                     
+                }
+
+
                 if (request.Payload.Id == null || request.Payload.Id.Equals(Guid.Empty))
                 {
                     Guid newId = Guid.NewGuid();
@@ -100,6 +112,17 @@ namespace NaStories.API.Persistence.Repositories
         {
             try
             {
+                if (request.Payload.EventBookingDateId != null && !request.Payload.EventBookingDateId.Equals(Guid.Empty))
+                {
+                    var bookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(request.Payload.EventBookingDateId)).FirstOrDefaultAsync();
+
+                    if (bookingDate != null && bookingDate.UserId != null)
+                    {
+                        return (Guid.Empty, ResultCode.BookingDateIsInvalid);
+                    }
+
+                }
+
                 if (request.Payload.Id == null || request.Payload.Id.Equals(Guid.Empty))
                 {
                     Guid newId = Guid.NewGuid();

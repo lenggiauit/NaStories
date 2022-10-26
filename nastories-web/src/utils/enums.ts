@@ -11,7 +11,10 @@ export enum ResultCode {
     NotExistUser = 5,
     NotExistEmail = 51,
     Expired = 6,
+    DoNotPermission = 7,
+    BookingDateIsInvalid = 8,
 }
+
 
 export enum DisplayType {
     Grid = 1,

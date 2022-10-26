@@ -19,7 +19,8 @@ namespace NaStories.API.Domain.Helpers
         NotExistUser = 5,
         NotExistEmail = 51,
         Expired = 6,
-        DoNotPermission = 7
+        DoNotPermission = 7,
+        BookingDateIsInvalid = 8,
 
     }
     public enum ControlType

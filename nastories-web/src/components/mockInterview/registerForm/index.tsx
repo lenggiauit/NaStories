@@ -123,7 +123,15 @@ const MockInterviewRegisterForm: React.FC = () => {
             showDialogModal({
                 message: "Đăng ký Mock Interview thành công!",
                 onClose: () => {
-                    window.location.href = appSetting.SiteUrl + "user/mock-interview/";// + addEditMockInterviewStatus.data?.resource;
+                    window.location.href = appSetting.SiteUrl + "user/mock-interview/"; 
+                }
+            });
+        }
+        if (addEditMockInterviewStatus.data && addEditMockInterviewStatus.data.resultCode == ResultCode.BookingDateIsInvalid) {
+            showDialogModal({
+                message: "Ngày bạn chọn đã có người đăng ký rồi, vui lòng chọn lại ngày khác!",
+                onClose: () => {
+                    getEventBookingAvaiableDateQueryStatus.refetch();
                 }
             });
         }
@@ -210,6 +218,9 @@ const MockInterviewRegisterForm: React.FC = () => {
                         </li>
                         <li>
                             Nếu có bất kỳ thay đổi gì trước ngày diễn ra buổi phỏng vấn, bạn nhớ email báo cho Na biết để được hỗ trợ tốt nhất nhé.
+                        </li>
+                        <li>
+                            Phí: <b>500.000 VND</b>
                         </li>
                     </ul>
                 </header>
@@ -378,7 +389,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 <label className="custom-control-label" onClick={handleIsUnderstandClick}>Mình đã rõ</label>
                                             </div>
                                         </div>
-                                        <div className="form-group col-md-12 text-center">
+                                        <div className="form-group col-md-12 text-center hide">
                                             <Field type="text" maxLength={20} className="form-control" style={{width: 150}} name="redeemCode" placeholder="Mã giảm giá" />
                                         </div> 
                                         <div className="form-group col-md-12 text-center">

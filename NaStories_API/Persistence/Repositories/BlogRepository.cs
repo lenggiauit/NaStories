@@ -203,8 +203,7 @@ namespace NaStories.API.Persistence.Repositories
                         Tags = p.Tags,
                         TotalRows = totalRow
                     })
-                    .OrderBy(p => p.CreatedDate)
-                    .OrderBy(p => p.UpdatedDate)  
+                    .OrderByDescending(p => p.CreatedDate) 
                     .GetPagingQueryable(request.MetaData)
                     .ToListAsync(), ResultCode.Success);
 
@@ -401,6 +400,38 @@ namespace NaStories.API.Persistence.Repositories
             catch (Exception ex)
             {
                 _logger.LogError("Error at GetBlogPostByCategory method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<(List<BlogPost>, ResultCode)> GetNewsPost()
+        {
+            try
+            {
+                return (await _context.BlogPost
+                    .Include(p => p.Category)
+                    .AsNoTracking()
+                    .AsQueryable()
+                    .Where(p => p.IsPublic)
+                    .OrderByDescending(p => p.CreatedDate)
+                    .Select(p => new BlogPost()
+                    {
+                        Title = p.Title,
+                        Thumbnail = p.Thumbnail,
+                        ShortDescription = p.ShortDescription,
+                        Url = p.Url,
+                        View = p.View,
+                        Comment = p.Comment,
+                        Category = p.Category,
+                        CreatedDate = p.CreatedDate
+                    })  
+                    .Take(9)
+                    .ToListAsync(), ResultCode.Success);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetNewsPost method: " + ex.Message);
                 return (null, ResultCode.Error);
             }
         }

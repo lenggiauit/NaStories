@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ApiRequest, ApiResponse, AppSetting } from "../types/type";
+import { ResultCode } from '../utils/enums';
 import { getLoggedUser } from '../utils/functions'; 
  
 import { YoutubeVideoResource } from './resources/youtubeVideoResource';
@@ -32,10 +33,20 @@ export const HomeService = createApi({
                 return response;
             },
         }),
-        
+         
+        SendContact:  builder.mutation<ApiResponse<ResultCode>, ApiRequest<{yourName: any, yourEmail: any, yourMessage: any}>>({
+            query: (payload) => ({
+                url: 'contact/SendContact',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }), 
  
     })
 });
 
 
-export const {  useGetYoutubevideosQuery   } = HomeService;
+export const {  useGetYoutubevideosQuery, useSendContactMutation   } = HomeService;

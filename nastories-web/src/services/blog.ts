@@ -54,6 +54,15 @@ export const BlogService = createApi({
                 return response;
             },
         }),
+        GetNewsPost: builder.query<ApiResponse<BlogPostResource[]>, null>({
+            query: () => ({
+                url: 'blog/GetNewsPost',
+                method: 'GET'
+            }),
+            transformResponse(response: ApiResponse<BlogPostResource[]>) {
+                return response;
+            },
+        }),
         GetBlogPost: builder.mutation<ApiResponse<BlogPostResource[]>, ApiRequest<{ keywords: any }>>({
             query: (payload) => ({
                 url: 'blog/getBlogPost',
@@ -148,4 +157,5 @@ export const { useGetCategoryQuery,
     useGetCommentMutation,
     useRemoveCommentMutation,
     useGetBlogPostByCategoryMutation,
-    useGetBlogPostByTagMutation  } = BlogService;
+    useGetBlogPostByTagMutation,
+    useGetNewsPostQuery  } = BlogService;

@@ -52,7 +52,7 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
     const [BlogPost, setBlogPost] = useState<BlogPost | undefined>(dataModel);
     const [createEditBlogPost, createEditBlogPostStatus] = useCreateEditBlogPostMutation();
     const [isArchived, setIsArchived] = useState<boolean>(dataModel != null ? dataModel.isArchived : false);
-    const [isPublic, setIsPublic] = useState<boolean>(dataModel != null ? dataModel.isPublic : false);
+    const [isPublic, setIsPublic] = useState<boolean>(dataModel != null ? dataModel.isPublic : true);
     const [isDraft, setIsDraft] = useState<boolean>(dataModel != null ? dataModel.isDraft : false);
 
     const getQueryCategoryStatus = useGetQueryCategoryQuery({ payload: { isArchived: false } });
@@ -159,6 +159,7 @@ const AddEditBlogPostModal: React.FC<Props> = ({ dataModel, onClose }) => {
     }, [createEditBlogPostStatus])
  
     const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      
         const value = event.target.value;
         switch(value.toLocaleLowerCase()){
             case "published":

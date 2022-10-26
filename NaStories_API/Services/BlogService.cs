@@ -58,6 +58,11 @@ namespace NaStories.API.Services
             return await _blogRepository.GetComments(request);
         }
 
+        public async Task<(List<BlogPost>, ResultCode)> GetNewsPost()
+        {
+            return await _blogRepository.GetNewsPost();
+        }
+
         public async Task<(List<BlogPost>, ResultCode)> GetPosts(BaseRequest<BlogPostSearchRequest> request)
         {
             return await _blogRepository.GetPosts(request);

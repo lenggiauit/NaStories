@@ -78,7 +78,7 @@ namespace NaStories.API.Services
 
         public async Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate()
         {
-            return await _adminRepository.GetEventAvailableDate();
+            return await _adminRepository.GetEventAvailableDate(_appSettings.BookingAdjustmentDay);
         }
 
         public async Task<(MockInterview, ResultCode)> GetMockInterviewDetail(Guid id)

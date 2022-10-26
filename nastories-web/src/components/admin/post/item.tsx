@@ -26,10 +26,14 @@ const BlogPostItem: React.FC<Props> = ({ dataItem, onSelected, onChangeStatus })
                 <div className="col-7">
                     <div className="row">
                         <div className="col-3 admin-post-img">
+                            <a href={`/blog/${dataItem.url}`} target="_blank">
                             <img src={dataItem.thumbnail} alt={dataItem.title} />
+                            </a>
                         </div>
                         <div className="col pl-0 text-left">
-                            <b className="align-middle">{dataItem.title}</b>
+                            <a href={`/blog/${dataItem.url}`} target="_blank">
+                                <b className="align-middle">{dataItem.title}</b>
+                            </a>
                             <p>{dataItem.shortDescription}</p>
                         </div>
                     </div>

@@ -131,6 +131,14 @@ const PrivateTalkRegisterForm: React.FC = () => {
                 }
             });
         }
+        if (addEditPrivateTalkStatus.data && addEditPrivateTalkStatus.data.resultCode == ResultCode.BookingDateIsInvalid) {
+            showDialogModal({
+                message: "Ngày bạn chọn đã có người đăng ký rồi, vui lòng chọn lại ngày khác!",
+                onClose: () => {
+                    getEventBookingAvaiableDateQueryStatus.refetch();
+                }
+            });
+        }
 
     }, [addEditPrivateTalkStatus]);
 
@@ -157,6 +165,9 @@ const PrivateTalkRegisterForm: React.FC = () => {
                         </li>
                         <li>
                             Nếu có bất kỳ thay đổi gì trước ngày diễn ra Private Talk, bạn nhớ email báo cho Na biết để được hỗ trợ tốt nhất nhé.
+                        </li>
+                        <li>
+                            Phí: <b>300.000 VND</b>
                         </li>
                     </ul>
                 </header>
@@ -331,7 +342,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        <div className="form-group col-md-12 text-center">
+                                        <div className="form-group col-md-12 text-center hide">
                                             <Field type="text" maxLength={20} className="form-control" style={{width: 150}} name="redeemCode" placeholder="Mã giảm giá" />
                                         </div> 
 

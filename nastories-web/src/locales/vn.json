@@ -73,6 +73,7 @@
     "btnSave" : "Lưu",
     "btnClose" : "Đóng",
     "btnConfirm": "Xác nhận",
+    "btnSubmit": "Gửi",
     "requestChangePrivateTalk_msg": "Bạn cần chọn ngày cần thay đổi và nhập lý do muốn thay đổi:",
     "requestChangePrivateTalkSuccess_msg": "Gửi yêu cầu thành công",
     "nav_admin_events": "Quản lý sự kiện",

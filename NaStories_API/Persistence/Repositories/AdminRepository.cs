@@ -180,6 +180,7 @@ namespace NaStories.API.Persistence.Repositories
                         ShortDescription = request.Payload.ShortDescription,
                         Content = request.Payload.Content,
                         CreatedBy = userId,
+                        UserId = userId,
                         CreatedDate = DateTime.Now,
                         IsArchived = request.Payload.IsArchived,
                         IsDraft = request.Payload.IsDraft,
@@ -217,6 +218,7 @@ namespace NaStories.API.Persistence.Repositories
                         post.ShortDescription = request.Payload.ShortDescription;
                         post.Content = request.Payload.Content;
                         post.CreatedBy = userId;
+                        post.UserId = userId;
                         post.CreatedDate = DateTime.Now;
                         post.IsArchived = request.Payload.IsArchived;
                         post.IsDraft = request.Payload.IsDraft;
@@ -315,7 +317,7 @@ namespace NaStories.API.Persistence.Repositories
                       Comment = p.Comment,
                       Tags = p.Tags
                   })
-
+                  .OrderByDescending(p => p.CreatedDate)
                   .GetPagingQueryable(request.MetaData)
                   .ToListAsync(), ResultCode.Success);
 
@@ -373,13 +375,14 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
-        public async Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate()
+        public async Task<(List<EventBookingDate>, ResultCode)> GetEventAvailableDate(int adjustmentDays)
         {
             try
             {
                 return (await _context.EventBookingDate
+                    .Where(e => e.UserId == null && e.Start > DateTime.UtcNow.AddDays(adjustmentDays))
+                    .OrderBy(e => e.Start)
                     .AsNoTracking()
-                    .OrderByDescending(x => x.UpdatedDate)
                     .ToListAsync(), ResultCode.Success);
             }
             catch (Exception ex)
