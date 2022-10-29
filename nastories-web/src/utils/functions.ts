@@ -1,7 +1,7 @@
 import { AppSetting } from "../types/type";
 import { decrypt, encrypt } from "./crypter";
 import { Cookies } from 'react-cookie';
-import { GlobalKeys } from "./constants";
+import { GlobalKeys, MockInterviewEnumStatus, PrivateTalkEnumStatus } from "./constants";
 import { User } from "../services/models/user";
 import { Redirect } from "react-router";
 import { useLocation } from "react-router-dom";
@@ -107,8 +107,10 @@ export function checkIfFilesAreTooBig(files?: [File]): boolean {
     }
     return valid
   }
-
-  export function checkValidFileExtention(){
-
-  }
-
+ 
+  export function getPrivateTalkEnumStatusName(  value: string) {
+    return Object.entries(PrivateTalkEnumStatus).find(([key, val]) => key === value)?.[1];
+}
+  export function getMockInterviewEnumStatusName(  value: string) {
+    return Object.entries(MockInterviewEnumStatus).find(([key, val]) => key === value)?.[1];
+    }

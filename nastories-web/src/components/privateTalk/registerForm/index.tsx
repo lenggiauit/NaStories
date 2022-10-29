@@ -322,7 +322,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                                     ))}
                                                 </>
                                                 } 
-                                                <option value={NIL_UUID} label="Để sau">Để sau</option> 
+                                                <option value={NIL_UUID} label="Lịch gần nhất không còn trống, Na sẽ email ngày cụ thể sau khi bạn đăng ký">Lịch gần nhất không còn trống, Na sẽ email ngày cụ thể sau khi bạn đăng ký</option> 
 
                                             </Field>
                                             <ErrorMessage

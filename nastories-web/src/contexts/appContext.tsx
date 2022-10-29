@@ -24,7 +24,7 @@ interface Props {
 
 export const AppProvider: React.FC<Props> = ({ children }) => {
     const defaultLocale = window.localStorage.getItem(GlobalKeys.LanguageSelectedKey);
-    const [locale, setLocale] = useState<string>(defaultLocale || 'en');
+    const [locale, setLocale] = useState<string>(defaultLocale || 'vn');
 
     const provider = {
         locale,

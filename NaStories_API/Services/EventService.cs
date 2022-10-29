@@ -5,6 +5,7 @@ using NaStories.API.Domain.Helpers;
 using NaStories.API.Domain.Repositories;
 using NaStories.API.Domain.Services;
 using NaStories.API.Domain.Services.Communication.Request;
+using NaStories.API.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -65,13 +66,30 @@ namespace NaStories.API.Services
         }
 
         public async Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(Guid userId)
-        {
-            return await _eventRepository.GetMockInterviewList(userId);
+        { 
+            var (data, result) = await _eventRepository.GetMockInterviewList(userId);
+            if (result == ResultCode.Success)
+            {
+                foreach (var item in data)
+                {
+                    item.EventStatus = ((MockInterviewStatusEnum)Enum.Parse(typeof(MockInterviewStatusEnum), item.EventStatus)).ToDescriptionString();
+                }
+            }
+            return (data, result);
         }
 
         public async Task<(List<PrivateTalk>, ResultCode)> GetPrivateTalkList(Guid userId)
         {
-            return await _eventRepository.GetPrivateTalkList(userId);
+            var (data, result) = await _eventRepository.GetPrivateTalkList(userId);
+            if (result == ResultCode.Success)
+            {
+                foreach (var item in data)
+                {
+                    item.EventStatus = ((PrivateTalkStatusEnum)Enum.Parse(typeof(PrivateTalkStatusEnum), item.EventStatus)).ToDescriptionString(); 
+                }
+            } 
+
+            return (data, result);
         }
 
         public async Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId)

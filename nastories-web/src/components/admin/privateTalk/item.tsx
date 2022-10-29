@@ -7,6 +7,8 @@ import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
 import { AppSetting } from "../../../types/type";
+import { PrivateTalkEnumStatus } from "../../../utils/constants";
+import {  getPrivateTalkEnumStatusName } from "../../../utils/functions";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
 import { Translation } from "../../translation";
@@ -44,7 +46,7 @@ const AdminPrivateTalkItem: React.FC<Props> = ({ dataItem, onSelected }) => {
                     {dataItem.eventBookingDate ? dateFormat( dataItem.eventBookingDate.start, "dd/mm/yyyy - h:MM:ss TT") : "---"}
                 </div>
                 <div className="col-md-2 text-center">
-                    {dataItem.eventStatus}
+                    {getPrivateTalkEnumStatusName("" + dataItem.eventStatus + "")} 
                 </div>
                 <div className="col-md-2 text-center" > 
                      <a className="btn btn-xs btn-round btn-primary" href={`${appSetting.SiteUrl}admin/private-talk/${dataItem.id}`}  >View full</a>

@@ -51,7 +51,7 @@ namespace NaStories.API.Persistence.Repositories
                         Resume = request.Payload.Resume,
                         JobDescription = request.Payload.Jobdescription,
                         EventBookingDateId = request.Payload.EventBookingDateId.Equals(Guid.Empty) ? null : request.Payload.EventBookingDateId,
-                        EventStatus = MockInterviewStatusEnum.Submitted.ToDescriptionString(),
+                        EventStatus = MockInterviewStatusEnum.Submitted.ToString(),
                         CoverLetter = request.Payload.CoverLetter,
                         Note = request.Payload.Note, 
                         UserId = userId,
@@ -89,7 +89,7 @@ namespace NaStories.API.Persistence.Repositories
                         mockInterview.Resume = request.Payload.Resume;
                         mockInterview.CoverLetter = request.Payload.CoverLetter;
                         mockInterview.EventBookingDateId = request.Payload.EventBookingDateId;
-                        mockInterview.EventStatus = MockInterviewStatusEnum.Submitted.ToDescriptionString();
+                        mockInterview.EventStatus = MockInterviewStatusEnum.Submitted.ToString();
                         mockInterview.JobDescription = request.Payload.Jobdescription;
                         mockInterview.Note = request.Payload.Note; 
                         mockInterview.UpdatedBy = userId;
@@ -137,7 +137,7 @@ namespace NaStories.API.Persistence.Repositories
                         Problem = request.Payload.Problem,
                         ProblemOther = request.Payload.ProblemOther,
                         EventBookingDateId = request.Payload.EventBookingDateId.Equals(Guid.Empty) ? null : request.Payload.EventBookingDateId,
-                        EventStatus = PrivateTalkStatusEnum.Submitted.ToDescriptionString(),
+                        EventStatus = PrivateTalkStatusEnum.Submitted.ToString(),
                         ProblemDescription = request.Payload.ProblemDescription, 
                         YourExpectationDescription = request.Payload.YourExpectationDescription,
                         YourSolutionDescription = request.Payload.YourSolutionDescription,
@@ -175,7 +175,7 @@ namespace NaStories.API.Persistence.Repositories
                         privateTalk.Problem = request.Payload.Problem;
                         privateTalk.ProblemOther = request.Payload.ProblemOther;
                         privateTalk.EventBookingDateId = request.Payload.EventBookingDateId;
-                        privateTalk.EventStatus = PrivateTalkStatusEnum.Submitted.ToDescriptionString();
+                        privateTalk.EventStatus = PrivateTalkStatusEnum.Submitted.ToString();
                         privateTalk.ProblemDescription = request.Payload.ProblemDescription;
                         privateTalk.YourExpectationDescription = request.Payload.YourExpectationDescription;
                         privateTalk.YourSolutionDescription = request.Payload.YourSolutionDescription;
@@ -296,7 +296,7 @@ namespace NaStories.API.Persistence.Repositories
                 if (mockInterview != null)
                 {
                     mockInterview.IsDeleted = true;
-                    mockInterview.EventStatus = MockInterviewStatusEnum.Canceled.ToDescriptionString();
+                    mockInterview.EventStatus = MockInterviewStatusEnum.Canceled.ToString();
                     _context.MockInterview.Update(mockInterview);
 
                     var cancelReason = new EventCancelReason()
@@ -348,7 +348,7 @@ namespace NaStories.API.Persistence.Repositories
                 if (privateTalk != null)
                 {
                     privateTalk.IsDeleted = true;
-                    privateTalk.EventStatus = PrivateTalkStatusEnum.Canceled.ToDescriptionString();
+                    privateTalk.EventStatus = PrivateTalkStatusEnum.Canceled.ToString();
                     _context.PrivateTalk.Update(privateTalk);
 
                     var cancelReason = new EventCancelReason()
@@ -399,7 +399,7 @@ namespace NaStories.API.Persistence.Repositories
                 var mockInterview = await _context.MockInterview.Where(n => n.UserId.Equals(userId) && n.Id.Equals(request.Payload.EventId)).FirstOrDefaultAsync();
                 if (mockInterview != null)
                 {
-                    mockInterview.EventStatus = MockInterviewStatusEnum.Pending.ToDescriptionString();
+                    mockInterview.EventStatus = MockInterviewStatusEnum.Pending.ToString();
                     _context.MockInterview.Update(mockInterview);
 
                     var changeReason = new EventRequestChangeReason()
@@ -433,7 +433,7 @@ namespace NaStories.API.Persistence.Repositories
                 var privateTalk = await _context.PrivateTalk.Where(n => n.UserId.Equals(userId) && n.Id.Equals( request.Payload.EventId)).FirstOrDefaultAsync();
                 if (privateTalk != null)
                 {
-                    privateTalk.EventStatus = PrivateTalkStatusEnum.Pending.ToDescriptionString();
+                    privateTalk.EventStatus = PrivateTalkStatusEnum.Pending.ToString();
                     _context.PrivateTalk.Update(privateTalk);
 
                     var changeReason = new EventRequestChangeReason()

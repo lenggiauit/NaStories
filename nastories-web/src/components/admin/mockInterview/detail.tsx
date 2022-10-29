@@ -164,11 +164,13 @@ const AdminMockInterviewDetail: React.FC = () => {
                                 <td>Status:</td>
                                 <td colSpan={2}>
                                     <select name="eventStatus" className="form-control form-control-sm" onChange={(e) => { setEventStatus(e.target.value) }}>
-                                        {Object.keys(MockInterviewEnumStatus).map((status) =>
+                                        
+                                        {Object.entries(MockInterviewEnumStatus).map((status) => 
                                         (
-                                            <option value={status} selected={getdetailStatus.data.resource.eventStatus == status} >{status}</option>
+                                            <option selected={getdetailStatus.data.resource.eventStatus == status[0]} value={status[0]}>{status[1]}</option>
                                         )
                                         )}
+
                                     </select>
                                 </td>
                             </tr>

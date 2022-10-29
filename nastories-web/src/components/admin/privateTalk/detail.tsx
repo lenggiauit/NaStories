@@ -161,9 +161,10 @@ const AdminPrivateTalkDetail: React.FC = () => {
                                 <td>Status:</td>
                                 <td colSpan={2}>
                                     <select name="eventStatus" className="form-control form-control-sm" onChange={(e) => { setEventStatus(e.target.value) }}>
-                                        {Object.keys(PrivateTalkEnumStatus).map((status) =>
+                                          
+                                        {Object.entries(PrivateTalkEnumStatus).map((status) => 
                                         (
-                                            <option value={status} selected={getdetailStatus.data.resource.eventStatus == status} >{status}</option>
+                                            <option selected={getdetailStatus.data.resource.eventStatus == status[0]} value={status[0]}>{status[1]}</option>
                                         )
                                         )}
                                     </select>

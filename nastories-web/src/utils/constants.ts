@@ -26,26 +26,22 @@ export enum PermissionKeys {
 }
 
 export enum PrivateTalkEnumStatus { 
-    Submitted = "Submitted",
-    Reviewing = "Reviewing",
-    RequestPay = "RequestPay",
-    Paid = "Paid",
-    Confirmed = "Confirmed",
-    Completed = "Completed",
-    Rejected = "Rejected", 
-    Canceled = "Canceled",
-    Pending = "Pending",
+    Submitted = "Chờ Email xác nhận", 
+    RequestPay = "Chờ thanh toán",
+    Paid = "Đã thanh toán",
+    Confirmed = "Đã xác nhận lịch hẹn",
+    Completed = "Hoàn thành", 
+    Canceled = "Đã hủy",
+    Pending = "Chờ xác nhận", 
 }
 
 export enum MockInterviewEnumStatus { 
-    Submitted = "Submitted",
-    Reviewing = "Reviewing",
-    RequestPay = "RequestPay",
-    Paid = "Paid",
-    Confirmed = "Confirmed",
-    Completed = "Completed",
-    Rejected = "Rejected", 
-    Canceled = "Canceled",
-    Pending = "Pending",
+    Submitted = "Chờ Email xác nhận", 
+    RequestPay = "Chờ thanh toán",
+    Paid = "Đã thanh toán",
+    Confirmed = "Đã xác nhận lịch hẹn",
+    Completed = "Hoàn thành", 
+    Canceled = "Đã hủy",
+    Pending = "Chờ xác nhận", 
 }
  

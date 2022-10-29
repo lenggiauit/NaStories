@@ -23,26 +23,7 @@ namespace NaStories.API.Domain.Helpers
         BookingDateIsInvalid = 8,
 
     }
-    public enum ControlType
-    {
-        H1 =1,
-        H2 = 2,
-        H3 = 3,
-        H4 = 4,
-        H5 = 5,
-        Div = 6,
-        Section= 7,
-        Container= 8,
-        Header = 9,
-        Input = 10,
-        Label = 11,
-        Main = 12,
-        Row =13,
-        Col = 14,
-        EditLabel = 15
-
-    }
-
+     
     public enum CacheKeys
     {
         [Description("YoutubeVideos")]
@@ -51,45 +32,37 @@ namespace NaStories.API.Domain.Helpers
 
     public enum PrivateTalkStatusEnum
     {
-        [Description("Submitted")]
-        Submitted,
-        [Description("Reviewing")]
-        Reviewing,
-        [Description("RequestPay")]
+        [Description("Chờ Email xác nhận")]
+        Submitted, 
+        [Description("Chờ thanh toán")]
         RequestPay,
-        [Description("Paid")]
+        [Description("Đã thanh toán")]
         Paid,
-        [Description("Confirmed")]
+        [Description("Đã xác nhận lịch hẹn")]
         Confirmed,
-        [Description("Completed")]
-        Completed,
-        [Description("Rejected")]
-        Rejected,
-        [Description("Canceled")]
+        [Description("Hoàn thành")]
+        Completed, 
+        [Description("Đã hủy")]
         Canceled,
-        [Description("Pending")]
+        [Description("Chờ xác nhận")]
         Pending, 
     }
 
     public enum MockInterviewStatusEnum
     {
-        [Description("Submitted")]
+        [Description("Chờ Email xác nhận")]
         Submitted,
-        [Description("Reviewing")]
-        Reviewing,
-        [Description("RequestPay")]
+        [Description("Chờ thanh toán")]
         RequestPay,
-        [Description("Paid")]
+        [Description("Đã thanh toán")]
         Paid,
-        [Description("Confirmed")]
+        [Description("Đã xác nhận lịch hẹn")]
         Confirmed,
-        [Description("Completed")]
-        Completed,
-        [Description("Rejected")]
-        Rejected,
-        [Description("Canceled")]
+        [Description("Hoàn thành")]
+        Completed, 
+        [Description("Đã hủy")]
         Canceled,
-        [Description("Pending")]
+        [Description("Chờ xác nhận")]
         Pending,
     }
 

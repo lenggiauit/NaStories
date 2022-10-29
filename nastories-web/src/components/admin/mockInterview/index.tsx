@@ -99,10 +99,10 @@ const AdminMockInterviewList: React.FC = (): ReactElement => {
                                     </div>
                                     <div className="col-2">
                                         <select name="eventStatus" className="form-control form-control-sm" onChange={(e)=>{ seteventStatusFilter(e.target.value);setPagingData({...pagingData, index: 1} as Paging ); }}>
-                                            <option value="">All status</option>
-                                            {Object.keys(MockInterviewEnumStatus).map((status) => 
+                                            <option value="">All status</option> 
+                                            {Object.entries(MockInterviewEnumStatus).map((status) => 
                                             (
-                                                <option value={status}>{status}</option>
+                                                <option value={status[0]}>{status[1]}</option>
                                             )
                                             )}
                                         </select>

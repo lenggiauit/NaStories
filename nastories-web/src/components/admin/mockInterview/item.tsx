@@ -8,6 +8,7 @@ import { MockInterview } from "../../../services/models/admin/mockInterview";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { MockInterviewResource } from "../../../services/resources/mockInterviewResource";
 import { AppSetting } from "../../../types/type";
+import { getMockInterviewEnumStatusName } from "../../../utils/functions";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
 import { Translation } from "../../translation"; 
@@ -42,7 +43,7 @@ const AdminMockInterviewItem: React.FC<Props> = ({ dataItem, onSelected }) => {
                     {dataItem.eventBookingDate ? dateFormat( dataItem.eventBookingDate.start, "dd/mm/yyyy - h:MM:ss TT") : "---"}
                 </div>
                 <div className="col-md-2 text-center">
-                    {dataItem.eventStatus}
+                    {getMockInterviewEnumStatusName(dataItem.eventStatus)}
                 </div>
                 <div className="col-md-2 text-center" > 
                      <a className="btn btn-xs btn-round btn-primary" href={`${appSetting.SiteUrl}admin/mock-interview/${dataItem.id}`}  >View full</a>
