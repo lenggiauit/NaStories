@@ -20,7 +20,8 @@ export type MockInterview = BaseModel & {
     eventRequestChangeReason: EventRequestChangeReason,
     eventCancelReason: EventCancelReason,
     eventStatus  : any,
-    isEnableRequestChange: boolean
+    isEnableRequestChange: boolean,
+    isEnableDelete: boolean,
     totalRows: any; 
     code: any,
     redeemCode: any,

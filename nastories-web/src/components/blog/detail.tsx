@@ -43,9 +43,7 @@ const PostDetail: React.FC = ({  }): ReactElement => {
                             <h2>{getPostDetailStatus.data.resource.title}</h2>
                             <p>{ConverterLocaleDateString(getPostDetailStatus.data.resource.createdDate)} by {getPostDetailStatus.data.resource.user.fullName}</p>
                         </div>
-                        <div className="gap-xy-2 mt-6">
-                            {getPostDetailStatus.data.resource.shortDescription}
-                        </div>
+                        
                         <div dangerouslySetInnerHTML={{ __html: getPostDetailStatus.data.resource.content }} />
                         <div className="gap-xy-2 mt-6">
                             {getPostDetailStatus.data.resource.tags.map((t) =>

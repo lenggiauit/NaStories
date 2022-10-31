@@ -30,7 +30,7 @@ namespace NaStories.API.Services
             // send email
             using var smtp = new SmtpClient();
             smtp.Connect(_appSettings.SmtpHost, _appSettings.SmtpPort, SecureSocketOptions.SslOnConnect);
-            smtp.Authenticate(_appSettings.SmtpUser, Utilities.Decrypt(_appSettings.SmtpPass, "nagistar_email_key"));
+            smtp.Authenticate(_appSettings.SmtpUser, Utilities.Decrypt(_appSettings.SmtpPass, "nastories_email_key6385937"));
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
         }
@@ -47,7 +47,7 @@ namespace NaStories.API.Services
             // send email
             using var smtp = new SmtpClient();
             smtp.Connect(_appSettings.SmtpHost, _appSettings.SmtpPort, SecureSocketOptions.None);
-            smtp.Authenticate(_appSettings.SmtpUser, Utilities.Decrypt(_appSettings.SmtpPass, "nagistar_email_key"));
+            smtp.Authenticate(_appSettings.SmtpUser, Utilities.Decrypt(_appSettings.SmtpPass, "nastories_email_key6385937"));
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
         }

@@ -61,7 +61,7 @@ namespace NaStories.API.Services
 
         public async Task<List<Conversation>> GetConversationListByUser(Guid userId, BaseRequest<GetConversationListRequest> request)
         {
-            return await _chatRepository.GetConversationListByUser(userId, request);
+            return await _chatRepository.GetConversationListByUser(userId, request, _appSettings);
         }
 
         public async Task<List<ConversationMessage>> GetMessagesByConversation(Guid userId, BaseRequest<GetMessagesRequest> request)

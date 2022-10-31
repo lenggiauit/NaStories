@@ -14,6 +14,7 @@ export type PrivateTalkResource =
     eventBookingDate? : EventBookingDateResource,  
     eventStatus  : any,
     isEnableRequestChange: boolean,
+    isEnableDelete: boolean,
     code: any,
     redeemCode: any,
 }

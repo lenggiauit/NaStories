@@ -367,11 +367,13 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 <option value="" label="Chọn ngày">Chọn ngày</option>
                                                 {getEventBookingAvaiableDateQueryStatus.data && <>
                                                     {getEventBookingAvaiableDateQueryStatus.data.resource.map((type) => (
-                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"}</option>
+                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " Vietnam"}</option>
                                                     ))}
                                                 </>
                                                 } 
+                                                 {getEventBookingAvaiableDateQueryStatus.data && getEventBookingAvaiableDateQueryStatus.data.resource.length == 0 &&
                                                 <option value={NIL_UUID} label="Lịch gần nhất không còn trống, Na sẽ email ngày cụ thể sau khi bạn đăng ký">Lịch gần nhất không còn trống, Na sẽ email ngày cụ thể sau khi bạn đăng ký</option> 
+                                                 }
                                             </Field>
                                             <ErrorMessage
                                                 name="eventBookingDateId"

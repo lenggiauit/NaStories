@@ -35,9 +35,9 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             { 
-                _emailService.Send(request.Payload.YourEmail,
-                    _appSettings.MailDefaultSubject,
-                    string.Format(_appSettings.MailDefaultContent, request.Payload.YourName));
+                //_emailService.Send(request.Payload.YourEmail,
+                //    _appSettings.MailDefaultSubject,
+                //    string.Format(_appSettings.MailDefaultContent, request.Payload.YourName));
                 // send to domain email
                 _emailService.Send(_appSettings.MailSender,
                    request.Payload.YourName,

@@ -142,5 +142,6 @@
     "[RegisterPrivateTalkSuccess]": "Register Private Talk Success",
     "[RemovePrivateTalkSuccess]": "Cancel Private Talk Successs",
     "[RegisterMockInterviewSuccess]": "Register Mock Interview Success",
-    "[RequestChangePrivateTalkSuccess]": "Request Change Private Talk Success"
+    "[RequestChangePrivateTalkSuccess]": "Request Change Private Talk Success",
+    "[UpdateProfileSuccess]": "Update Profile Success"
 }

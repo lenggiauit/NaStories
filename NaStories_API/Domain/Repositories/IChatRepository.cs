@@ -10,7 +10,7 @@ namespace NaStories.API.Domain.Repositories
 {
     public interface IChatRepository
     {
-        Task<List<Conversation>> GetConversationListByUser(Guid userId, BaseRequest<GetConversationListRequest> request);
+        Task<List<Conversation>> GetConversationListByUser(Guid userId, BaseRequest<GetConversationListRequest> request, AppSettings appSettings);
         
         Task<Conversation> CreateConversation(Guid userId, BaseRequest<CreateConversationRequest> request);
         Task<ResultCode> InviteToConversation(BaseRequest<InviteConversationRequest> request);

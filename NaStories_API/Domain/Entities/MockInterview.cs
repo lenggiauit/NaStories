@@ -44,10 +44,23 @@ namespace NaStories.API.Domain.Entities
         {
             get
             {
-                return this.RequestChangeCount <= 2 && this.EventStatus == MockInterviewStatusEnum.Submitted.ToDescriptionString();
+                return this.RequestChangeCount <= 2 && !IsDeleted && this.EventStatus == MockInterviewStatusEnum.Submitted.ToString();
 
             }
         }
+
+        [NotMapped]
+        public bool IsEnableDelete
+        {
+            get
+            { 
+               
+                return this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != MockInterviewStatusEnum.Confirmed.ToDescriptionString();
+
+            }
+        }
+
+
         [NotMapped]
         public virtual EventRequestChangeReason EventRequestChangeReason { get; set; }
         [NotMapped]

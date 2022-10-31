@@ -82,13 +82,11 @@ const AdminPrivateTalkList: React.FC = (): ReactElement => {
                         <div className="row gap-y gap-2" data-shuffle="list">
                             <div className="col-md-12">
                                 <div className="row admin-post-header">
-                                <div className="col-2">
-                                        Title
-                                    </div>
-                                    <div className="col-1">
+                               
+                                    <div className="col-2">
                                          Code
                                     </div>
-                                    <div className="col-1">
+                                    <div className="col-2">
                                         RedeemCode
                                     </div>
                                     <div className="col-2">

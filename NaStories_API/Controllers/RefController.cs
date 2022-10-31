@@ -36,6 +36,13 @@ namespace NaStories.API.Controllers
             _mapper = mapper;
             _appSettings = appSettings.Value;
         }
+
+        [AllowAnonymous]
+        [HttpPost("Encrypt")]
+        public Task<string> Encrypt(string text)
+        {
+            return Task.FromResult( EncryptionHelper.Encrypt(text, "nastories_email_key6385937"));
+        }
         
   
 

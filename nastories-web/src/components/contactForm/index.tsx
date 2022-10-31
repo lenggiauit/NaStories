@@ -8,10 +8,11 @@ import { NIL as NIL_UUID } from 'uuid';
 import { useEffect, useState } from "react";
 import { AppSetting } from '../../types/type';
 import { dictionaryList } from '../../locales';
-import { useAppContext } from '../../contexts/appContext'; 
+import { useAppContext } from '../../contexts/appContext';
 import { useSendContactMutation } from '../../services/home';
 import { ResultCode } from '../../utils/enums';
 import showDialogModal from '../modal/showModal';
+import PageLoading from '../pageLoading';
 
 
 type FormValues = {
@@ -49,24 +50,25 @@ export const ContactForm: React.FC = () => {
 
 
     const handleOnSubmit = (values: FormValues, actions: FormikHelpers<FormValues>) => {
-        sendContact({ payload: { yourName: values.yourName, yourEmail: values.yourEmail, yourMessage: values.yourMessage }});
+        sendContact({ payload: { yourName: values.yourName, yourEmail: values.yourEmail, yourMessage: values.yourMessage } });
         actions.resetForm();
-    } 
+    }
 
     useEffect(() => {
         if (sendContactStatus.data && sendContactStatus.data.resultCode == ResultCode.Success) {
             showDialogModal({
                 message: "Thông tin của bạn đã được gửi thành công, Na's Stories sẽ liên hệ với bạn sớm nhất có thể!",
                 onClose: () => {
-                    
+
                 }
             });
-        } 
+        }
 
     }, [sendContactStatus]);
 
     return (
-        <> 
+        <>
+            {sendContactStatus.isLoading && <PageLoading />}
             <Formik initialValues={initialValues}
                 onSubmit={handleOnSubmit}
                 validationSchema={validationSchema}
@@ -101,7 +103,7 @@ export const ContactForm: React.FC = () => {
                             </div>
 
                             <div className="col-12 text-center">
-                                <button className="btn btn-primary " style={{width: 200}} type="submit"><Translation tid="btnSubmit"></Translation></button>
+                                <button className="btn btn-primary " style={{ width: 200 }} type="submit"><Translation tid="btnSubmit"></Translation></button>
                             </div>
                         </div>
 

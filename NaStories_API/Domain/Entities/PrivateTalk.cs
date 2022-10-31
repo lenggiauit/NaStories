@@ -40,8 +40,20 @@ namespace NaStories.API.Domain.Entities
 
         [NotMapped]
         public bool IsEnableRequestChange {
-            get {
-                return this.RequestChangeCount <= 2 && this.EventStatus == PrivateTalkStatusEnum.Submitted.ToDescriptionString();
+            get 
+            {
+                
+                return this.RequestChangeCount <= 2 && !IsDeleted && this.EventStatus == PrivateTalkStatusEnum.Submitted.ToDescriptionString();
+
+            }
+        }
+
+        [NotMapped]
+        public bool IsEnableDelete
+        {
+            get
+            {
+                return this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != PrivateTalkStatusEnum.Confirmed.ToDescriptionString();
 
             }
         }

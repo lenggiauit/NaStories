@@ -61,30 +61,30 @@ const UserPrivateTalkItem: React.FC<Props> = ({ dataItem, bookingDate, onSelecte
     
 
     return (<>
-        <div className={`col-md-12 ${isDeleted ? "hide": ""}`} >
+        <div className={`col-md-12`} >
             <div className="row admin-post-item border-top border-light p-2">
-                <div className="col-md-3">
-                    <a href="#" onClick={(e) => { e.preventDefault(); onSelected(dataItem) }}> 
-                        { dataItem.eventBookingDate ? dataItem.eventBookingDate.title : dataItem.fullName }
+                
+                <div className="col-md-3 text-center">
+                <a href="#" onClick={(e) => { e.preventDefault(); onSelected(dataItem) }}> 
+                    {dataItem.code}
                     </a>
                 </div>
-                <div className="col-md-2 text-center">
-                    {dataItem.code}
-                </div>
-                <div className="col-md-1 text-center">
+                {/* <div className="col-md-2 text-center">
                     {dataItem.redeemCode}
+                </div> */}
+                <div className="col-md-3 text-center">
+                    {dataItem.eventBookingDate ? dateFormat(calcTime(new Date(dataItem.eventBookingDate.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " Vietnam"   : "---"}
                 </div>
-                <div className="col-md-2 text-center">
-                    {dataItem.eventBookingDate ? dateFormat(calcTime(new Date(dataItem.eventBookingDate.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"   : "---"}
-                </div>
-                <div className="col-md-1 text-center">
+                <div className="col-md-3 text-center">
                     {dataItem.eventStatus}
                 </div>
                 <div className="col-md-3 text-right" >
-                    {(dataItem.isEnableRequestChange && !isRequestChanged) && 
+                    {(dataItem.isEnableRequestChange && !isRequestChanged && !isDeleted) && 
                         <a className="btn btn-xs btn-round btn-success mr-1" href="#" onClick={onRequestChangePrivateTalk} ><Translation tid="action_privatetalk_requestchangetime" /></a> 
                     }
+                   {(dataItem.isEnableDelete && !isDeleted) &&
                     <a className="btn btn-xs btn-round btn-danger" href="#" onClick={onDeletePrivateTalk}><Translation tid="btnCancel" /></a>
+                    }
                 </div>
             </div>
         </div>

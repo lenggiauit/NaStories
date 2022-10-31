@@ -219,8 +219,9 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
                 return (await _context.MockInterview.AsNoTracking()
-                    .Where(p => p.UserId.Equals(userId) && !p.IsDeleted)
+                    .Where(p => p.UserId.Equals(userId))
                     .Include(p => p.EventBookingDate)
+                    .OrderByDescending(p => p.CreatedDate)
                     .Select(p => new MockInterview()
                     {
                         Id = p.Id,
@@ -256,8 +257,9 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
                 return (await _context.PrivateTalk.AsNoTracking()
-                    .Where(p => p.UserId.Equals(userId) && !p.IsDeleted)
+                    .Where(p => p.UserId.Equals(userId))
                     .Include(p => p.EventBookingDate)
+                    .OrderByDescending(p => p.CreatedDate)
                     .Select(p => new PrivateTalk()
                     {
                         Id = p.Id,
@@ -279,6 +281,7 @@ namespace NaStories.API.Persistence.Repositories
                         YourSolutionDescription = p.YourSolutionDescription,
 
                     })
+                    
                     .ToListAsync(), ResultCode.Success);
             }
             catch (Exception ex)

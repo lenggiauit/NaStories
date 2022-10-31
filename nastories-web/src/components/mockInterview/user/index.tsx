@@ -37,24 +37,21 @@ const UserMockInterviewList: React.FC = (): ReactElement => {
                     <div data-provide="shuffle">
                         <div className="row gap-y gap-2" data-shuffle="list">
                             <div className="col-md-12">
-                                <div className="row admin-post-header">
+                                <div className="row admin-post-header"> 
+                                    <div className="col-3 ">
+                                         Mã
+                                    </div>
+                                    {/* <div className="col-2">
+                                        Giảm giá
+                                    </div> */}
                                     <div className="col-3">
-                                        Title
+                                        Ngày hẹn
                                     </div>
-                                    <div className="col-2">
-                                         Code
-                                    </div>
-                                    <div className="col-1">
-                                        RedeemCode
-                                    </div>
-                                    <div className="col-2">
-                                        Start date
-                                    </div>
-                                    <div className="col-1">
-                                        Status
+                                    <div className="col-3">
+                                        Trạng thái
                                     </div> 
                                     <div className="col-3">
-                                        Action
+                                        
                                     </div>
                                 </div>
                             </div>

@@ -25,15 +25,13 @@ const AdminMockInterviewItem: React.FC<Props> = ({ dataItem, onSelected }) => {
     return (<>
         <div className={`col-md-12`} >
             <div className="row admin-post-item border-top border-light p-2">
-                <div className="col-md-2">
+                
+                <div className="col-2">
                     <a href="#" onClick={(e) => { e.preventDefault(); onSelected(dataItem) }}> 
-                        { dataItem.eventBookingDate ? dataItem.eventBookingDate.title : dataItem.fullName }
+                    {dataItem.code}
                     </a>
                 </div>
-                <div className="col-1">
-                    {dataItem.code}
-                </div>
-                <div className="col-1">
+                <div className="col-2">
                     {dataItem.redeemCode}
                 </div>
                 <div className="col-md-2 text-center">

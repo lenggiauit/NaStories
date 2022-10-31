@@ -38,23 +38,21 @@ const UserPrivateTalkList: React.FC = (): ReactElement => {
                         <div className="row gap-y gap-2" data-shuffle="list">
                             <div className="col-md-12">
                                 <div className="row admin-post-header">
+                                    
                                     <div className="col-3">
-                                        Title
+                                         Mã
                                     </div>
-                                    <div className="col-2">
-                                         Code
+                                    {/* <div className="col-2">
+                                        Mã giảm giá
+                                    </div> */}
+                                    <div className="col-3">
+                                        Ngày hẹn
                                     </div>
-                                    <div className="col-1">
-                                        RedeemCode
-                                    </div>
-                                    <div className="col-2">
-                                        Start date
-                                    </div>
-                                    <div className="col-1">
-                                        Status
+                                    <div className="col-3">
+                                        Trạng thái
                                     </div> 
                                     <div className="col-3">
-                                        Action
+                                        
                                     </div>
                                 </div>
                             </div>

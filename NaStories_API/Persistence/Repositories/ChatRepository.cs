@@ -119,10 +119,80 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
-        public async Task<List<Conversation>> GetConversationListByUser(Guid userId, BaseRequest<GetConversationListRequest> request)
+        public async Task<List<Conversation>> GetConversationListByUser(Guid userId, BaseRequest<GetConversationListRequest> request, AppSettings appSettings)
         {
             try
             {
+                // init chat with Na's Stories
+                var list = await _context.Conversation.OrderByDescending(s => s.LastMessageDate).Join(_context.ConversationUsers.Where(cu => cu.UserId.Equals(userId)),
+                    c => c.Id,
+                    cus => cus.ConversationId,
+                    (c, cus) => new Conversation()
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                        LastMessage = c.LastMessage,
+                        CreatedBy = c.CreatedBy,
+                        CreatedDate = c.CreatedDate,
+                        UpdatedBy = c.UpdatedBy,
+                        LastMessageDate = c.LastMessageDate,
+                        Conversationers = _context.ConversationUsers.Where(cus2 => cus2.ConversationId.Equals(c.Id))
+                        .Join(_context.User, cus2 => cus2.UserId, u => u.Id, (cus2, u) => new User()
+                        {
+                            Id = u.Id,
+                            UserName = u.UserName,
+                            Email = u.Email,
+                            Avatar = u.Avatar,
+                            FullName = u.FullName,
+                            Phone = u.Phone,
+                            Address = u.Address,
+                            Role = _context.Role.Where(r => r.Id == u.RoleId).FirstOrDefault()
+                        })
+                        .ToList()
+                    })
+                    .AsNoTracking().GetPagingQueryable(request.MetaData).ToListAsync();
+
+                if(list.Count == 0)
+                {
+                    var naUser = _context.User.Where(u => u.Email.Equals("nastories.vn@gmail.com")).FirstOrDefault();
+                    if (naUser != null)
+                    {
+                        var conversationId = Guid.NewGuid();
+                        var conversation = new Conversation()
+                        {
+                            Id = conversationId,
+                            Title = appSettings.SiteName,
+                            CreatedBy = userId,
+                            CreatedDate = DateTime.Now
+                        };
+                        await _context.Conversation.AddAsync(conversation);
+
+                        List<ConversationUsers> listc = new List<ConversationUsers>();
+
+                        listc.Add(new ConversationUsers()
+                        {
+                            Id = Guid.NewGuid(),
+                            ConversationId = conversationId,
+                            CreatedDate = DateTime.Now,
+                            UserId = userId
+                        });
+
+                        listc.Add(new ConversationUsers()
+                        {
+                            Id = Guid.NewGuid(),
+                            ConversationId = conversationId,
+                            CreatedDate = DateTime.Now,
+                            UserId = naUser.Id
+                        });
+                         
+
+                        await _context.ConversationUsers.AddRangeAsync(listc);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+                 
+
                 return await _context.Conversation.OrderByDescending(s => s.LastMessageDate).Join(_context.ConversationUsers.Where(cu => cu.UserId.Equals(userId)),
                     c => c.Id,
                     cus => cus.ConversationId,
