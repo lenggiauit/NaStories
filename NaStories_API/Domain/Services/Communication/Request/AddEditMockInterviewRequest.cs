@@ -23,11 +23,11 @@ namespace NaStories.API.Domain.Services.Communication.Request
         [MaxLength(250)]
         public string Resume { get; set; }
 
-        [Required]
+       
         [MaxLength(250)]
         public string Jobdescription { get; set; }
         
-        [Required]
+       
         [MaxLength(250)]
         public string CoverLetter { get; set; }
 

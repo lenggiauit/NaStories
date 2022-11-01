@@ -6,7 +6,8 @@ using NaStories.API.Domain.Services.Communication.Response;
 using NaStories.API.Resources;
 using System; 
 using System.Linq;
-using System.Security.Claims; 
+using System.Security.Claims;
+using static NaStories.API.Domain.Helpers.AccessToken;
 
 namespace NaStories.API.Domain.Helpers
 {
@@ -30,7 +31,7 @@ namespace NaStories.API.Domain.Helpers
             {
                 try
                 {
-                    User userResource = JsonConvert.DeserializeObject<User>(claimUser.Value);
+                    UserToken userResource = JsonConvert.DeserializeObject<UserToken>(claimUser.Value);
                     if (!userResource.Permissions.Select(p => p.Code).AsEnumerable().Intersect(_permissions.AsEnumerable()).Any())
                     {
                         context.Result = new JsonResult(new BaseResponse<ResultCode>("Do not permission", ResultCode.DoNotPermission));

@@ -74,14 +74,14 @@ const MockInterviewRegisterForm: React.FC = () => {
             resume: Yup.mixed().test("resume", dictionaryList[locale]["RequiredField"], function test(value) {
                 return currentResume != null && currentResume.length > 0;
               }), 
-            coverLetter: Yup.mixed().test("coverLetter", dictionaryList[locale]["RequiredField"], function test(value) {
-                return currentCoverLetter != null && currentCoverLetter.length > 0;
-              }), 
-            jobDescription: Yup.mixed().test("jobDescription", dictionaryList[locale]["RequiredField"], function test(value) {
-                return currentJobDescription != null && currentJobDescription.length > 0;
-              }), 
-              redeemCode: Yup.string() 
-              .max(20)
+            // coverLetter: Yup.mixed().test("coverLetter", dictionaryList[locale]["RequiredField"], function test(value) {
+            //     return currentCoverLetter != null && currentCoverLetter.length > 0;
+            //   }), 
+            // jobDescription: Yup.mixed().test("jobDescription", dictionaryList[locale]["RequiredField"], function test(value) {
+            //     return currentJobDescription != null && currentJobDescription.length > 0;
+            //   }), 
+            redeemCode: Yup.string() 
+            .max(20)
         });
     }
  
@@ -319,7 +319,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         <div className="form-group col-md-12">
                                             <div className="custom-control custom-checkbox">
                                             <Field type="file" name="resume" className="custom-file-input" onChange={handleSelectResume} accept=".pdf" />
-                                                <label className="custom-file-label">{currentResume != null ? currentResume : "Resume file" }</label>
+                                                <label className="custom-file-label">{currentResume != null ? currentResume : "Resume/CV file" }</label>
                                             </div> 
                                             <ErrorMessage
                                                 name="resume"
@@ -331,7 +331,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         <div className="form-group col-md-12">
                                             <div className="custom-control custom-checkbox">
                                             <Field type="file" name="coverLetter" className="custom-file-input" onChange={handleSelectCoverLetter} accept=".pdf" />
-                                                <label className="custom-file-label">{currentCoverLetter != null ? currentCoverLetter : "Cover letter file" }</label>
+                                                <label className="custom-file-label">{currentCoverLetter != null ? currentCoverLetter : "Cover letter file (nếu có)" }</label>
                                             </div> 
                                             <ErrorMessage
                                                 name="coverLetter"
@@ -343,7 +343,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         <div className="form-group col-md-12">
                                             <div className="custom-control custom-checkbox">
                                             <Field type="file" name="jobDescription" className="custom-file-input" onChange={handleSelectJobDescription} accept=".pdf" />
-                                                <label className="custom-file-label">{currentJobDescription != null ? currentJobDescription : "Job description file" }</label>
+                                                <label className="custom-file-label">{currentJobDescription != null ? currentJobDescription : "Job description file (nếu có)" }</label>
                                             </div> 
                                             <ErrorMessage
                                                 name="jobDescription"
@@ -353,7 +353,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="note" maxLength={500} placeholder="Ghi chú thêm" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="note" maxLength={500} placeholder="Ghi chú thêm (nếu có)" />
                                             <ErrorMessage
                                                 name="note"
                                                 component="div"

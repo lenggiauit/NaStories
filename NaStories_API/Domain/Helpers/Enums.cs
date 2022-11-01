@@ -32,7 +32,7 @@ namespace NaStories.API.Domain.Helpers
 
     public enum PrivateTalkStatusEnum
     {
-        [Description("Chờ Email xác nhận")]
+        [Description("Chờ email xác nhận")]
         Submitted, 
         [Description("Chờ thanh toán")]
         RequestPay,
@@ -50,7 +50,7 @@ namespace NaStories.API.Domain.Helpers
 
     public enum MockInterviewStatusEnum
     {
-        [Description("Chờ Email xác nhận")]
+        [Description("Chờ email xác nhận")]
         Submitted,
         [Description("Chờ thanh toán")]
         RequestPay,

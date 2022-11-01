@@ -16,14 +16,19 @@ namespace NaStories.API.Domain.Helpers
     {
 		public string GenerateToken(User user, string secretKey)
 		{
+			UserToken userdata = new UserToken();
+			userdata.Id = user.Id;
+			userdata.Permissions = user.Permissions.Select( p => new PermissionToken() { Code = p.Code }).ToList();
+			userdata.Email = user.Email;
+			 
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes(secretKey);
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(new Claim[]
 				{
-					 new Claim(ClaimTypes.Name, user.Id.ToString()),
-					 new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(user)),
+					 new Claim(ClaimTypes.Name, userdata.Id.ToString()),
+					 new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(userdata)),
 				}),
 				Expires = DateTime.UtcNow.AddYears(10),
 				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -31,5 +36,21 @@ namespace NaStories.API.Domain.Helpers
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return tokenHandler.WriteToken(token);
 		}
+
+
+		public class UserToken
+        {
+			public Guid Id { get; set; } 
+			public string Email { get; set; }   
+			public List<PermissionToken> Permissions { get; set; }
+
+		}
+		public class PermissionToken
+		{
+			public string Code { get; set; }
+
+		}
+
+
 	}
 }
