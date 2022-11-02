@@ -103,6 +103,9 @@
     "Edit": "Thay đổi",
     "Save": "Lưu",
     "Cancel": "Hủy",
-    "Profile": "Hồ Sơ"
+    "Profile": "Hồ Sơ",
+    "btnCreate": "Tạo mới",
+    "EmailAlreadyRegistered": "Email của bạn đã được đăng ký rồi!",
+    "RegisterSuccess": "Đăng ký thành công"
     
 }

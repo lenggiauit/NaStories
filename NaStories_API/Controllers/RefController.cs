@@ -41,7 +41,10 @@ namespace NaStories.API.Controllers
         [HttpPost("Encrypt")]
         public Task<string> Encrypt(string text)
         {
-            return Task.FromResult( EncryptionHelper.Encrypt(text, "nastories_email_key6385937"));
+
+            string en = EncryptionHelper.Encrypt(text, Constants.PassDecryptKey);
+            string de  = EncryptionHelper.Decrypt(en, Constants.PassDecryptKey);
+            return Task.FromResult(en + "---" + de );
         }
         
   

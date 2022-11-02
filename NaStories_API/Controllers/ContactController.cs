@@ -34,14 +34,15 @@ namespace NaStories.API.Controllers
         public Task<BaseResponse<ResultCode>> SendContact([FromBody] BaseRequest<ContactRequest> request)
         {
             if (ModelState.IsValid)
-            { 
+            {
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
                 //_emailService.Send(request.Payload.YourEmail,
                 //    _appSettings.MailDefaultSubject,
-                //    string.Format(_appSettings.MailDefaultContent, request.Payload.YourName));
-                // send to domain email
-                _emailService.Send(_appSettings.MailSender,
+                //    string.Format(_appSettings.MailDefaultContent, request.Payload.YourName), smtpPwd);
+               // send to domain email
+                _emailService.Send(_appSettings.MailAdmin,
                    request.Payload.YourName,
-                     request.Payload.YourMessage);
+                    string.Format(_appSettings.MailDefaultContent,  request.Payload.YourName, request.Payload.YourEmail, request.Payload.YourMessage), smtpPwd);
 
                 return Task.FromResult(new BaseResponse<ResultCode>(resultCode:  ResultCode.Success));
             }

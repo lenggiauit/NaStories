@@ -10,6 +10,7 @@
     "@fullcalendar/timegrid": "^5.11.3",
     "@microsoft/signalr": "^6.0.0",
     "@reach/router": "^1.3.4",
+    "@react-oauth/google": "^0.4.0",
     "@reduxjs/toolkit": "^1.6.1",
     "@rtk-incubator/rtk-query": "^0.2.0",
     "@testing-library/jest-dom": "^5.11.4",

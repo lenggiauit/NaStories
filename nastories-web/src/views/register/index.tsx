@@ -11,6 +11,8 @@ import { Md5 } from "md5-typescript";
 import { GoogleLoginButton } from 'ts-react-google-login-component';
 import { ResultCode } from '../../utils/enums';
 import { AppSetting } from '../../types/type';
+import { useGoogleLogin } from '@react-oauth/google';
+import showDialogModal from '../../components/modal/showModal';
 
 let appSetting: AppSetting = require('../../appSetting.json');
 
@@ -97,6 +99,26 @@ const Register: React.FC = (): ReactElement => {
     const errorHandler = (error: string) => {
         console.error(error)
     }
+
+    const loginGoogle = useGoogleLogin({
+        onSuccess: tokenResponse => {
+            const access_token = tokenResponse.access_token;
+            fetch(appSetting.BaseUrl + "account/RegisterWithGoogle?access_token=" + access_token)
+            .then(response => response.json())
+            .then((json) => {
+                if (json.resultCode == ResultCode.RegisterExistEmail) {
+                    showDialogModal({ message: dictionaryList[locale]["EmailAlreadyRegistered"]});
+                     
+                }
+                else {
+                    showDialogModal({ message: dictionaryList[locale]["RegisterSuccess"]})
+                    
+                    window.location.href = "/login";
+                }
+            }).catch(() => {
+                console.log('Error');
+            })
+        }});
 
     const responseGoogle = (googleUser: gapi.auth2.GoogleUser) => {
         const access_token = googleUser.getAuthResponse(true).id_token;
@@ -209,16 +231,7 @@ const Register: React.FC = (): ReactElement => {
                             </>}
                             <div className="divider"><Translation tid="OrRegisterWith" /></div>
                             <div className="text-center">
-                                <GoogleLoginButton
-                                    responseHandler={responseGoogle}
-                                    preLogin={preLoginTracking}
-                                    failureHandler={errorHandler}
-                                    classNames='btn btn-circle btn-sm btn-google mr-2'
-                                    clientConfig={{ client_id: appSetting.GoogleClientId }}
-                                    singInOptions={{ scope: 'profile' }}
-                                >
-                                    <i className="fa fa-google"></i>
-                                </GoogleLoginButton>
+                                <button className="btn btn-block btn-danger" onClick={() =>{ loginGoogle(); }}> Register with Google</button>  
                             </div>
                             <hr className="w-50" />
                             <p className="text-center text-muted small-2"><Translation tid="AlreadyAMember" />

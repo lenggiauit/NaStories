@@ -12,5 +12,6 @@ namespace NaStories.API.Domain.Helpers
         // Default Database values
         public static string DefaultRole = "Member";
         public static string ErrorMsg = "ErrorMsg";
+        public static string PassDecryptKey = "nastories_email_key6385937";
     }
 }

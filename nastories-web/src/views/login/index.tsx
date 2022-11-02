@@ -13,6 +13,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { logout, setLoggedUser } from '../../utils/functions';
 import { ResultCode } from '../../utils/enums';
 import userSlice from '../../store/userSlice';
+import { GoogleLogin, googleLogout, useGoogleLogin } from '@react-oauth/google';
 let appSetting: AppSetting = require('../../appSetting.json');
 
 interface FormValues {
@@ -60,8 +61,30 @@ const Login: React.FC = (): ReactElement => {
     const errorHandler = (error: string) => {
         console.error(error)
     }
+
+    const loginGoogle = useGoogleLogin({
+        onSuccess: tokenResponse => {
+            const access_token = tokenResponse.access_token;
+        
+            fetch(appSetting.BaseUrl + "account/LoginWithGoogle?access_token=" + access_token)
+                .then(response => response.json())
+                .then((jsonData) => {
+                    setLoginGoogleResponseResult(jsonData.resultCode);
+                    if (jsonData.resultCode == ResultCode.Success) {
+                        setLoggedUser(jsonData.resource);
+                        window.location.href = "/";
+                    } 
+                }).catch(() => {
+                    setLoginGoogleResponseResult(ResultCode.Error);
+                    console.log('Error');
+                })
+        }
+      });
+
+
     const responseGoogle = (googleUser: gapi.auth2.GoogleUser) => {
         const access_token = googleUser.getAuthResponse(true).id_token;
+        
         fetch(appSetting.BaseUrl + "account/LoginWithGoogle?access_token=" + access_token)
             .then(response => response.json())
             .then((jsonData) => {
@@ -125,23 +148,10 @@ const Login: React.FC = (): ReactElement => {
                                 </div>
                             </Form>
                         </Formik>
-                        
-                        {/* <div className="divider"><Translation tid="OrLoginWith" /></div>
-                        <div className="form-group">
-                            <button className="btn btn-block btn-primary" type="button" disabled={isLoading} onClick={handleOnSubmitWithDemoAccount} ><Translation tid="LoginWithDemoAccount" /></button>
-                        </div> */}
+                         
                         <div className="divider"><Translation tid="OrLoginWith" /></div>
-                        <div className="text-center">
-                            <GoogleLoginButton
-                                responseHandler={responseGoogle}
-                                preLogin={preLoginTracking}
-                                failureHandler={errorHandler}
-                                classNames='btn btn-circle btn-sm btn-google mr-2'
-                                clientConfig={{ client_id: appSetting.GoogleClientId }}
-                                singInOptions={{ scope: 'profile' }}
-                            >
-                                <i className="fa fa-google"></i>
-                            </GoogleLoginButton>
+                        <div className="text-center"> 
+                            <button className="btn btn-block btn-danger" onClick={() =>{ loginGoogle(); }}> Login with Google</button>  
                         </div>
                         {data && data.resultCode == ResultCode.NotExistUser.valueOf() && <>
                             <hr className="w-30" />

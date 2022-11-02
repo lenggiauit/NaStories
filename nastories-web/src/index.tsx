@@ -7,14 +7,17 @@ import reportWebVitals from './reportWebVitals';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 ReactDOM.render(
+  <GoogleOAuthProvider clientId="1075286664742-righjavc1rvvb1ba5mdk674gv3gis7v3.apps.googleusercontent.com">
   <Provider store={store} >
     <React.StrictMode>
       <Routes />
       <ToastContainer newestOnTop hideProgressBar position="bottom-right" autoClose={2000} />
     </React.StrictMode >
-  </Provider>,
+  </Provider>
+  </GoogleOAuthProvider>,
   document.getElementById('root')
 );
 

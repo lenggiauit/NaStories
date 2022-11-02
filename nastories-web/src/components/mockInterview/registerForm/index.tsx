@@ -17,6 +17,7 @@ import dateFormat from "dateformat";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
 import { useUploadPackageFileMutation } from "../../../services/fileService";
+import PageLoading from "../../pageLoading";
 let appSetting: AppSetting = require('../../../appSetting.json');
 
 interface FormValues {
@@ -250,6 +251,7 @@ const MockInterviewRegisterForm: React.FC = () => {
 
         return (
             <>
+                {addEditMockInterviewStatus.isLoading && <PageLoading />}
                 {mockInterviewHeader()}
                 <section className="section">
                     <div className="container">

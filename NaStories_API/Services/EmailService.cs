@@ -4,7 +4,8 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 using NaStories.API.Domain.Helpers;
-using NaStories.API.Domain.Services;  
+using NaStories.API.Domain.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace NaStories.API.Services
@@ -18,7 +19,7 @@ namespace NaStories.API.Services
             _appSettings = appSettings.Value;
         }
 
-        public async Task Send(string from, string to, string subject, string content)
+        public async Task Send(string from, string to, string subject, string content, string smtpPwd)
         {
             // create message
             var email = new MimeMessage();
@@ -30,12 +31,13 @@ namespace NaStories.API.Services
             // send email
             using var smtp = new SmtpClient();
             smtp.Connect(_appSettings.SmtpHost, _appSettings.SmtpPort, SecureSocketOptions.SslOnConnect);
-            smtp.Authenticate(_appSettings.SmtpUser, Utilities.Decrypt(_appSettings.SmtpPass, "nastories_email_key6385937"));
+            //string pwd = Utilities.Decrypt(_appSettings.SmtpPass, "nastories_email_key6385937");
+            smtp.Authenticate(_appSettings.SmtpUser, smtpPwd);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
         }
 
-        public async Task Send(string to, string subject, string content)
+        public async Task Send(string to, string subject, string content, string smtpPwd)
         {
             // create message
             var email = new MimeMessage();
@@ -47,9 +49,18 @@ namespace NaStories.API.Services
             // send email
             using var smtp = new SmtpClient();
             smtp.Connect(_appSettings.SmtpHost, _appSettings.SmtpPort, SecureSocketOptions.None);
-            smtp.Authenticate(_appSettings.SmtpUser, Utilities.Decrypt(_appSettings.SmtpPass, "nastories_email_key6385937"));
-            await smtp.SendAsync(email);
-            smtp.Disconnect(true);
+            try
+            {
+                 
+                smtp.Authenticate(_appSettings.SmtpUser, smtpPwd);
+                await smtp.SendAsync(email);
+                smtp.Disconnect(true);
+            }
+            catch(Exception e)
+            {
+                
+            }
+           
         }
     }
 }

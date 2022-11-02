@@ -38,7 +38,8 @@ namespace NaStories.API.Domain.Helpers
         public string YoutubeAPIKey { get; set; }
 
         public int BookingAdjustmentDay { get; set; }
-        public string SiteName { get; set; }
+        public string SiteName { get; set; } 
+        public string MailAdmin { get; set; }
 
 
     }

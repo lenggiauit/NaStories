@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static NaStories.API.Domain.Helpers.AccessToken;
 
 namespace NaStories.API.Infrastructure
 {
@@ -34,12 +35,13 @@ namespace NaStories.API.Infrastructure
             var claimUser = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.UserData).FirstOrDefault();
             if (claimUser != null)
             {
-                return JsonConvert.DeserializeObject<User>(claimUser.Value); 
+                User user = JsonConvert.DeserializeObject<User>(claimUser.Value);
+                return user;
             }
             else
             {
                 return null;
             }
-        }
+        } 
     }
 }

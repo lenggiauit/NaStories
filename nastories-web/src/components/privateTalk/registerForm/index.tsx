@@ -16,6 +16,7 @@ import dateFormat from "dateformat";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
 import { NIL as NIL_UUID } from 'uuid';
+import PageLoading from "../../pageLoading";
 
 
 let appSetting: AppSetting = require('../../../appSetting.json');
@@ -197,6 +198,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
 
         return (
             <>
+            {addEditPrivateTalkStatus.isLoading && <PageLoading />}
                 {privateTalkHeader()}
                 <section className="section">
                     <div className="container">

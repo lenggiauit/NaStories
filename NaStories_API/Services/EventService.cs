@@ -32,11 +32,16 @@ namespace NaStories.API.Services
 
         }
 
-        public async Task<(Guid, ResultCode)> AddEditMockInterview(BaseRequest<AddEditMockInterviewRequest> request, Guid userId)
+        public async Task<(Guid, ResultCode)> AddEditMockInterview(BaseRequest<AddEditMockInterviewRequest> request, Guid userId, string userName)
         {
             var (data, result) = await _eventRepository.AddEditMockInterview(request, userId);
             if (result == ResultCode.Success && (request.Payload.Id == null || request.Payload.Id != Guid.Empty))
             {
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+
+                await _emailService.Send(_appSettings.MailAdmin,
+                     "Register MockInterview Success", string.Format( "User Email: {0}", userName), smtpPwd);
+
                 await _notifyRepository.SendNotification("[RegisterMockInterviewSuccess]", userId);
             }
             else
@@ -46,12 +51,15 @@ namespace NaStories.API.Services
             return (data, result);
         }
 
-        public async Task<(Guid, ResultCode)> AddEditPrivateTalk(BaseRequest<AddEditPrivateTalkRequest> request, Guid userId)
+        public async Task<(Guid, ResultCode)> AddEditPrivateTalk(BaseRequest<AddEditPrivateTalkRequest> request, Guid userId, string userName)
         {
             var (data, result ) = await _eventRepository.AddEditPrivateTalk(request, userId);
             if(result == ResultCode.Success && (request.Payload.Id == null || request.Payload.Id != Guid.Empty))
             {
-               await _notifyRepository.SendNotification("[RegisterPrivateTalkSuccess]", userId);
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+                await _emailService.Send(_appSettings.MailAdmin,
+                    "Register Private Talk Success", string.Format("User Email: {0}", userName), smtpPwd);
+                await _notifyRepository.SendNotification("[RegisterPrivateTalkSuccess]", userId);
             }
             else
             {

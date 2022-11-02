@@ -1,6 +1,6 @@
 {
-    "SiteUrl":"http://localhost:3000/", 
-    "BaseUrl": "https://localhost:44333/",
-    "GoogleClientId": "522351386373-vd9iv3qesca501vuv0ccbhmth4ema178.apps.googleusercontent.com",
+    "SiteUrl":"https://nastories.com/", 
+    "BaseUrl": "https://api.nastories.com/",
+    "GoogleClientId": "1075286664742-righjavc1rvvb1ba5mdk674gv3gis7v3.apps.googleusercontent.com",
     "PageSize": 10
 }

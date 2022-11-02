@@ -55,9 +55,12 @@ namespace NaStories.API.Services
                 {
                     long expireTime = DateTime.Now.AddDays(1).ToUniversalTime().Ticks;
                     string resetPasswordUrl = string.Format("{0}?code={1}", _appSettings.ForgotPasswordUrl, EncryptionHelper.Encrypt(user.Id.ToString() + "_" + expireTime.ToString(), _appSettings.Secret));
+                    
+                    string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+
                     await _emailService.Send(email,
                         _appSettings.MailForgotPasswordSubject,
-                        string.Format(_appSettings.MailForgotPasswordContent, user.UserName, resetPasswordUrl));
+                        string.Format(_appSettings.MailForgotPasswordContent, user.UserName, resetPasswordUrl), smtpPwd);
                     await _notifyRepository.SendNotification("[SendEmailForgotPasswordSuccess]", user.Id);
                     return ResultCode.Success;
                 }

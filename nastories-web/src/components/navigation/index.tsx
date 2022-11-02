@@ -199,9 +199,10 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                             </li>
                                         </ul>
                                     </li>
-                                    <LanguageSelector />
+                                    
                                 </>
                                 }
+                                <LanguageSelector />
                             </ul>
                         </div>
                         {isPublic && currentUser == null && <>

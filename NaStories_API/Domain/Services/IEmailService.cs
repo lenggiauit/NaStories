@@ -7,7 +7,7 @@ namespace NaStories.API.Domain.Services
 {
     public interface IEmailService
     {
-        Task Send(string from, string to, string subject, string content);
-        Task Send(string to, string subject, string content);
+        Task Send(string from, string to, string subject, string content, string smtpPwd);
+        Task Send(string to, string subject, string content, string smtpPwd);
     }
 }

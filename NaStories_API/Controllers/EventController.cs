@@ -67,7 +67,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new BaseResponse<Guid>(await _eventService.AddEditPrivateTalk(request, GetCurrentUserId()));
+                return new BaseResponse<Guid>(await _eventService.AddEditPrivateTalk(request, GetCurrentUserId(), GetCurrentUser().Email));
             }
             else
             {
@@ -80,7 +80,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new BaseResponse<Guid>(await _eventService.AddEditMockInterview(request, GetCurrentUserId()));
+                return new BaseResponse<Guid>(await _eventService.AddEditMockInterview(request, GetCurrentUserId(), GetCurrentUser().Email));
             }
             else
             {
