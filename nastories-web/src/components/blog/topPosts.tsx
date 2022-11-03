@@ -3,6 +3,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { useGetTopPostQuery } from "../../services/blog"; 
 import { ResultCode } from "../../utils/enums";
+import LocalSpinner from "../localSpinner";
 import { Translation } from "../translation";
 
  
@@ -13,7 +14,7 @@ const TopPosts: React.FC = ({ }): ReactElement => {
     return (
         <>
             <h6 className="sidebar-title"><Translation tid="heading_topposts" /></h6>
-            
+            {getTopPostQueryStatus.isLoading && <LocalSpinner /> }
             {getTopPostQueryStatus.data && getTopPostQueryStatus.data.resultCode == ResultCode.Success && <>
                 {getTopPostQueryStatus.data.resource.map((p) => (
                     <a key={v4().toString()} className="media text-default align-items-center mb-5" href={`/blog/${p.url}`}>

@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import { useGetNewsPostQuery } from "../../services/blog";
 import { DisplayType, ResultCode } from "../../utils/enums";
+import LocalSpinner from "../localSpinner";
 import PageLoading from "../pageLoading";
 import { Translation } from "../translation";
 import BlogPostItem from "./blogPostItem";
@@ -10,14 +11,14 @@ const BlogCarousel: React.FC = () => {
     const getTopPostQueryStatus = useGetNewsPostQuery(null);
 
     return (
-        <>
-            {getTopPostQueryStatus.isLoading && <PageLoading />}
+        <> 
             <section className="section bg-gray">
                 <div className="container">
                     <header className="section-header mb-0"><h2><Translation tid="header_blog_title" /></h2>
                         <hr /> 
                     </header>
                     <div className="small ls-1 text-right"><a href="/blog">Xem tất cả</a></div>
+                    {getTopPostQueryStatus.isLoading && <LocalSpinner /> }
                     <div id="blog-post-carouse" className="carousel slide" data-ride="carousel">
                         <div className="carousel-inner">
                             <div className="carousel-item active">

@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import { v4 } from "uuid";
 import { useGetYoutubevideosQuery } from "../../services/home";
 import { ResultCode } from "../../utils/enums";
+import LocalSpinner from "../localSpinner";
 import PageLoading from "../pageLoading";
 import { Translation } from "../translation";
 
@@ -11,14 +12,14 @@ const YoutubeCarousel: React.FC = () => {
     const getYoutubevideosQueryStatus = useGetYoutubevideosQuery(null);
 
     return (
-        <>   
-         {getYoutubevideosQueryStatus.isLoading && <PageLoading />}
+        <>    
             <section className="section bg-gray">
                 <div className="container">
                 <header className="section-header mb-0"><h2><Translation tid="header_youtube_title" /></h2>
                 <hr />
                 </header>
                 <div className="small ls-1 text-right"><a target="_blank" href="https://www.youtube.com/@nastories">Xem tất cả</a></div>
+                    {getYoutubevideosQueryStatus.isLoading && <LocalSpinner /> }
                     <div id="youtube-carouse" className="carousel slide" data-ride="carousel">
                         <div className="carousel-inner">
                             <div className="carousel-item active">
