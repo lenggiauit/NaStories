@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import { useGetNewsPostQuery } from "../../services/blog";
 import { DisplayType, ResultCode } from "../../utils/enums";
+import PageLoading from "../pageLoading";
 import { Translation } from "../translation";
 import BlogPostItem from "./blogPostItem";
 
@@ -10,6 +11,7 @@ const BlogCarousel: React.FC = () => {
 
     return (
         <>
+            {getTopPostQueryStatus.isLoading && <PageLoading />}
             <section className="section bg-gray">
                 <div className="container">
                     <header className="section-header mb-0"><h2><Translation tid="header_blog_title" /></h2>

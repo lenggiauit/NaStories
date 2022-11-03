@@ -66,7 +66,7 @@ const Blog: React.FC = (): ReactElement => {
  
     return (
         <>
-            <Layout isPublic={true}>
+            <Layout isPublic={true}> 
                 <section className="section bg-gray">
                     <div className="container">
                         <header className="section-header">

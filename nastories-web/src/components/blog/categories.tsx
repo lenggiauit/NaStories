@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import { useGetCategoryQuery } from "../../services/blog";
 import { PostDataItem } from "../../services/models/postDataItem";
 import { ResultCode } from "../../utils/enums";
+import LocalSpinner from "../localSpinner";
 import { Translation } from "../translation";
 
 
@@ -15,6 +16,7 @@ const Categories: React.FC = ({ }): ReactElement => {
     return (
         <>
             <h6 className="sidebar-title"><Translation tid="heading_categories" /></h6>
+            {getQueryCategoryStatus.isLoading && <LocalSpinner /> }
             <div className="row link-color-default fs-14 lh-24">
             {getQueryCategoryStatus.data && getQueryCategoryStatus.data.resultCode == ResultCode.Success && <>
                 {getQueryCategoryStatus.data.resource.map((c) => (

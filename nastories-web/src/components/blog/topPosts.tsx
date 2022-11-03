@@ -13,7 +13,7 @@ const TopPosts: React.FC = ({ }): ReactElement => {
     return (
         <>
             <h6 className="sidebar-title"><Translation tid="heading_topposts" /></h6>
-
+            
             {getTopPostQueryStatus.data && getTopPostQueryStatus.data.resultCode == ResultCode.Success && <>
                 {getTopPostQueryStatus.data.resource.map((p) => (
                     <a key={v4().toString()} className="media text-default align-items-center mb-5" href={`/blog/${p.url}`}>

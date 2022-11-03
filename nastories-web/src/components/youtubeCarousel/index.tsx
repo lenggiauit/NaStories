@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import { v4 } from "uuid";
 import { useGetYoutubevideosQuery } from "../../services/home";
 import { ResultCode } from "../../utils/enums";
+import PageLoading from "../pageLoading";
 import { Translation } from "../translation";
 
 
@@ -11,6 +12,7 @@ const YoutubeCarousel: React.FC = () => {
 
     return (
         <>   
+         {getYoutubevideosQueryStatus.isLoading && <PageLoading />}
             <section className="section bg-gray">
                 <div className="container">
                 <header className="section-header mb-0"><h2><Translation tid="header_youtube_title" /></h2>
