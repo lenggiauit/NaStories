@@ -7,8 +7,7 @@ Na’s Stories Website. Some screenshots:
 <img width="1047" alt="image" src="https://user-images.githubusercontent.com/7054426/199859242-49ad605f-1aa2-4062-98da-543d848479d2.png">
 <img width="614" alt="image" src="https://user-images.githubusercontent.com/7054426/199859280-b3cdefce-dd90-455f-bfbf-9576ad700e6e.png">
 <img width="572" alt="image" src="https://user-images.githubusercontent.com/7054426/199859301-a231096d-8199-470c-bbed-be73d65c2ec0.png">
-<img width="1089" alt="image" src="https://user-images.githubusercontent.com/7054426/199859333-ec73c450-83c9-41a5-b86a-f101d5d46683.png">
-<img width="985" alt="image" src="https://user-images.githubusercontent.com/7054426/199859387-9c355daf-adcf-4fe0-a67e-a3a7869734af.png">
+<img width="1089" alt="image" src="https://user-images.githubusercontent.com/7054426/199859333-ec73c450-83c9-41a5-b86a-f101d5d46683.png"> 
 <img width="1079" alt="image" src="https://user-images.githubusercontent.com/7054426/199859446-b89a7254-f6aa-49d9-9b69-86724231deeb.png">
 <img width="1042" alt="image" src="https://user-images.githubusercontent.com/7054426/199859472-9d84523c-3b61-4dfb-aa5e-f58c53bc9616.png">
 <img width="1103" alt="image" src="https://user-images.githubusercontent.com/7054426/199859517-2ed537c7-6009-455f-95f3-729746bfc854.png">
