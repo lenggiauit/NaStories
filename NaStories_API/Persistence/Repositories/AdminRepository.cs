@@ -176,7 +176,7 @@ namespace NaStories.API.Persistence.Repositories
                         Title = request.Payload.Title,
                         Thumbnail = request.Payload.Thumbnail,
                         CategoryId = request.Payload.CategoryId,
-                        Url = Regex.Replace(request.Payload.Title.ToLower(), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
+                        Url = Regex.Replace(Utilities.RemoveSign4VietnameseString(request.Payload.Title.ToLower()), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
                         ShortDescription = request.Payload.ShortDescription,
                         Content = request.Payload.Content,
                         CreatedBy = userId,
@@ -197,7 +197,7 @@ namespace NaStories.API.Persistence.Repositories
                             {
                                 Id = Guid.NewGuid(),
                                 Name = name,
-                                Url = Regex.Replace(name, "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
+                                Url = Regex.Replace(Utilities.RemoveSign4VietnameseString(name), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
                                 BlogPostId = postId
                             });
                         }
@@ -214,12 +214,12 @@ namespace NaStories.API.Persistence.Repositories
                         post.Title = request.Payload.Title;
                         post.Thumbnail = request.Payload.Thumbnail;
                         post.CategoryId = request.Payload.CategoryId;
-                        post.Url = Regex.Replace(request.Payload.Title.ToLower(), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled);
+                        post.Url = Regex.Replace(Utilities.RemoveSign4VietnameseString(request.Payload.Title.ToLower()), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled);
                         post.ShortDescription = request.Payload.ShortDescription;
                         post.Content = request.Payload.Content;
                         post.CreatedBy = userId;
                         post.UserId = userId;
-                        post.CreatedDate = DateTime.Now;
+                        post.UpdatedDate = DateTime.Now;
                         post.IsArchived = request.Payload.IsArchived;
                         post.IsDraft = request.Payload.IsDraft;
                         post.IsPublic = request.Payload.IsPublic;
@@ -236,7 +236,7 @@ namespace NaStories.API.Persistence.Repositories
                                 {
                                     Id = Guid.NewGuid(),
                                     Name = name,
-                                    Url = Regex.Replace(name, "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
+                                    Url = Regex.Replace(Utilities.RemoveSign4VietnameseString(name), "[^a-zA-Z0-9]+", "-", RegexOptions.Compiled),
                                     BlogPostId = post.Id
                                 });
                             }
@@ -418,7 +418,7 @@ namespace NaStories.API.Persistence.Repositories
                     await _context.EventBookingDate.AddAsync(bookingDate);
                 }
                 await _context.SaveChangesAsync();
-                return (null, ResultCode.Error);
+                return (bookingDate, ResultCode.Success);
             }
             catch (Exception ex)
             {

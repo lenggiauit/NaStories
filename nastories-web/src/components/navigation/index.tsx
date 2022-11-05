@@ -24,7 +24,10 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
     const getNotificationCountStatus = useGetNotificationCountQuery({  payload: {}});
     // Start onload 
     useEffect(() => {
-        StartSignalRHubConnection();
+        const currentUser = getLoggedUser();
+        if (currentUser != null) {
+            StartSignalRHubConnection();
+        }
         return () => {
             StopSignalRHubConnection();
         }
@@ -36,15 +39,14 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                 const currentUser = getLoggedUser();
                 if (currentUser != null) {
                     signalRHubConnection.send("checkNewMessages", currentUser.id);
-                    console.log("checkNewMessages");
+                    //console.log("checkNewMessages");
                 }
                 signalRHubConnection.on("onHaveNewMessages", (count) => {
                     setMessageCount(count);
-                    console.log(count);
+                    //console.log(count);
                 });
             }
-        }, 1000);
-
+        }, 5000); 
 
     }, [signalRHubConnection]);
     return (

@@ -13,7 +13,7 @@ const Contact: React.FC = (): ReactElement => {
                         <header className="section-header">
                             <h2><Translation tid="nav_contact" /></h2>
                             <hr /> 
-                            <p> Các bạn có thể liên hệ với Na's Stories qua form bên dưới nha</p>
+                            <p className="lead-2"> Các bạn có thể liên hệ với Na's Stories qua form bên dưới nha</p>
                         </header> 
                          <ContactForm />
                          <br />

@@ -197,7 +197,7 @@ const MockInterviewRegisterForm: React.FC = () => {
     const mockInterviewHeader = () => { 
         return (<section className="section text-white bg-success" > 
             <div className="container">
-                <header className="section-header">
+                <header className="section-header text-infor">
                     <h2><Translation tid="header_mock_interview_title" /></h2>
                     <hr />
                     <p className="lead">
@@ -369,7 +369,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                                 <option value="" label="Chọn ngày">Chọn ngày</option>
                                                 {getEventBookingAvaiableDateQueryStatus.data && <>
                                                     {getEventBookingAvaiableDateQueryStatus.data.resource.map((type) => (
-                                                        <option key={type.id} value={type.id} >{dateFormat(calcTime(new Date(type.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " Vietnam"}</option>
+                                                        <option key={type.id} value={type.id} >{dateFormat(type.start, "mmm dd, yyyy - HH:MM") + " Vietnam"}</option>
                                                     ))}
                                                 </>
                                                 } 

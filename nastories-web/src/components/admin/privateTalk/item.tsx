@@ -39,7 +39,7 @@ const AdminPrivateTalkItem: React.FC<Props> = ({ dataItem, onSelected }) => {
                     {dataItem.email}
                 </div>
                 <div className="col-md-2 text-center"> 
-                    {dataItem.eventBookingDate ? dateFormat( dataItem.eventBookingDate.start, "dd/mm/yyyy - h:MM:ss TT") : "---"}
+                    {dataItem.eventBookingDate ? dateFormat( dataItem.eventBookingDate.start, "mmm dd, yyyy - HH:MM") : "---"}
                 </div>
                 <div className="col-md-2 text-center">
                     {getPrivateTalkEnumStatusName("" + dataItem.eventStatus + "")} 

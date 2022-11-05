@@ -107,11 +107,14 @@ const BookingList: React.FC = () => {
       }, []);
  
     const handleEventClick = useCallback((clickInfo: EventClickArg) => { 
-         
+        console.log(clickInfo.event.startStr);
+        var lcalDateTime = new  Date(clickInfo.event.startStr);
+        lcalDateTime.setHours(lcalDateTime.getHours() -12);
+
         ShowBookingConfirmModal({
             message1: `Title: ${clickInfo.event.title}`,
-            message2: `Canada time: ${clickInfo.event.start?.toLocaleString()}`,
-            message3: `VN Time: ${dateFormat(calcTime(new Date(clickInfo.event.start!), 7), "mm/dd/yyyy - h:MM:ss TT")}`,
+            message2: `Canada time: ${dateFormat( lcalDateTime, "mmm dd, yyyy - HH:MM TT")}`,
+            message3: `VN Time: ${dateFormat(clickInfo.event.startStr, "mmm dd, yyyy - HH:MM TT")}`,
             onDelete: () => {
                 removeEventAvailableDate({ payload: { id: clickInfo.event.id}});
                 clickInfo.event.remove(); 
@@ -153,7 +156,7 @@ const BookingList: React.FC = () => {
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     }}
-                    //timeZone={"UTC"}
+                    timeZone={"Asia/Ho_Chi_Minh"} 
                     plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                     initialView={calendarView}
                     selectable={true}

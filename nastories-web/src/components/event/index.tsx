@@ -20,15 +20,12 @@ const Event: React.FC = ({ }): ReactElement => {
                             <br />
                            
                             <div className="text-muted p-1">
-                                <ul className="list-infor">
-                                    <li>
-                                        <small>Bạn đang có một vài vấn đề băn khoăn, thắc mắc hoặc trở ngại cần được gỡ rối liên quan đến công việc, học tập, cuộc sống. </small>
+                                <ul className="list-infor text-left">
+                                    <li> Bạn đang có một vài vấn đề băn khoăn, thắc mắc hoặc trở ngại cần được gỡ rối liên quan đến công việc, học tập, cuộc sống.  
                                     </li>
-                                    <li>
-                                        <small>Bạn cần một người lắng nghe và cho bạn lời khuyên hữu ích hoặc một góc nhìn mới.</small>
+                                    <li> Bạn cần một người lắng nghe và cho bạn lời khuyên hữu ích hoặc một góc nhìn mới. 
                                     </li>
-                                    <li>
-                                        <small>Bạn theo dõi Na cũng được một thời gian và bạn tin rằng những kỹ năng và kinh nghiệm của Na sẽ giúp được cho bạn.</small>
+                                    <li> Bạn theo dõi Na cũng được một thời gian và bạn tin rằng những kỹ năng và kinh nghiệm của Na sẽ giúp được cho bạn. 
                                     </li>
                                 </ul>
                                 <p className="p-2">Vậy thì tụi mình đặt một cái hẹn nói chuyện với nhau để Na có cơ hội lắng nghe bạn nhiều hơn nhé.</p>
@@ -36,6 +33,8 @@ const Event: React.FC = ({ }): ReactElement => {
                             <br />
                             <br />
                             <br />
+                            <br /> 
+                            <br /> 
                             <br /> 
                             <br /> 
                             <p className="text-center py-3 align-self-end mt-auto">
@@ -56,28 +55,19 @@ const Event: React.FC = ({ }): ReactElement => {
                             <p className="plan-name">Mock Interview, Real Feedback</p>
                             <br /> 
                             <div className="text-muted p-1">
-                                <ul className="list-infor">
-                                    <li>
-                                        <small>
+                                <ul className="list-infor text-left">
+                                    <li> 
                                         Bạn đang tìm kiếm cơ hội trong ngành IT Business Analyst nhưng chưa có nhiều kinh nghiệm hoặc còn thiếu tự tin.
-                                        </small>
                                     </li>
-                                    <li>
-                                        <small>
+                                    <li> 
                                         Bạn đã tham gia vài khóa học và trang bị khá nhiều kiến thức về ngành nhưng vẫn sợ hãi khi nghĩ đến việc đối diện với nhà tuyển dụng trong buổi phỏng vấn.
-                                        </small>
                                     </li>
-                                    <li>
-                                        <small>
+                                    <li> 
                                         Bạn muốn trải nghiệm thử một buổi phỏng vấn BA để có sự chuẩn bị tốt hơn. 
-                                        </small>
                                     </li>
-                                    <li>
-                                        <small>
+                                    <li> 
                                         Bạn đã từng nghe đến assignment khi phỏng vấn nhưng không biết nó ra sao và cách làm thế nào. 
-                                        </small>
-                                    </li>
-
+                                    </li> 
                                 </ul>
                                 <p className="p-2">Với kinh nghiệm 10+ năm trong ngành và đã phỏng vấn khá nhiều BA ở tất cả các level, Na sẽ mang đến cho bạn một trải nghiệm như một buổi phỏng vấn thật, giúp bạn đánh giá resume của mình, cách bạn làm assignment và gợi ý những kỹ năng, kiến thức nào bạn cần trau dồi thêm để trở thành ứng viên sáng giá.</p>
                             </div>

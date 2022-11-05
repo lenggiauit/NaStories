@@ -30,7 +30,7 @@ const BlogCarousel: React.FC = () => {
                                                     <a href={`/blog/${p.url}`}><img className="card-img-top" src={p.thumbnail} alt={p.title} /></a>
                                                     <div className="p-6 text-center">
                                                         <p><a className="small-5 text-lighter text-uppercase ls-2 fw-400" href={`/blog/category/${p.category.url}`}>{p.category.name}</a></p>
-                                                        <h5 className="mb-0"><a className="text-dark" href={`/blog/${p.url}`}>{p.shortDescription.length > 150 ? p.shortDescription.subString(0, 150) : p.shortDescription }</a></h5>
+                                                        <a className="text-dark" href={`/blog/${p.url}`}>{p.shortDescription.length > 50 ? p.shortDescription.substring(0, 50) : p.shortDescription }</a>
                                                     </div>
                                                 </div>
                                             </div>

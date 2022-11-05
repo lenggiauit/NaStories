@@ -192,22 +192,22 @@ namespace NaStories.API.Services
 
         public override Task OnConnectedAsync()
         {
-            Groups.AddToGroupAsync(Context.ConnectionId.ToLower().Trim(), GetCurrentUserId().ToString().ToLower().Trim());
-           // _chatConnections.Add(GetCurrentUserId(), Context.ConnectionId); 
+            Groups.AddToGroupAsync(Context.ConnectionId.ToLower().Trim(), GetCurrentUserId().ToString().ToLower().Trim()); 
+            _chatConnections.Add(GetCurrentUserId(), Context.ConnectionId); 
             return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
             Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentUserId().ToString().Trim());
-           // _chatConnections.Remove(GetCurrentUserId(), Context.ConnectionId);
+            _chatConnections.Remove(GetCurrentUserId(), Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
 
         public async Task CheckNewMessages(Guid userId)
         {
-            int count = await _chatServices.CheckNewMessagesByUser(userId); 
-            await Clients.Group(GetCurrentUserId().ToString().ToLower().Trim()).SendAsync("onHaveNewMessages", count);
+            int count = await _chatServices.CheckNewMessagesByUser(GetCurrentUserId());  
+            await Clients.Caller.SendAsync("onHaveNewMessages", count);
         }
 
         public async Task SetUserSeenMessages(List<Guid> userIds, Guid conversationId)

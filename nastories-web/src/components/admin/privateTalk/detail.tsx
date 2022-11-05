@@ -130,7 +130,7 @@ const AdminPrivateTalkDetail: React.FC = () => {
                                             getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success &&
                                             getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
                                                 <option key={b.id} value={b.id} selected={getdetailStatus.data.resource.eventBookingDate?.id == b.id} >
-                                                    {dateFormat(b.start, "dd/mm/yyyy - h:MM:ss TT")}
+                                                    {dateFormat(b.start, "mmm dd, yyyy - HH:MM")}
                                                 </option>
                                             ))}
                                     </select>
@@ -195,7 +195,7 @@ const AdminPrivateTalkDetail: React.FC = () => {
                                             {getEventBookingAvaiableDateQueryStatus.data != null &&
                                                 getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success &&
                                                 getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
-                                                    <option key={b.id} value={b.id} selected={bookingId == b.id} >{dateFormat(calcTime(new Date(b.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " VietNam"}</option>
+                                                    <option key={b.id} value={b.id} selected={bookingId == b.id} >{dateFormat(b.start, "mmm dd, yyyy - HH:MM") + " VietNam"}</option>
                                                 ))}
                                         </select>
                                     </td>

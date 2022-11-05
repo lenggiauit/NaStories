@@ -73,7 +73,7 @@ const UserPrivateTalkItem: React.FC<Props> = ({ dataItem, bookingDate, onSelecte
                     {dataItem.redeemCode}
                 </div> */}
                 <div className="col-md-3 text-center">
-                    {dataItem.eventBookingDate ? dateFormat(calcTime(new Date(dataItem.eventBookingDate.start), 7), "dd/mm/yyyy - h:MM:ss TT") + " Vietnam"   : "---"}
+                    {dataItem.eventBookingDate ? dateFormat(dataItem.eventBookingDate.start, "mmm dd, yyyy - HH:MM") + " Vietnam"   : "---"}
                 </div>
                 <div className="col-md-3 text-center">
                     {dataItem.eventStatus}

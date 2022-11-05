@@ -14,7 +14,7 @@ const Introduce: React.FC = () => {
                         <img src="../../assets/images/ChiVan.jpg" alt="Chi Vạn" style={{ width: 256 }} />
                     </div> 
                     <div className="col-md-8">  
-                        <p> 
+                        <p className="lead-2"> 
                             <Translation tid="header_about_description" /> 
                         </p>
                     </div> 

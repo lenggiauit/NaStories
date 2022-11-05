@@ -654,7 +654,7 @@ ul.list-infor li:before {
   margin-right: 5px;
 }
 .pricing-1{
-  min-height: 710px;
+  min-height: 800px;
   cursor: pointer;
 }
 .bottom {
@@ -665,7 +665,7 @@ ul.list-infor li:before {
   color: #999 !important;
 }
 .home-post{
-  height: 350px;
+  height: 375px;
   overflow: hidden;
 }
 
@@ -673,14 +673,20 @@ ul.list-infor li:before {
   height: 220px;
   overflow: hidden;
 }
-
-
-
+ 
 .form-control, .custom-file-label{
   color: #111 !important;
   border: 1px solid #ccc !important;
 }
-    
+p{
+  font-size: 16px !important;
+}
+.sidebar-title{
+  font-size: 17px !important;
+}
+header.text-infor{
+  font-size: 17px !important;
+}    
  
  
  
