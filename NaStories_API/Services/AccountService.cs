@@ -96,6 +96,11 @@ namespace NaStories.API.Services
             return await _accountServiceRepository.Register(name, email, password);
         }
 
+        public async Task<ResultCode> Register(string name, string email, string password, string fullname, string avatar)
+        {
+            return await _accountServiceRepository.Register(name, email, password, fullname, avatar);
+        }
+
         public async Task<ResultCode> ResetPassword(string userInfo, string newPassword)
         {
             try

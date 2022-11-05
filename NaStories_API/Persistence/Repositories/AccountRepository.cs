@@ -281,6 +281,52 @@ namespace NaStories.API.Persistence.Repositories
 
         }
 
+        public async Task<ResultCode> Register(string name, string email, string password, string fullname, string avatar)
+        {
+            try
+            {
+                var existUser = await _context.User
+                    .Where(u => u.UserName.Equals(name) || u.Email.Equals(email))
+                    .Select(u => new User()
+                    {
+                        Id = u.Id,
+                        Email = u.Email,
+                    })
+                    .FirstOrDefaultAsync();
+                if (existUser != null)
+                {
+                    if (existUser.Email.Equals(email))
+                        return ResultCode.RegisterExistEmail;
+                    else
+                        return ResultCode.RegisterExistUserName;
+                }
+                else
+                {
+                    User newUser = new User()
+                    {
+                        Id = Guid.NewGuid(),
+                        FullName = fullname,
+                        Avatar = avatar,
+                        UserName = name,
+                        Email = email,
+                        IsActive = true,
+                        Password = password,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = Guid.Empty,
+                        RoleId = _context.Role.Where(r => r.Name.Equals(Constants.DefaultRole)).FirstOrDefaultAsync().Result.Id
+                    };
+                    await _context.User.AddAsync(newUser);
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
         public async Task<bool> UpdateProfile(Guid userId, UpdateProfileRequest payload)
         {
             try

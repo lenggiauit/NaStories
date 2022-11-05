@@ -50,9 +50,8 @@ const Message: React.FC = (): ReactElement => {
 
     const selectedConversationHandler = (conv: Conversation) => {
         setSelectedConversation(conv);
-        // if (signalRHubConnection.state === 'Connected' && conv) {
-        //     signalRHubConnection.send("startConversation", conv?.id, JSON.stringify(conv));
-        // }
+        signalRHubConnection.send("startConversation", conv?.id, JSON.stringify(conv));
+        
     };
 
     const createConversationHandler = (conv: Conversation) => {

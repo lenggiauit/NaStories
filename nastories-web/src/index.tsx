@@ -10,6 +10,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 ReactDOM.render(
+  // local key:  522351386373-vd9iv3qesca501vuv0ccbhmth4ema178.apps.googleusercontent.com
+  // prod key : 1075286664742-righjavc1rvvb1ba5mdk674gv3gis7v3.apps.googleusercontent.com
   <GoogleOAuthProvider clientId="1075286664742-righjavc1rvvb1ba5mdk674gv3gis7v3.apps.googleusercontent.com">
   <Provider store={store} >
     <React.StrictMode>

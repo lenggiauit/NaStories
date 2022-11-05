@@ -204,6 +204,7 @@ namespace NaStories.API.Persistence.Repositories
                     .Where(e => e.UserId == null && e.Start > DateTime.UtcNow.AddDays(adjustmentDay))
                     .OrderBy(e => e.Start)
                     .AsNoTracking() 
+                    .Take(15)
                     .ToListAsync(), ResultCode.Success);
 
             }

@@ -474,6 +474,15 @@ namespace NaStories.API.Persistence.Repositories
 
             if(ms != null)
             {
+                foreach (var item in ms.SeenByUids.Split(','))
+                {
+                    if(!userIds.Contains( Guid.Parse(item)))
+                    {
+                        userIds.Add( Guid.Parse(item)); 
+                    }
+                }
+
+                userIds = userIds.Distinct().ToList();
                 ms.SeenByUids = String.Format("{0},{1}", ms.SeenByUids, string.Join(",", userIds)); 
                 _context.ConversationMessage.Update(ms);
                 await _context.SaveChangesAsync();

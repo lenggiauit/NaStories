@@ -20,6 +20,7 @@ namespace NaStories.API.Domain.Repositories
         Task UpdateUserPasword(Guid id, string newPassword);
         Task<bool> UpdateProfile(Guid id, UpdateProfileRequest payload);
         Task<bool> UpdateUserAvatar(Guid id, string avartarUrl);
-        Task<ResultCode> CheckEmailWithUser(string email, Guid id); 
+        Task<ResultCode> CheckEmailWithUser(string email, Guid id);
+        Task<ResultCode> Register(string name, string email, string password, string fullname, string avatar);
     }
 }

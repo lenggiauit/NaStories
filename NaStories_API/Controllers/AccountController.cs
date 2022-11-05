@@ -127,7 +127,13 @@ namespace NaStories.API.Controllers
                var googleApiResponse = _httpClientFactoryService.GetAsync(string.Format(_appSettings.GoogleapisUrl, access_token)).Result;
                if(googleApiResponse != null)
                 {
-                    var result = await _accountServices.Register(googleApiResponse["email"].ToString(), googleApiResponse["email"].ToString(), string.Empty);
+                    var result = await _accountServices.Register(
+                        googleApiResponse["email"].ToString(), 
+                        googleApiResponse["email"].ToString(), 
+                        string.Empty,
+                        googleApiResponse["name"].ToString(),
+                        googleApiResponse["picture"].ToString()
+                        );
                     return new BaseResponse<ResultCode>(string.Empty, result); 
                 }
                 else

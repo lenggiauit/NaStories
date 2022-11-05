@@ -106,6 +106,7 @@
     "Profile": "Hồ Sơ",
     "btnCreate": "Tạo mới",
     "EmailAlreadyRegistered": "Email của bạn đã được đăng ký rồi!",
-    "RegisterSuccess": "Đăng ký thành công"
+    "RegisterSuccess": "Đăng ký thành công",
+    "[UpdateUserAvatarSuccess]": "Cập nhật hình đại diện thành công!"
     
 }

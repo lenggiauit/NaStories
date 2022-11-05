@@ -14,6 +14,7 @@ export const signalRHubConnection = new signalR.HubConnectionBuilder()
     .withUrl(appSetting.BaseUrl + "conversationServiceHub", {
         accessTokenFactory: () => getLoggedUser()?.accessToken,
     })
+    //.configureLogging(signalR.LogLevel.Trace)
     .withAutomaticReconnect() 
     .build();
 

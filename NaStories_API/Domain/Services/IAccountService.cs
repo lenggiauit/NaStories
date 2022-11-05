@@ -12,7 +12,8 @@ namespace NaStories.API.Domain.Services
         Task<User> GetById(Guid id);
         Task<User> Login(string name, string password);
         Task<User> LoginWithGoogle(string email);
-        Task<ResultCode> Register(string name, string email, string password);
+        Task<ResultCode> Register(string name, string email, string password); 
+        Task<ResultCode> Register(string name, string email, string password, string fullname, string avatar);
         Task<ResultCode> CheckEmail(string email);
         Task<ResultCode> CheckUserName(string userName);
         Task<ResultCode> ForgotPassword(string email);
