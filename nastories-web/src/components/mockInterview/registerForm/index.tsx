@@ -70,8 +70,7 @@ const MockInterviewRegisterForm: React.FC = () => {
             email: Yup.string().email().required(dictionaryList[locale]["RequiredField"])
             .max(150), 
             ageRange: Yup.string().required(dictionaryList[locale]["RequiredField"]), 
-            note: Yup.string() 
-            .max(500), 
+            note: Yup.string(), 
             resume: Yup.mixed().test("resume", dictionaryList[locale]["RequiredField"], function test(value) {
                 return currentResume != null && currentResume.length > 0;
               }), 
@@ -251,7 +250,7 @@ const MockInterviewRegisterForm: React.FC = () => {
 
         return (
             <>
-                {addEditMockInterviewStatus.isLoading && <PageLoading />}
+                {(addEditMockInterviewStatus.isLoading || uploadFileData.isLoading) && <PageLoading />}
                 {mockInterviewHeader()}
                 <section className="section">
                     <div className="container">
@@ -355,7 +354,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="note" maxLength={500} placeholder="Ghi chú thêm (nếu có)" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="note" placeholder="Ghi chú thêm (nếu có)" />
                                             <ErrorMessage
                                                 name="note"
                                                 component="div"
@@ -363,7 +362,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                             />
                                         </div> 
                                         <div className="form-group col-md-12">
-                                            <p>Bạn chọn một ngày trong danh sách ngày trong combobox bên dưới, nếu không có ngày phù hợp hoặc không còn ngày trống hãy chọn option 'Để sau' </p>
+                                            <p>Thời gian</p>
                                             <Field as="select" type="select" name="eventBookingDateId"
                                                 className="form-control" placeholder="Booking date">
                                                 <option value="" label="Chọn ngày">Chọn ngày</option>
@@ -390,7 +389,7 @@ const MockInterviewRegisterForm: React.FC = () => {
                                             </p>
                                             <div className="custom-control custom-checkbox">
                                                 <Field type="checkbox" className="custom-control-input" checked={isUnderstand ? "checked" : ""} />
-                                                <label className="custom-control-label" onClick={handleIsUnderstandClick}>Mình đã rõ</label>
+                                                <label className="custom-control-label" style={{fontSize: 16}} onClick={handleIsUnderstandClick}>Mình đã rõ</label>
                                             </div>
                                         </div>
                                         <div className="form-group col-md-12 text-center hide">
@@ -400,6 +399,10 @@ const MockInterviewRegisterForm: React.FC = () => {
                                             <button className="btn btn-lg btn-primary " type="submit" style={{ width: 250 }}  >
                                                 <Translation tid="Submit" />
                                             </button>
+                                        </div>
+
+                                        <div className="col-md-12 text-center">
+                                            Bạn gặp khó khăn khi đăng ký?<a target="_blank" href={appSetting.SiteUrl + "messages"}> Chat với Na </a>
                                         </div>
 
 

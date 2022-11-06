@@ -206,7 +206,8 @@ const Message: React.FC = (): ReactElement => {
                     <div className="row h-100">
                         <div className="col-sm-3 border-right p-0 pt-2">
                             <h2><Translation tid="Chats" /></h2>
-                            {/* <div className="input-group input-group-search m-2 mb-5">
+                            {currentUser != null && currentUser.role?.name == "Administrator" && 
+                            <div className="input-group input-group-search m-2 mb-5">
                                 {isSearchingUser &&
                                     <div className="input-group-prepend">
                                         <span><a href="#" onClick={() => { if (txtSearchRef.current) { txtSearchRef.current.value = ''; } setIsSearchingUser(false) }}> <i className="bi bi-arrow-left" style={{ fontSize: 20, marginRight: 5 }} ></i> </a></span>
@@ -214,7 +215,7 @@ const Message: React.FC = (): ReactElement => {
                                 }
                                 <input type="text" ref={txtSearchRef} className="form-control border-1 form-control-sm rounded-pill" onKeyDown={handleSeachingUser} placeholder="Search messenger" />
 
-                            </div> */}
+                            </div>  }
                             {((GetConversationListByUserStatus.isLoading) || (ConversationalSearchKeywordStatus.isLoading)) &&
                                 <>
                                     <LocalSpinner />

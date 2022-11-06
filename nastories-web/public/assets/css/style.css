@@ -594,7 +594,7 @@ label.btn {
 }
 
 .modal-body{
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - 150px);
   overflow: auto;
 }
 
@@ -674,10 +674,15 @@ ul.list-infor li:before {
   overflow: hidden;
 }
  
-.form-control, .custom-file-label{
+.form-control, .custom-file-label, .custom-control-input{
   color: #111 !important;
   border: 1px solid #ccc !important;
 }
+
+.custom-control-label::before{
+  border: 1px solid #ccc !important;
+}
+
 p{
   font-size: 16px !important;
 }

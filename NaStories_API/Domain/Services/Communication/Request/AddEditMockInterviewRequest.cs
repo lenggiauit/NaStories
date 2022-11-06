@@ -30,9 +30,7 @@ namespace NaStories.API.Domain.Services.Communication.Request
        
         [MaxLength(250)]
         public string CoverLetter { get; set; }
-
-        
-        [MaxLength(500)]
+         
         public string Note { get; set; }
         
         public Guid? EventBookingDateId { get; set; }

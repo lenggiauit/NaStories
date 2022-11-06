@@ -83,6 +83,7 @@ namespace NaStories_API
             services.AddScoped<ConversationServiceHub>();
             services.AddSignalR();
             // services
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<IAccountService, AccountService>(); 
             services.AddScoped<IEmailService, EmailService>();
@@ -91,16 +92,17 @@ namespace NaStories_API
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IEventService, EventService>();
-            services.AddScoped<INotificationService, NotificationService>();
+
 
             // Repositories
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();  
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<IRefRepository, RefRepository>();
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
-            services.AddScoped<INotificationRepository, NotificationRepository>();
+           
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // File Service
             services.AddTransient<IFileService, FileService>();

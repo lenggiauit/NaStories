@@ -20,11 +20,11 @@ namespace NaStories.API.Domain.Entities
         public string Problem { get; set; }
         [MaxLength(150)]
         public string ProblemOther { get; set; }
-        [MaxLength(500)]
+       
         public string ProblemDescription { get; set; }
-        [MaxLength(500)]
+        
         public string YourSolutionDescription { get; set; }
-        [MaxLength(500)]
+       
         public string YourExpectationDescription { get; set; }
         public Guid? EventBookingDateId { get; set; }
         public virtual EventBookingDate EventBookingDate { get; set; }
@@ -43,7 +43,10 @@ namespace NaStories.API.Domain.Entities
             get 
             {
                 
-                return this.RequestChangeCount <= 2 && !IsDeleted && this.EventStatus == PrivateTalkStatusEnum.Submitted.ToDescriptionString();
+                return this.RequestChangeCount  < 1 
+                    && !IsDeleted 
+                    && this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() 
+                    && this.EventStatus != PrivateTalkStatusEnum.Completed.ToDescriptionString();
 
             }
         }
@@ -53,7 +56,7 @@ namespace NaStories.API.Domain.Entities
         {
             get
             {
-                return this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != PrivateTalkStatusEnum.Confirmed.ToDescriptionString();
+                return this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != PrivateTalkStatusEnum.Completed.ToDescriptionString();
 
             }
         }

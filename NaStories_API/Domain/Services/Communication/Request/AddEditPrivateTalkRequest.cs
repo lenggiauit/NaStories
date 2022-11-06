@@ -20,14 +20,11 @@ namespace NaStories.API.Domain.Services.Communication.Request
         public string Problem { get; set; }
         [MaxLength(150)]
         public string ProblemOther { get; set; }
-        [Required]
-        [MaxLength(500)]
+        [Required] 
         public string ProblemDescription { get; set; }
-        [Required]
-        [MaxLength(500)]
+        [Required] 
         public string YourSolutionDescription { get; set; }
-        [Required]
-        [MaxLength(500)]
+        [Required] 
         public string YourExpectationDescription { get; set; }
         public Guid? EventBookingDateId { get; set; }
 

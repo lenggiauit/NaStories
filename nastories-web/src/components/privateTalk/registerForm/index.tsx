@@ -73,12 +73,9 @@ const PrivateTalkRegisterForm: React.FC = () => {
                     return schema.required(dictionaryList[locale]["RequiredField"])
                 }
             }).max(150),
-            problemDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
-            .max(500),
-            yourSolutionDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
-            .max(500),
-            yourExpectationDescription: Yup.string().required(dictionaryList[locale]["RequiredField"])
-            .max(500),
+            problemDescription: Yup.string().required(dictionaryList[locale]["RequiredField"]), 
+            yourSolutionDescription: Yup.string().required(dictionaryList[locale]["RequiredField"]), 
+            yourExpectationDescription: Yup.string().required(dictionaryList[locale]["RequiredField"]), 
             redeemCode: Yup.string().max(20)
         });
     }
@@ -287,7 +284,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="problemDescription" maxLength={500} placeholder="Mô tả chi tiết về vấn đề của bạn*" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="problemDescription" placeholder="Mô tả chi tiết về vấn đề của bạn*" />
                                             <ErrorMessage
                                                 name="problemDescription"
                                                 component="div"
@@ -296,7 +293,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourSolutionDescription" maxLength={500} placeholder="Bạn đã tự tìm giải pháp cho vấn đề của mình như thế nào và giải pháp đó là gì?*" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourSolutionDescription" placeholder="Bạn đã tự tìm giải pháp cho vấn đề của mình như thế nào và giải pháp đó là gì?*" />
                                             <ErrorMessage
                                                 name="yourSolutionDescription"
                                                 component="div"
@@ -305,7 +302,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourExpectationDescription" maxLength={500} placeholder="Bạn kì vọng Na sẽ giúp được bạn những gì và như thế nào?*" />
+                                            <Field type="textarea" as="textarea" row={7} className="form-control" name="yourExpectationDescription" placeholder="Bạn kì vọng Na sẽ giúp được bạn những gì và như thế nào?*" />
                                             <ErrorMessage
                                                 name="yourExpectationDescription"
                                                 component="div"
@@ -314,7 +311,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <p>Bạn chọn một ngày trong danh sách ngày trong combobox bên dưới, nếu không có ngày phù hợp hoặc không còn ngày trống hãy chọn option 'Để sau' </p>
+                                            <p>Thời gian</p>
                                             <Field as="select" type="select" name="eventBookingDateId"
                                                 className="form-control" placeholder="Booking date">
                                                 <option value="" label="Chọn ngày">Chọn ngày</option>
@@ -341,7 +338,7 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                             </p>
                                             <div className="custom-control custom-checkbox">
                                                 <Field type="checkbox" className="custom-control-input" checked={isUnderstand ? "checked" : ""} />
-                                                <label className="custom-control-label" onClick={handleIsUnderstandClick}>Mình đã rõ</label>
+                                                <label className="custom-control-label" style={{fontSize: 16}} onClick={handleIsUnderstandClick}>Mình đã rõ</label>
                                             </div>
                                         </div>
 
@@ -354,7 +351,9 @@ const PrivateTalkRegisterForm: React.FC = () => {
                                                 <Translation tid="Submit" />
                                             </button>
                                         </div>
-
+                                        <div className="col-md-12 text-center">
+                                            Bạn gặp khó khăn khi đăng ký?<a target="_blank" href={appSetting.SiteUrl + "messages"}> Chat với Na </a>
+                                        </div>
 
                                     </div>
 

@@ -82,14 +82,17 @@ const AdminMockInterviewDetail: React.FC = () => {
     useEffect(() => {
         if (CancelMockInterviewStatus.data && CancelMockInterviewStatus.data.resultCode == ResultCode.Success) {
             showDialogModal({ message: "Cập nhật thành công" });
+            getEventBookingAvaiableDateQueryStatus.refetch();
         }
     }, [CancelMockInterviewStatus]);
 
+    
     useEffect(() => {
         if (UpdateMockInterviewStatus.data && UpdateMockInterviewStatus.data.resultCode == ResultCode.Success) {
             setEventStatus(null);
             setEventDateId(null);
             showDialogModal({ message: "Cập nhật thành công" });
+            getEventBookingAvaiableDateQueryStatus.refetch();
         }
 
 
@@ -129,7 +132,7 @@ const AdminMockInterviewDetail: React.FC = () => {
                                             getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success &&
                                             getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
                                                 <option key={b.id} value={b.id} selected={getdetailStatus.data.resource.eventBookingDate?.id == b.id} >
-                                                    {dateFormat(b.start, "mmm dd, yyyy - HH:MM")}
+                                                    {dateFormat(b.start, "mmm dd, yyyy - HH:MM") + (b.user != null ? " - " + b.user.email : "" ) }
                                                 </option>
                                             ))}
                                     </select>
@@ -211,7 +214,7 @@ const AdminMockInterviewDetail: React.FC = () => {
                             <div className="col-md-12 text-center">
                                 <button className="btn btn-secondary " onClick={() => window.location.href = appSetting.SiteUrl + "admin/mock-interview"}>Back to list</button>
                                 <button className="btn btn-primary ml-2" onClick={handleOnSaveChange} disabled={!(eventStatus != null || eventDateId != null)} > Save change</button>
-                                <button className="btn btn-danger ml-2" onClick={handleOnCancel} > Hủy ngày</button>
+                                {/* <button className="btn btn-danger ml-2" onClick={handleOnCancel} > Hủy ngày</button> */}
                             </div>
                         </div>
                     </div>

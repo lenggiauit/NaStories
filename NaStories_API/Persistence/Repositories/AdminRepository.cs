@@ -380,7 +380,8 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
                 return (await _context.EventBookingDate
-                    .Where(e => e.UserId == null && e.Start > DateTime.UtcNow.AddDays(adjustmentDays))
+                    .Where(e => e.Start > DateTime.UtcNow.AddDays(-30))
+                    .Include(e => e.User)
                     .OrderBy(e => e.Start)
                     .AsNoTracking()
                     .ToListAsync(), ResultCode.Success);
@@ -579,13 +580,42 @@ namespace NaStories.API.Persistence.Repositories
                 {
                     var oldEventBookingDateId = privateTalk.EventBookingDateId;
                     if (!string.IsNullOrEmpty(payload.Status))
+                    {
                         privateTalk.EventStatus = payload.Status;
+
+                        // send notification
+                        var newNotify = new Notification()
+                        {
+                            Id = Guid.NewGuid(),
+                            CreatedDate = DateTime.Now,
+                            Message = "Private Talk đã chuyển sang trạng thái: " + ((PrivateTalkStatusEnum)Enum.Parse(typeof(PrivateTalkStatusEnum), payload.Status)).ToDescriptionString(),
+                            UserId = userId,
+                        };
+                        await _context.Notification.AddAsync(newNotify);
+
+                        if ((PrivateTalkStatusEnum)Enum.Parse(typeof(PrivateTalkStatusEnum), payload.Status) == PrivateTalkStatusEnum.Canceled)
+                        {
+                            var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
+                            if (oldBookingDate != null)
+                            {
+                                oldBookingDate.UserId = null;
+                                oldBookingDate.Title = "Available time";
+                                oldBookingDate.EventName = "";
+                                oldBookingDate.UpdatedDate = DateTime.Now;
+                                _context.EventBookingDate.Update(oldBookingDate);
+                            }
+                            privateTalk.EventBookingDateId = null;
+
+                        }
+                    }
                     if ( payload.EventBookingDateId != null && payload.EventBookingDateId != Guid.Empty)
                         privateTalk.EventBookingDateId = payload.EventBookingDateId;
 
                     _context.PrivateTalk.Update(privateTalk);
 
-                    if (payload.EventBookingDateId != null && !payload.EventBookingDateId.Equals(Guid.Empty))
+                    if ( (string.IsNullOrEmpty(payload.Status) || 
+                        !string.IsNullOrEmpty(payload.Status) && (PrivateTalkStatusEnum)Enum.Parse(typeof(PrivateTalkStatusEnum), payload.Status) != PrivateTalkStatusEnum.Canceled ) 
+                        &&  payload.EventBookingDateId != null && !payload.EventBookingDateId.Equals(Guid.Empty))
                     {
                         var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
                         if(oldBookingDate != null)
@@ -607,6 +637,8 @@ namespace NaStories.API.Persistence.Repositories
                             _context.EventBookingDate.Update(bookingDate);
                         } 
                     }
+
+                    
 
 
                     await _context.SaveChangesAsync();
@@ -772,13 +804,45 @@ namespace NaStories.API.Persistence.Repositories
                 {
                     var oldEventBookingDateId = mockInterview.EventBookingDateId;
                     if (!string.IsNullOrEmpty(payload.Status))
+                    {
                         mockInterview.EventStatus = payload.Status;
+
+                        // send notification
+                        var newNotify = new Notification()
+                        {
+                            Id = Guid.NewGuid(),
+                            CreatedDate = DateTime.Now,
+                            Message = "Mock Interview đã chuyển sang trạng thái: " + ((MockInterviewStatusEnum)Enum.Parse(typeof(MockInterviewStatusEnum), payload.Status)).ToDescriptionString() ,
+                            UserId = userId,
+                        };
+                        await _context.Notification.AddAsync(newNotify);
+                         
+
+                        if ((MockInterviewStatusEnum)Enum.Parse(typeof(MockInterviewStatusEnum), payload.Status) == MockInterviewStatusEnum.Canceled)
+                        {
+                            var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
+                            if (oldBookingDate != null)
+                            {
+                                oldBookingDate.UserId = null;
+                                oldBookingDate.Title = "Available time";
+                                oldBookingDate.EventName = "";
+                                oldBookingDate.UpdatedDate = DateTime.Now;
+                                _context.EventBookingDate.Update(oldBookingDate);
+                            }
+                            mockInterview.EventBookingDateId = null;
+
+                        }
+                    }
                     if (payload.EventBookingDateId != null && payload.EventBookingDateId != Guid.Empty)
                         mockInterview.EventBookingDateId = payload.EventBookingDateId;
 
                     _context.MockInterview.Update(mockInterview);
 
-                    if (payload.EventBookingDateId != null && !payload.EventBookingDateId.Equals(Guid.Empty))
+                    if ( 
+                        (string.IsNullOrEmpty(payload.Status) || 
+                        !string.IsNullOrEmpty(payload.Status) && (MockInterviewStatusEnum)Enum.Parse(typeof(MockInterviewStatusEnum), payload.Status) != MockInterviewStatusEnum.Canceled)  
+                        && 
+                        payload.EventBookingDateId != null && !payload.EventBookingDateId.Equals(Guid.Empty))
                     {
                         var oldBookingDate = await _context.EventBookingDate.Where(b => b.Id.Equals(oldEventBookingDateId)).FirstOrDefaultAsync();
                         if (oldBookingDate != null)

@@ -33,7 +33,8 @@ namespace NaStories.API.Persistence.Repositories
                         Id = Guid.NewGuid(),
                         Title = request.Payload.Title,
                         CreatedBy = userId,
-                        CreatedDate = DateTime.Now
+                        CreatedDate = DateTime.Now,
+                        LastMessageDate = DateTime.Now,
                     };
                     await _context.Conversation.AddAsync(conversation);
                     List<ConversationUsers> listc = new List<ConversationUsers>();
@@ -163,7 +164,8 @@ namespace NaStories.API.Persistence.Repositories
                             Id = conversationId,
                             Title = appSettings.SiteName,
                             CreatedBy = userId,
-                            CreatedDate = DateTime.Now
+                            CreatedDate = DateTime.Now,
+                            LastMessageDate = DateTime.Now,
                         };
                         await _context.Conversation.AddAsync(conversation);
 
@@ -318,7 +320,7 @@ namespace NaStories.API.Persistence.Repositories
                 //    .ToListAsync();
 
 
-                return await Task.FromResult( _context.Conversation.AsNoTracking()
+                var list = _context.Conversation.AsNoTracking()
                     .OrderByDescending(s => s.UpdatedBy)
                     .Where(c => c.Title.ToLower().Contains(request.Payload.Keyword.ToLower()))
                     .Join(_context.ConversationUsers,
@@ -342,7 +344,7 @@ namespace NaStories.API.Persistence.Repositories
                             Avatar = u.Avatar,
                             FullName = u.FullName,
                             Phone = u.Phone,
-                            Address = u.Address, 
+                            Address = u.Address,
                             Role = _context.Role.Where(r => r.Id == u.RoleId).FirstOrDefault()
                         })
                         .ToList()
@@ -364,8 +366,69 @@ namespace NaStories.API.Persistence.Repositories
                         CreatedDate = DateTime.Now,
                         Conversationers = new List<User> { currentUser, u },
                     }))
-                    //.DistinctBy(d => d.Conversationers )
-                    .ToList());
+                    .DistinctBy(d => d.Conversationers)
+                    .ToList();
+
+                var newList = new List<Conversation>();
+
+                foreach (var item in list)
+                {
+                    if(!newList.Any(l => l.Title.Equals( item.Title)))
+                    {
+                        newList.Add(item);
+                    }
+                } 
+
+                return await Task.FromResult(newList);
+
+                //return await Task.FromResult( _context.Conversation.AsNoTracking()
+                //    .OrderByDescending(s => s.UpdatedBy)
+                //    .Where(c => c.Title.ToLower().Contains(request.Payload.Keyword.ToLower()))
+                //    .Join(_context.ConversationUsers,
+                //    c => c.Id,
+                //    cus => cus.ConversationId,
+                //    (c, cus) => new Conversation()
+                //    {
+                //        Id = c.Id,
+                //        Title = c.Title,
+                //        LastMessage = c.LastMessage,
+                //        CreatedBy = c.CreatedBy,
+                //        CreatedDate = c.CreatedDate,
+                //        UpdatedBy = c.UpdatedBy,
+                //        LastMessageDate = c.LastMessageDate,
+                //        Conversationers = _context.ConversationUsers.Where(cus2 => cus2.ConversationId.Equals(c.Id))
+                //        .Join(_context.User, cus2 => cus2.UserId, u => u.Id, (cus2, u) => new User()
+                //        {
+                //            Id = u.Id,
+                //            UserName = u.UserName,
+                //            Email = u.Email,
+                //            Avatar = u.Avatar,
+                //            FullName = u.FullName,
+                //            Phone = u.Phone,
+                //            Address = u.Address, 
+                //            Role = _context.Role.Where(r => r.Id == u.RoleId).FirstOrDefault()
+                //        })
+                //        .ToList()
+                //    })
+                //    .AsEnumerable()
+                //    .Union(_context.User.AsNoTracking().Where(u => (u.UserName.Contains(request.Payload.Keyword) || u.FullName.Contains(request.Payload.Keyword)) && u.Id != currentUser.Id)
+                //        .Select(u => new User()
+                //        {
+                //            Id = u.Id,
+                //            UserName = u.UserName,
+                //            Email = u.Email,
+                //            FullName = u.FullName,
+                //        })
+                //    .Select(u => new Conversation()
+                //    {
+                //        Id = Guid.NewGuid(),
+                //        Title = !string.IsNullOrEmpty(u.FullName) ? u.FullName : u.UserName,
+                //        LastMessage = string.Empty,
+                //        CreatedDate = DateTime.Now,
+                //        Conversationers = new List<User> { currentUser, u },
+                //    }))
+                //    .DistinctBy(d => d.Conversationers )
+                //    .ToList());
 
             }
             catch (Exception ex)

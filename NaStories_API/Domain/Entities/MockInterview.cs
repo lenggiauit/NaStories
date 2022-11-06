@@ -24,7 +24,7 @@ namespace NaStories.API.Domain.Entities
         public string CoverLetter { get; set; }
         [MaxLength(250)]
         public string JobDescription { get; set; }
-        [MaxLength(500)]
+       
         public string Note { get; set; }
 
         public Guid? EventBookingDateId { get; set; }
@@ -44,7 +44,10 @@ namespace NaStories.API.Domain.Entities
         {
             get
             {
-                return this.RequestChangeCount <= 2 && !IsDeleted && this.EventStatus == MockInterviewStatusEnum.Submitted.ToString();
+                return this.RequestChangeCount < 1 
+                    && !IsDeleted 
+                    && this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString() 
+                    && this.EventStatus != MockInterviewStatusEnum.Completed.ToDescriptionString();
 
             }
         }
@@ -55,7 +58,7 @@ namespace NaStories.API.Domain.Entities
             get
             { 
                
-                return this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != MockInterviewStatusEnum.Confirmed.ToDescriptionString();
+                return this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != MockInterviewStatusEnum.Completed.ToDescriptionString();
 
             }
         }
