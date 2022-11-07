@@ -44,8 +44,9 @@ namespace NaStories.API.Domain.Entities
         {
             get
             {
-                return this.RequestChangeCount < 1 
-                    && !IsDeleted 
+                return this.RequestChangeCount == 0
+                    && !IsDeleted
+                    && this.EventStatus != MockInterviewStatusEnum.Pending.ToDescriptionString()
                     && this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString() 
                     && this.EventStatus != MockInterviewStatusEnum.Completed.ToDescriptionString();
 
@@ -56,9 +57,9 @@ namespace NaStories.API.Domain.Entities
         public bool IsEnableDelete
         {
             get
-            { 
-               
-                return this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != MockInterviewStatusEnum.Completed.ToDescriptionString();
+            {  
+                return  this.EventStatus != MockInterviewStatusEnum.Canceled.ToDescriptionString()  
+                    && this.EventStatus != MockInterviewStatusEnum.Completed.ToDescriptionString();
 
             }
         }

@@ -55,15 +55,21 @@ const ShowModal: React.FC<Props> = ({ options }) => {
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Mô tả vấn đề:</td>
-                                <td>{options.data.problemDescription}</td>
+                                <td> 
+                                <div dangerouslySetInnerHTML={{ __html: options.data.problemDescription }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Giải pháp:</td>
-                                <td>{options.data.yourSolutionDescription}</td>
+                                <td> 
+                                <div dangerouslySetInnerHTML={{ __html: options.data.yourSolutionDescription }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Mong muốn:</td>
-                                <td>{options.data.yourExpectationDescription}</td>
+                                <td> 
+                                    <div dangerouslySetInnerHTML={{ __html: options.data.yourExpectationDescription }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>

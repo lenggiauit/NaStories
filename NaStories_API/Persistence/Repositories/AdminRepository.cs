@@ -519,10 +519,10 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
 
-                var eventRequestChangeReason = await _context.EventRequestChangeReason.Where(e => e.PrivateTalkId.Equals(id)).FirstOrDefaultAsync();
+                var eventRequestChangeReason = await _context.EventRequestChangeReason.Where(e => e.PrivateTalkId.Equals(id)).OrderByDescending(e=> e.CreateDate).FirstOrDefaultAsync();
                 if (eventRequestChangeReason != null) {
                     
-                    var eventBookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(eventRequestChangeReason.EventBookingDateId)).FirstOrDefaultAsync();
+                    var eventBookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(eventRequestChangeReason.EventBookingDateId)).OrderByDescending(e => e.CreatedDate).FirstOrDefaultAsync();
                     eventRequestChangeReason.EventBookingDate = eventBookingDate;
                 }
                  
@@ -742,11 +742,11 @@ namespace NaStories.API.Persistence.Repositories
             try
             {
 
-                var eventRequestChangeReason = await _context.EventRequestChangeReason.Where(e => e.MockInterviewId.Equals(id)).FirstOrDefaultAsync();
+                var eventRequestChangeReason = await _context.EventRequestChangeReason.Where(e => e.MockInterviewId.Equals(id)).OrderByDescending(e => e.CreateDate ).FirstOrDefaultAsync();
                 if (eventRequestChangeReason != null)
                 {
 
-                    var eventBookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(eventRequestChangeReason.EventBookingDateId)).FirstOrDefaultAsync();
+                    var eventBookingDate = await _context.EventBookingDate.Where(e => e.Id.Equals(eventRequestChangeReason.EventBookingDateId)).OrderByDescending(e => e.CreatedDate).FirstOrDefaultAsync();
                     eventRequestChangeReason.EventBookingDate = eventBookingDate;
                 }
 

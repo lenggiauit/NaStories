@@ -149,15 +149,21 @@ const AdminPrivateTalkDetail: React.FC = () => {
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Mô tả vấn đề:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.problemDescription}</td>
+                                <td colSpan={2}> 
+                                <div dangerouslySetInnerHTML={{ __html: getdetailStatus.data.resource.problemDescription }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Giải pháp:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.yourSolutionDescription}</td>
+                                <td colSpan={2}> 
+                                <div dangerouslySetInnerHTML={{ __html: getdetailStatus.data.resource.yourSolutionDescription }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Mong muốn:</td>
-                                <td colSpan={2}>{getdetailStatus.data.resource.yourExpectationDescription}</td>
+                                <td colSpan={2}> 
+                                    <div dangerouslySetInnerHTML={{ __html: getdetailStatus.data.resource.yourExpectationDescription }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>

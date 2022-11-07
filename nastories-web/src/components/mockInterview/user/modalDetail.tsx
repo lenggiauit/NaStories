@@ -63,7 +63,9 @@ const ShowModal: React.FC<Props> = ({ options }) => {
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Note:</td>
-                                <td>{options.data.note}</td>
+                                <td> 
+                                    <div dangerouslySetInnerHTML={{ __html: options.data.note }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>

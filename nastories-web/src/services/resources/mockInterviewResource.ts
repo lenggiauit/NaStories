@@ -1,4 +1,5 @@
 import { EventBookingDateResource } from "./eventBookingDateResource";
+import { EventRequestChangeReasonResource } from "./eventRequestChangeReasonResource";
 
 export type MockInterviewResource =
 {
@@ -17,6 +18,7 @@ export type MockInterviewResource =
     eventStatus  : any,
     isEnableRequestChange: boolean,
     isEnableDelete: boolean,
+    eventRequestChangeReason: EventRequestChangeReasonResource
     code: any,
     redeemCode: any,
 }

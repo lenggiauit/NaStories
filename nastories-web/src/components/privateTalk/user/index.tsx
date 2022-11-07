@@ -62,7 +62,7 @@ const UserPrivateTalkList: React.FC = (): ReactElement => {
                          getEventBookingAvaiableDateQueryStatus.data != null && getEventBookingAvaiableDateQueryStatus.data.resultCode== ResultCode.Success
                            && getPrivateTalkListQueryStatus.data.resource
                             .map(p => 
-                                <UserPrivateTalkItem key={v4()} dataItem={p} bookingDate={getEventBookingAvaiableDateQueryStatus.data!.resource} onSelected={onSelectedHandler} onDeleted={() =>{}} onRequestChange={() =>{}} />
+                                <UserPrivateTalkItem key={v4()} dataItem={p} bookingDate={getEventBookingAvaiableDateQueryStatus.data!.resource} onSelected={onSelectedHandler} onDeleted={() =>{}} onRequestChange={() =>{ getPrivateTalkListQueryStatus.refetch() }} />
                             )
                         }
                          

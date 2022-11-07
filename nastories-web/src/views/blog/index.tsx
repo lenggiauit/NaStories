@@ -71,10 +71,7 @@ const Blog: React.FC = (): ReactElement => {
                     <div className="container">
                         <header className="section-header">
                             <h2>Na’s Stories blog</h2>
-                            <hr />
-                            <p className="lead">
-                                Na sẽ kể những câu chuyện đời thường nhưng có ý nghĩa diễn ra xung quanh Na, hi
-                            </p>
+                            <hr /> 
                         </header>
                         <div className="row">
                             {/* <!-- Begin left side --> */}

@@ -34,6 +34,8 @@ namespace NaStories.API.Mapping
             CreateMap<PrivateTalk, PrivateTalkResource>();
             CreateMap<Notification, NotificationResource>();
             CreateMap<MockInterview, MockInterviewResource>();
+            CreateMap<EventRequestChangeReason, EventRequestChangeReasonResource>();
+            
 
 
         }

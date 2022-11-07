@@ -43,8 +43,9 @@ namespace NaStories.API.Domain.Entities
             get 
             {
                 
-                return this.RequestChangeCount  < 1 
-                    && !IsDeleted 
+                return this.RequestChangeCount == 0
+                    && !IsDeleted
+                    && this.EventStatus != PrivateTalkStatusEnum.Pending.ToDescriptionString()
                     && this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() 
                     && this.EventStatus != PrivateTalkStatusEnum.Completed.ToDescriptionString();
 
@@ -56,7 +57,8 @@ namespace NaStories.API.Domain.Entities
         {
             get
             {
-                return this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString() && this.EventStatus != PrivateTalkStatusEnum.Completed.ToDescriptionString();
+                return this.EventStatus != PrivateTalkStatusEnum.Canceled.ToDescriptionString()  
+                    && this.EventStatus != PrivateTalkStatusEnum.Completed.ToDescriptionString();
 
             }
         }

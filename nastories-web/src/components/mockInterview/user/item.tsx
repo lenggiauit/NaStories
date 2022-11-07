@@ -78,6 +78,19 @@ const UserMockInterviewItem: React.FC<Props> = ({ dataItem, bookingDate, onSelec
                 </div>
                 <div className="col-md-3 text-center">
                     {dataItem.eventStatus}
+                    {dataItem.eventRequestChangeReason != null && dataItem.eventStatus == "Chờ xác nhận" && <br /> }
+                    {dataItem.eventRequestChangeReason != null && dataItem.eventStatus == "Chờ xác nhận" && 
+
+                         dataItem.eventRequestChangeReason.eventBookingDate != null &&
+                          "(" + dateFormat(dataItem.eventRequestChangeReason.eventBookingDate.start, "mmm dd, yyyy - HH:MM") + ")"
+                    
+                    }
+                    {dataItem.eventRequestChangeReason != null && dataItem.eventStatus == "Chờ xác nhận" && 
+
+                    dataItem.eventRequestChangeReason.eventBookingDate == null &&
+                    "(Chưa xác định ngày)"
+
+                    }
                 </div>
                 <div className="col-md-3 text-right" >
                     {((dataItem.isEnableRequestChange && !isRequestChanged) && !isDeleted) && 

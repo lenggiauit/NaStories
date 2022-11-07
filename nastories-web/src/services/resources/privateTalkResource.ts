@@ -1,4 +1,5 @@
 import { EventBookingDateResource } from "./eventBookingDateResource";
+import { EventRequestChangeReasonResource } from "./eventRequestChangeReasonResource";
 
 export type PrivateTalkResource =
 {
@@ -17,4 +18,5 @@ export type PrivateTalkResource =
     isEnableDelete: boolean,
     code: any,
     redeemCode: any,
+    eventRequestChangeReason: EventRequestChangeReasonResource
 }

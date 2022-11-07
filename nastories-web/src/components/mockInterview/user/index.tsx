@@ -61,7 +61,7 @@ const UserMockInterviewList: React.FC = (): ReactElement => {
                          getEventBookingAvaiableDateQueryStatus.data != null && getEventBookingAvaiableDateQueryStatus.data.resultCode== ResultCode.Success
                            && getMockInterviewListQueryStatus.data.resource
                             .map(p => 
-                                <UserMockInterviewItem key={v4()} dataItem={p} bookingDate={getEventBookingAvaiableDateQueryStatus.data!.resource} onSelected={onSelectedHandler} onDeleted={() =>{}} onRequestChange={() =>{}} />
+                                <UserMockInterviewItem key={v4()} dataItem={p} bookingDate={getEventBookingAvaiableDateQueryStatus.data!.resource} onSelected={onSelectedHandler} onDeleted={() =>{}} onRequestChange={() =>{ getMockInterviewListQueryStatus.refetch();}} />
                             )
                         }
                          

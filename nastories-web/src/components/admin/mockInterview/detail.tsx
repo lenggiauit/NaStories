@@ -161,7 +161,9 @@ const AdminMockInterviewDetail: React.FC = () => {
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Note:</td>
-                                <td>{getdetailStatus.data.resource.note}</td>
+                                <td> 
+                                <div dangerouslySetInnerHTML={{ __html: getdetailStatus.data.resource.note }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>

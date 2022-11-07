@@ -51,6 +51,10 @@ const ShowModal: React.FC<Props> = ({ options }) => {
                                 <td>{options.data.ageRange}</td>
                             </tr>
                             <tr className="border-top border-light">
+                                <td>Language:</td>
+                                <td>{options.data.language}</td>
+                            </tr>
+                            <tr className="border-top border-light">
                                 <td>Resume:</td>
                                 <td><a target="_blank" href={options.data.resume}>Download</a></td>
                             </tr>
@@ -64,7 +68,9 @@ const ShowModal: React.FC<Props> = ({ options }) => {
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Note:</td>
-                                <td>{options.data.note}</td>
+                                <td> 
+                                    <div dangerouslySetInnerHTML={{ __html:  options.data.note }} /> 
+                                </td>
                             </tr>
                             <tr className="border-top border-light">
                                 <td>Status:</td>
