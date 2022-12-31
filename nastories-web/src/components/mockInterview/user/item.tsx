@@ -6,10 +6,12 @@ import { useRemoveMockInterviewMutation, useRequestChangeMockInterviewMutation }
 import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { MockInterviewResource } from "../../../services/resources/mockInterviewResource";
+import { ResultCode } from "../../../utils/enums";
 import calcTime from "../../../utils/time";
  
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
+import PageLoading from "../../pageLoading";
 import { Translation } from "../../translation";
 import showDeleteConfirmModal from "./modalDelete";
 import showRequestChangeModal from "./modalRequestChange";
@@ -50,18 +52,23 @@ const UserMockInterviewItem: React.FC<Props> = ({ dataItem, bookingDate, onSelec
             bookingDate: bookingDate,
             onConfirm: (bookingId, r) => {
                 RequestChangeMockInterview({ payload: {eventId: dataItem.id, eventBookingDateId: bookingId, reason: r } });
-                setIsRequestChanged(true);
-                onRequestChange(dataItem);
-                showDialogModal({ 
-                    message: dictionaryList[locale]["requestChangeMockInterviewSuccess_msg"]
-                });
+                setIsRequestChanged(true); 
             }
         });
     }, []);
 
-    
+    useEffect(() => {
+        if (RequestChangeMockInterviewStatus.data && RequestChangeMockInterviewStatus.data.resultCode == ResultCode.Success) {
+            onRequestChange(dataItem);
+            showDialogModal({ 
+                message: dictionaryList[locale]["requestChangeMockInterviewSuccess_msg"]
+            });
+        }
 
+    }, [RequestChangeMockInterviewStatus]);
+ 
     return (<>
+        {(RequestChangeMockInterviewStatus.isLoading || RemoveMockInterviewStatus.isLoading ) && <PageLoading />}
         <div className={`col-md-12`} >
             <div className="row admin-post-item border-top border-light p-2">
                  
@@ -88,8 +95,7 @@ const UserMockInterviewItem: React.FC<Props> = ({ dataItem, bookingDate, onSelec
                     {dataItem.eventRequestChangeReason != null && dataItem.eventStatus == "Chờ xác nhận" && 
 
                     dataItem.eventRequestChangeReason.eventBookingDate == null &&
-                    "(Chưa xác định ngày)"
-
+                    "(Chưa xác định ngày)" 
                     }
                 </div>
                 <div className="col-md-3 text-right" >

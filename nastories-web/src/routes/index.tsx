@@ -150,6 +150,14 @@ const MockInterview = lazy(() => {
         .then(([moduleExports]) => moduleExports);
 });
 
+const ResourcesPage = lazy(() => {
+    return Promise.all([
+        import("../views/resources"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
  
 // Admin 
 const AdminBlogCategory = lazy(() => {
@@ -171,6 +179,14 @@ const AdminBlogPost = lazy(() => {
 const AdminUsers = lazy(() => {
     return Promise.all([
         import("../views/admin/users"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+const AdminResources = lazy(() => {
+    return Promise.all([
+        import("../views/admin/manageResources"),
         new Promise(resolve => setTimeout(resolve, delayTime))
     ])
         .then(([moduleExports]) => moduleExports);
@@ -256,7 +272,7 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/notification" exact component={Notification} /> 
                         <Route path="/messages" exact component={Messages} />
                         <Route path="/profile" exact component={Profile} />
-                         
+                        <Route path="/resources" exact component={ResourcesPage} /> 
                         <Route path="/login" exact component={Login} />
                         <Route path="/register" exact component={Register} />
                         <Route path="/forgotpassword" exact component={ForgotPassword} />
@@ -281,6 +297,8 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/admin/private-talk/:id" exact component={AdminPrivateTalkDetailPage} /> 
                         <Route path="/admin/mock-interview" exact component={AdminMockInterview} /> 
                         <Route path="/admin/mock-interview/:id" exact component={AdminMockInterviewDetailPage} /> 
+                        <Route path="/admin/manageResources" exact component={AdminResources} /> 
+ 
                         {/* User  */} 
                         <Route path="/user/private-talk" exact component={UserPrivateTalk} />
                         <Route path="/user/private-talk/:id" exact component={UserPrivateTalk} />

@@ -692,6 +692,16 @@ p{
 header.text-infor{
   font-size: 17px !important;
 }    
+.custom-file-input{
+  cursor: pointer;
+}
+.input-group  {
+  color: #111 !important;
+  border: 1px solid #ccc !important;
+}
+.input-group .form-control{
+   border: 0 !important;
+}
  
  
  

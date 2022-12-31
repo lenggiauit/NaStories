@@ -589,7 +589,7 @@ namespace NaStories.API.Persistence.Repositories
                             Id = Guid.NewGuid(),
                             CreatedDate = DateTime.Now,
                             Message = "Private Talk đã chuyển sang trạng thái: " + ((PrivateTalkStatusEnum)Enum.Parse(typeof(PrivateTalkStatusEnum), payload.Status)).ToDescriptionString(),
-                            UserId = userId,
+                            UserId = privateTalk.UserId,
                         };
                         await _context.Notification.AddAsync(newNotify);
 
@@ -813,7 +813,7 @@ namespace NaStories.API.Persistence.Repositories
                             Id = Guid.NewGuid(),
                             CreatedDate = DateTime.Now,
                             Message = "Mock Interview đã chuyển sang trạng thái: " + ((MockInterviewStatusEnum)Enum.Parse(typeof(MockInterviewStatusEnum), payload.Status)).ToDescriptionString() ,
-                            UserId = userId,
+                            UserId = mockInterview.UserId,
                         };
                         await _context.Notification.AddAsync(newNotify);
                          
@@ -996,6 +996,46 @@ namespace NaStories.API.Persistence.Repositories
             {
                 _logger.LogError("Error at GetUserList method: " + ex.Message);
                 return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<ResultCode> DeleteReasonChangeMockInterview(Guid id, Guid userId)
+        {
+            try
+            {
+                var listReason = await _context.EventRequestChangeReason.Where(r => r.MockInterviewId == id).ToListAsync();
+                if(listReason .Count > 0)
+                {
+                     _context.EventRequestChangeReason.RemoveRange(listReason);
+                    await _context.SaveChangesAsync();
+                }
+
+                return  ResultCode.Success; 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at DeleteReasonChangeMockInterview method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
+        public async Task<ResultCode> DeleteReasonChangePrivateTalk(Guid id, Guid userId)
+        {
+            try
+            {
+                var listReason = await _context.EventRequestChangeReason.Where(r => r.PrivateTalkId == id).ToListAsync();
+                if (listReason.Count > 0)
+                {
+                    _context.EventRequestChangeReason.RemoveRange(listReason);
+                    await _context.SaveChangesAsync();
+                }
+
+                return ResultCode.Success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at DeleteReasonChangePrivateTalk method: " + ex.Message);
+                return ResultCode.Error;
             }
         }
     }

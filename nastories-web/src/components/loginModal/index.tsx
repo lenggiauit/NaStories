@@ -10,6 +10,7 @@ import { Translation } from "../translation";
 import * as Yup from "yup";
 import { Md5 } from "md5-typescript";
 import { useUserLoginMutation } from "../../services/account";
+import { useGoogleLogin } from "@react-oauth/google";
 let appSetting: AppSetting = require('../../appSetting.json');
 
 type Props = {
@@ -21,6 +22,7 @@ const LoginModal : React.FC<Props> = ({ isShow, onClose }) =>{
     
     const { locale, } = useAppContext(); 
     let initialValues: LoginFormValues = { username: '', password: '' };
+    const [loginGoogleResponseResult, setLoginGoogleResponseResult] = useState<ResultCode | null>(null);
     
       // login
     const [login, { isLoading, data, error }] = useUserLoginMutation();
@@ -40,6 +42,25 @@ const LoginModal : React.FC<Props> = ({ isShow, onClose }) =>{
         onClose(false);
     }
 
+    const loginGoogle = useGoogleLogin({
+        onSuccess: tokenResponse => {
+            const access_token = tokenResponse.access_token;
+        
+            fetch(appSetting.BaseUrl + "account/LoginWithGoogle?access_token=" + access_token)
+                .then(response => response.json())
+                .then((jsonData) => {
+                    setLoginGoogleResponseResult(jsonData.resultCode);
+                    if (jsonData.resultCode == ResultCode.Success) {
+                        setLoggedUser(jsonData.resource);
+                        onClose(true);
+                    } 
+                }).catch(() => {
+                    setLoginGoogleResponseResult(ResultCode.Error);
+                    onClose(false);
+                })
+        }
+      });
+
     useEffect(() => {
         logout();
     }, [])
@@ -52,7 +73,7 @@ const LoginModal : React.FC<Props> = ({ isShow, onClose }) =>{
  
     return(<> 
         <div className={`modal fade ${ isShow ? "show": ""}`} role="dialog" aria-labelledby="loginModalLabel" aria-modal="true"  >
-            <div className="modal-dialog modal-sm" role="document">
+            <div className="modal-dialog modal-sm" style={{width:350}} role="document">
                 <div className="modal-content"> 
                     <div className="modal-header">
                         <h5 className="modal-title" id="loginModalLabel"><Translation tid="SigninToYourAccount" /></h5>
@@ -84,9 +105,14 @@ const LoginModal : React.FC<Props> = ({ isShow, onClose }) =>{
                                     <button className="btn btn-block btn-primary" type="submit" disabled={isLoading} >
                                         <Translation tid="Login" />
                                     </button>
-                                </div>
+                                </div> 
                             </Form>
                         </Formik>
+                        <div className="divider"><Translation tid="OrLoginWith" /></div>
+                                <div className="text-center"> 
+                                    <button className="btn btn-block btn-danger" onClick={() =>{ loginGoogle(); }}> Login with Google</button>  
+                                </div>
+                                <br />
                     </div>
                 </div>
             </div>

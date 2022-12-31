@@ -36,13 +36,13 @@ namespace NaStories.API.Controllers
             if (ModelState.IsValid)
             {
                 string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
-                //_emailService.Send(request.Payload.YourEmail,
-                //    _appSettings.MailDefaultSubject,
-                //    string.Format(_appSettings.MailDefaultContent, request.Payload.YourName), smtpPwd);
-               // send to domain email
+                
                 _emailService.Send(_appSettings.MailAdmin,
                    request.Payload.YourName,
-                    string.Format(_appSettings.MailDefaultContent,  request.Payload.YourName, request.Payload.YourEmail, request.Payload.YourMessage), smtpPwd);
+                    string.Format(_appSettings.MailDefaultContent,  
+                    request.Payload.YourName, request.Payload.YourEmail, 
+                    request.Payload.YourMessage.Replace("\n", "<br />")
+                    ), smtpPwd);
 
                 return Task.FromResult(new BaseResponse<ResultCode>(resultCode:  ResultCode.Success));
             }

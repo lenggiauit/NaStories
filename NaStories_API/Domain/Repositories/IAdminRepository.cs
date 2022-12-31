@@ -33,5 +33,7 @@ namespace NaStories.API.Domain.Repositories
         Task<ResultCode> UpdateMockInterviewStatus(UpdateMockInterviewStatusRequest payload, Guid userId);
         Task<Guid> GetMockInterviewIdByEventBookingDate(GetMockInterviewIdByEventBookingDateRequest payload, Guid userId);
         Task<(List<User>, ResultCode)> GetUserList();
+        Task<ResultCode> DeleteReasonChangeMockInterview(Guid id, Guid userId);
+        Task<ResultCode> DeleteReasonChangePrivateTalk(Guid id, Guid userId);
     }
 }

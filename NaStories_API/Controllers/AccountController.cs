@@ -256,7 +256,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new BaseResponse<ResultCode>(await _eventServices.RemovePrivateTalk(request.Payload.Id, request.Payload.Reason, GetCurrentUserId()));
+                return new BaseResponse<ResultCode>(await _eventServices.RemovePrivateTalk(request.Payload.Id, request.Payload.Reason, GetCurrentUserId(), GetCurrentUser().Email ));
             }
             else
             {
@@ -269,7 +269,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new BaseResponse<ResultCode>(await _eventServices.RequestChangePrivateTalk(request, GetCurrentUserId()));
+                return new BaseResponse<ResultCode>(await _eventServices.RequestChangePrivateTalk(request, GetCurrentUserId(), GetCurrentUser().Email));
             }
             else
             {
@@ -304,7 +304,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new BaseResponse<ResultCode>(await _eventServices.RemoveMockInterview(request.Payload.Id, request.Payload.Reason, GetCurrentUserId()));
+                return new BaseResponse<ResultCode>(await _eventServices.RemoveMockInterview(request.Payload.Id, request.Payload.Reason, GetCurrentUserId(), GetCurrentUser().Email));
             }
             else
             {
@@ -317,7 +317,7 @@ namespace NaStories.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new BaseResponse<ResultCode>(await _eventServices.RequestChangeMockInterview(request, GetCurrentUserId()));
+                return new BaseResponse<ResultCode>(await _eventServices.RequestChangeMockInterview(request, GetCurrentUserId(), GetCurrentUser().Email));
             }
             else
             {

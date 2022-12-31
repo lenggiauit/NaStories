@@ -152,7 +152,7 @@ const Profile: React.FC = (): ReactElement => {
                                                 
                                             </div>
                                             <div className="profile-avatar-edit-link-container1">
-                                                    <a className="profile-avatar-edit-link1 text-primary" href="#" onClick={handleUploadFile}>Edit Avartar</a>
+                                                    <a className="profile-avatar-edit-link1 text-primary" href="#" onClick={handleUploadFile}>Edit Avatar</a>
                                                     <div className="hide">
                                                         <input type="file" className="hide" ref={inputFileUploadRef} onChange={handleSelectFile} />
                                                     </div>

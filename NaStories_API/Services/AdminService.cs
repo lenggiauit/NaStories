@@ -66,6 +66,16 @@ namespace NaStories.API.Services
             return await _adminRepository.CreateEditCategory(request, userId);
         }
 
+        public async Task<ResultCode> DeleteReasonChangeMockInterview(Guid id, Guid userId)
+        {
+            return await _adminRepository.DeleteReasonChangeMockInterview(id, userId);
+        }
+
+        public async Task<ResultCode> DeleteReasonChangePrivateTalk(Guid id, Guid userId)
+        {
+            return await _adminRepository.DeleteReasonChangePrivateTalk(id, userId);
+        }
+
         public async Task<(List<BlogPost>, ResultCode)> GetBlogPost(BaseRequest<BlogPostFilterRequest> request)
         {
             return await _adminRepository.GetBlogPost(request);

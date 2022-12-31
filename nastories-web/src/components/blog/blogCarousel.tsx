@@ -33,18 +33,7 @@ const BlogCarousel: React.FC = () => {
                                                         <a className="text-dark" href={`/blog/${p.url}`}>{p.shortDescription.length > 50 ? p.shortDescription.substring(0, 50) : p.shortDescription }</a>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            //     <div key={v4()}  className="col-md-4">
-                                            //     <div className="card text-white bg-img" style={{backgroundImage: `url(${p.thumbnail})`}} data-overlay="5">
-                                            //     <div className="card-body">
-                                            //       <h5 className="card-title">Background image</h5>
-                                            //       <p>Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title.</p>
-                                            //       <a className="fs-12 fw-600" href="#">Read more <i className="fa fa-angle-right pl-1"></i></a>
-                                            //     </div>
-                                            //   </div>
-                                            //   </div>
-
-
+                                            </div> 
                                         ))}
                                     </>}
                                 </div>
@@ -57,8 +46,7 @@ const BlogCarousel: React.FC = () => {
                                                 <div className="card border hover-shadow-6 mb-6 d-block">
                                                     <a href={`/blog/${p.url}`}><img className="card-img-top" src={p.thumbnail} alt={p.title} /></a>
                                                     <div className="p-6 text-center">
-                                                        <p><a className="small-5 text-lighter text-uppercase ls-2 fw-400" href={`/blog/category/${p.category.url}`}>{p.category.name}</a></p>
-                                                        {/* <h5 className="mb-0"><a className="text-dark" href={`/blog/${p.url}`}>{p.shortDescription}</a></h5> */}
+                                                        <p><a className="small-5 text-lighter text-uppercase ls-2 fw-400" href={`/blog/category/${p.category.url}`}>{p.category.name}</a></p> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,8 +62,7 @@ const BlogCarousel: React.FC = () => {
                                                 <div className="card border hover-shadow-6 mb-6 d-block">
                                                     <a href={`/blog/${p.url}`}><img className="card-img-top" src={p.thumbnail} alt={p.title} /></a>
                                                     <div className="p-6 text-center">
-                                                        <p><a className="small-5 text-lighter text-uppercase ls-2 fw-400" href={`/blog/category/${p.category.url}`}>{p.category.name}</a></p>
-                                                        {/* <h5 className="mb-0"><a className="text-dark" href={`/blog/${p.url}`}>{p.shortDescription}</a></h5> */}
+                                                        <p><a className="small-5 text-lighter text-uppercase ls-2 fw-400" href={`/blog/category/${p.category.url}`}>{p.category.name}</a></p> 
                                                     </div>
                                                 </div>
                                             </div>

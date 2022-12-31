@@ -92,7 +92,7 @@ namespace NaStories_API
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IEventService, EventService>();
-
+            services.AddScoped<IFileSharingRepository, FileSharingRepository>();
 
             // Repositories
             services.AddScoped<INotificationRepository, NotificationRepository>();
@@ -101,8 +101,8 @@ namespace NaStories_API
             services.AddScoped<IRefRepository, RefRepository>();
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
-            services.AddScoped<IEventRepository, EventRepository>();
-           
+            services.AddScoped<IEventRepository, EventRepository>(); 
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // File Service
             services.AddTransient<IFileService, FileService>();

@@ -91,10 +91,16 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                             </li>
  
                             <li className="nav-item">
+                                <a className={`nav-link ${(location.pathname == '/resources') ? "active" : ""}`} href="/resources">
+                                    <Translation tid="nav_resources" />
+                                </a>
+                            </li>
+
+                            <li className="nav-item">
                                 <a className={`nav-link ${(location.pathname == '/contact') ? "active" : ""}`} href="/contact">
                                     <Translation tid="nav_contact" />
                                 </a>
-                            </li>
+                            </li> 
                         </ul>
                         <div className="justify-content-end">
                             <ul className="nav nav-navbar nav-text-normal mr-auto navbar-right">
@@ -113,6 +119,7 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                                     <ul >
                                                         <li><a className="dropdown-item" href="/admin/blog/category"><Translation tid="nav_admin_manageCategory" /></a> </li>
                                                         <li><a className="dropdown-item" href="/admin/blog/post"><Translation tid="nav_admin_managePost" /></a> </li>
+                                                        <li><a className="dropdown-item" href="/admin/manageResources"><Translation tid="nav_admin_manageResources" /></a> </li>
                                                     </ul> 
                                                 </li>
  

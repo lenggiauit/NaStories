@@ -35,7 +35,8 @@ namespace NaStories.API.Mapping
             CreateMap<Notification, NotificationResource>();
             CreateMap<MockInterview, MockInterviewResource>();
             CreateMap<EventRequestChangeReason, EventRequestChangeReasonResource>();
-            
+            //
+            CreateMap<FileSharing, FileSharingResource > ();
 
 
         }

@@ -4,6 +4,7 @@ import { useGetPrivateTalkListQuery } from "../../../services/account";
 import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
 import { ResultCode } from "../../../utils/enums";
+import PageLoading from "../../pageLoading";
 import { Translation } from "../../translation";
 import UserPrivateTalkItem from "./item";
 import showPrivateTalkModal from "./modalDetail";
@@ -28,6 +29,7 @@ const UserPrivateTalkList: React.FC = (): ReactElement => {
 
     return (
         <>
+         {getPrivateTalkListQueryStatus.isLoading && <PageLoading />}
             <section className="section">
                 <div className="container">
                     <header className="section-header">

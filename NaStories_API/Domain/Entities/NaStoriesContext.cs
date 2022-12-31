@@ -38,8 +38,8 @@ namespace NaStories.API.Domain.Entities
         public virtual DbSet<MockInterview> MockInterview { get; set; }
         public virtual DbSet<Notification> Notification { get; set; } 
         public virtual DbSet<EventRequestChangeReason> EventRequestChangeReason { get; set; }
-        public virtual DbSet<EventCancelReason> EventCancelReason { get; set; }
-
+        public virtual DbSet<EventCancelReason> EventCancelReason { get; set; } 
+        public virtual DbSet<FileSharing> FileSharing { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

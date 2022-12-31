@@ -15,6 +15,7 @@
     "nav_private_talk": "Private talk",
     "nav_mock_interview": "Mock interview",
     "nav_contact": "Contact",
+    "nav_resources": "Resources",
     "nav_admin": "Admin", 
     "nav_termsOfService": "Terms Of Service",
     "OrLoginWith": "Or Login With",
@@ -99,6 +100,7 @@
     "nav_admin_manageCategory": "Manage category",
     "nav_admin_manageUser": "Manage user",
     "nav_admin_managePost" : "Manage post",
+    "nav_admin_manageResources": "Manage Resources",
     "input_public" : "Public",
     "input_draft": "Draft",
     "input_archived": "Archived",
@@ -143,5 +145,7 @@
     "[RemovePrivateTalkSuccess]": "Cancel Private Talk Successs",
     "[RegisterMockInterviewSuccess]": "Register Mock Interview Success",
     "[RequestChangePrivateTalkSuccess]": "Request Change Private Talk Success",
-    "[UpdateProfileSuccess]": "Update Profile Success"
+    "[UpdateProfileSuccess]": "Update Profile Success",
+    "[UpdateUserAvatarSuccess]": "Update User Avatar Success",
+    "btn_search": "Search"
 }

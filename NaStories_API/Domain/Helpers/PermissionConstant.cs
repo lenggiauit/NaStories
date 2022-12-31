@@ -11,6 +11,7 @@ namespace NaStories.API.Domain.Helpers
         public const string CreateEditCategory = "CreateEditCategory";
         public const string CreateEditBlogPost = "CreateEditBlogPost";
         public const string ManageUser = "ManageUser";
+        public const string ManageFileSharing = "ManageFileSharing";
         public const string GetPrivateTalkList = "GetPrivateTalkList";
         public const string UpdatePrivateTalkStatus = "UpdatePrivateTalkStatus";
         public const string RemovePrivateTalk = "RemovePrivateTalk";

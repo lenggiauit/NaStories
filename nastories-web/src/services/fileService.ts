@@ -3,6 +3,7 @@ import { ApiRequest, ApiResponse, AppSetting } from "../types/type";
 import { getLoggedUser } from '../utils/functions'; 
 import * as FormDataFile from "form-data";
 import { FileResponse } from './communication/response/fileResponse';
+import { FileSharingResource } from './resources/fileSharingResource';
 
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -42,9 +43,21 @@ export const FileService = createApi({
             transformResponse(response: ApiResponse<FileResponse>) {
                 return response;
             },
+        }), 
+        GetFileSharing: builder.mutation<ApiResponse<FileSharingResource[]>, ApiRequest<{ keywords: any }>>({
+            query: (payload) => ({
+                url: 'fileSharing/getFileSharing',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<FileSharingResource[]>) {
+                return response;
+            },
         }),
+
+
 
     })
 });
 
-export const { useUploadImageMutation, useUploadPackageFileMutation } = FileService;
+export const { useUploadImageMutation, useUploadPackageFileMutation, useGetFileSharingMutation } = FileService;

@@ -4,6 +4,7 @@ import { useGetMockInterviewListQuery } from "../../../services/account";
 import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { MockInterviewResource } from "../../../services/resources/mockInterviewResource"; 
 import { ResultCode } from "../../../utils/enums";
+import PageLoading from "../../pageLoading";
 import { Translation } from "../../translation";
 import UserMockInterviewItem from "./item";
 import showMockInterviewModal from "./modalDetail";
@@ -28,6 +29,7 @@ const UserMockInterviewList: React.FC = (): ReactElement => {
 
     return (
         <>
+        {getMockInterviewListQueryStatus.isLoading && <PageLoading />}
             <section className="section">
                 <div className="container">
                     <header className="section-header">

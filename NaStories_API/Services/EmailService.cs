@@ -1,5 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
@@ -12,11 +13,13 @@ namespace NaStories.API.Services
 {
     public class EmailService : IEmailService
     {
+        private readonly ILogger<EmailService> _logger;
         private readonly AppSettings _appSettings;
 
-        public EmailService(IOptions<AppSettings> appSettings)
+        public EmailService(ILogger<EmailService> logger, IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
 
         public async Task Send(string from, string to, string subject, string content, string smtpPwd)
@@ -58,7 +61,7 @@ namespace NaStories.API.Services
             }
             catch(Exception e)
             {
-                
+                _logger.LogError("Error at Send Email: " + e.Message);
             }
            
         }

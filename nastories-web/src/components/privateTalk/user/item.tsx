@@ -6,9 +6,11 @@ import { useRemovePrivateTalkMutation, useRequestChangePrivateTalkMutation } fro
 import { useGetEventBookingAvaiableDateQuery } from "../../../services/event";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
+import { ResultCode } from "../../../utils/enums";
 import calcTime from "../../../utils/time";
 import showConfirmModal from "../../modal";
 import showDialogModal from "../../modal/showModal";
+import PageLoading from "../../pageLoading";
 import { Translation } from "../../translation";
 import showDeleteConfirmModal from "./modalDelete";
 import showRequestChangeModal from "./modalRequestChange";
@@ -49,18 +51,25 @@ const UserPrivateTalkItem: React.FC<Props> = ({ dataItem, bookingDate, onSelecte
             bookingDate: bookingDate,
             onConfirm: (bookingId, r) => {
                 RequestChangePrivateTalk({ payload: {eventId: dataItem.id, eventBookingDateId: bookingId, reason: r } });
-                setIsRequestChanged(true);
-                onRequestChange(dataItem);
-                showDialogModal({ 
-                    message: dictionaryList[locale]["requestChangePrivateTalkSuccess_msg"]
-                });
+                setIsRequestChanged(true); 
             }
         });
     }, []);
 
+    useEffect(() => {
+        if (RequestChangePrivateTalkStatus.data && RequestChangePrivateTalkStatus.data.resultCode == ResultCode.Success) {
+            onRequestChange(dataItem);
+            showDialogModal({ 
+                message: dictionaryList[locale]["requestChangePrivateTalkSuccess_msg"]
+            });
+        }
+
+    }, [RequestChangePrivateTalkStatus]);
+
     
 
     return (<>
+        {(RequestChangePrivateTalkStatus.isLoading || RemovePrivateTalkStatus.isLoading ) && <PageLoading />}
         <div className={`col-md-12`} >
             <div className="row admin-post-item border-top border-light p-2">
                 

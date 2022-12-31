@@ -12,23 +12,31 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
+using NaStories.API.Domain.Services.Communication.Request;
+using NaStories.API.Domain.Services.Communication.Request.Admin;
+using System.Collections.Generic;
+using AutoMapper;
+using NaStories.API.Domain.Entities;
 
 namespace NaStories.API.Controllers
 {
-    [Authorize] 
+    [Authorize]
     [Route("File")]
+    [ApiController]
     public class FileController : BaseController
     {
-        private readonly IFileService _fileService; 
+        private readonly IFileService _fileService;
         private readonly ILogger<FileController> _logger;
-        private readonly AppSettings _appSettings; 
+        private readonly AppSettings _appSettings;
+        private IMapper _mapper;
 
-        public FileController(IFileService fileService, ILogger<FileController> logger, IOptions<AppSettings> appSettings)
+        public FileController(IFileService fileService, IMapper mapper, ILogger<FileController> logger, IOptions<AppSettings> appSettings)
         {
             _fileService = fileService;
-            _logger = logger; 
+            _logger = logger;
+            _mapper = mapper;
             _appSettings = appSettings.Value;
-        } 
+        }
         [HttpPost("UploadImage")]
         public async Task<BaseResponse<FileResource>> UploadImage(IFormFile file)
         {
@@ -85,6 +93,7 @@ namespace NaStories.API.Controllers
             {
                 return new BaseResponse<FileResource>("File upload is null!", ResultCode.Unknown);
             }
-        }
+        } 
+
     }
 }

@@ -12,6 +12,7 @@ import { EventBookingDateResource } from './resources/eventBookingDateResource';
 import { MockInterview } from './models/admin/mockInterview';
 import { User } from './models/user';
 import { UserResource } from './resources/userResource';
+import { FileSharing } from './models/admin/fileSharing';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -254,6 +255,29 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+
+        DeleteReasonChangeMockInterview : builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any }>>({
+            query: (payload) => ({
+                url: 'admin/deleteReasonChangeMockInterview',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        DeleteReasonChangePrivateTalk : builder.mutation<ApiResponse<ResultCode>, ApiRequest<{id: any }>>({
+            query: (payload) => ({
+                url: 'admin/deleteReasonChangePrivateTalk',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+
+
         GetUserList:  builder.mutation<ApiResponse<UserResource[]>, ApiRequest<{}>>({
             query: (payload) => ({
                 url: 'admin/GetUserList',
@@ -264,6 +288,31 @@ export const AdminService = createApi({
                 return response;
             },
         }),
+
+        GetAdminFileSharing: builder.mutation<ApiResponse<FileSharing[]>, ApiRequest<{ keywords: any }>>({
+            query: (payload) => ({
+                url: 'admin/GetFileSharing',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<FileSharing[]>) {
+                return response;
+            },
+        }),
+
+        CreateEditFileSharing: builder.mutation<ApiResponse<FileSharing>, ApiRequest<{ id: any, name: any, category: any, url: any, isArchived: boolean }>>({
+            query: (payload) => ({
+                url: 'admin/AddUpdateFileSharing',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<FileSharing>) {
+                return response;
+            },
+        }),
+
+
+
 
     })
 });
@@ -288,4 +337,9 @@ export const { useGetCategoryMutation,
     useGetMockInterviewIdByEventBookingDateMutation,
     useCancelMockInterviewMutation,
     useCancelPrivateTalkMutation,
-    useGetUserListMutation } = AdminService;
+    useGetUserListMutation,
+    useDeleteReasonChangeMockInterviewMutation,
+    useDeleteReasonChangePrivateTalkMutation,
+    useGetAdminFileSharingMutation,
+    useCreateEditFileSharingMutation
+ } = AdminService;

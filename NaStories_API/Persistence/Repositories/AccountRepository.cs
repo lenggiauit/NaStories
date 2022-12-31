@@ -165,18 +165,19 @@ namespace NaStories.API.Persistence.Repositories
             {
                 return await _context.User.AsNoTracking()
                 .Where(a => (a.UserName.Equals(name) || a.Email.Equals(name)) && a.Password.Equals(password))
-                .Select(acc => new User()
+                
+                .Select(a => new User()
                 {
-                    Id = acc.Id,
-                    UserName = acc.UserName,
-                    Email = acc.Email,
-                    Avatar = acc.Avatar,
-                    RoleId = acc.RoleId,
-                    FullName = acc.FullName,
-                    Phone = acc.Phone,
-                    Address = acc.Address, 
-                    Role = _context.Role.Where(r => r.Id == acc.RoleId).FirstOrDefault(),
-                    Permissions = _context.PermissionInRole.Where(pir => pir.RoleId == acc.RoleId)
+                    Id = a.Id,
+                    UserName = a.UserName,
+                    Email = a.Email,
+                    Avatar = a.Avatar,
+                    RoleId = a.RoleId,
+                    FullName = a.FullName,
+                    Phone = a.Phone,
+                    Address = a.Address, 
+                    Role = _context.Role.Where(r => r.Id == a.RoleId).FirstOrDefault(),
+                    Permissions = _context.PermissionInRole.Where(pir => pir.RoleId == a.RoleId)
                                 .Join(_context.Permission.Select(per => new Permission
                                 {
                                     Id = per.Id,

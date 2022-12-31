@@ -100,46 +100,62 @@ namespace NaStories.API.Services
             return (data, result);
         }
 
-        public async Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId)
+        public async Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId, string userName)
         {
             var result = await _eventRepository.RemoveMockInterview(id, reason, userId);
             if (result == ResultCode.Success)
             {
                 await _notifyRepository.SendNotification("[RemoveMockInterviewSuccess]", userId);
+
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+                await _emailService.Send(_appSettings.MailAdmin,
+                    "Hủy Mock Interview ", string.Format("User Email: {0}", userName), smtpPwd);
             }
 
             return result;
         }
 
-        public async Task<ResultCode> RemovePrivateTalk(Guid id, string reason, Guid userId)
+        public async Task<ResultCode> RemovePrivateTalk(Guid id, string reason, Guid userId, string userName)
         {
             var result = await _eventRepository.RemovePrivateTalk(id, reason, userId);
             if (result == ResultCode.Success)
             {
                 await _notifyRepository.SendNotification("[RemovePrivateTalkSuccess]", userId);
+
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+                await _emailService.Send(_appSettings.MailAdmin,
+                    "Hủy Mock Interview ", string.Format("User Email: {0}", userName), smtpPwd);
             }
              
             return result;
 
         }
 
-        public async Task<ResultCode> RequestChangeMockInterview(BaseRequest<RequestChangeEventRequest> request, Guid userId)
+        public async Task<ResultCode> RequestChangeMockInterview(BaseRequest<RequestChangeEventRequest> request, Guid userId, string userName)
         {
             var result = await _eventRepository.RequestChangeMockInterview(request, userId);
             if (result == ResultCode.Success)
             {
                 await _notifyRepository.SendNotification("[RequestMockInterviewSuccess]", userId);
+
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+                await _emailService.Send(_appSettings.MailAdmin,
+                    "Yêu cầu đổi ngày Mock Interview ", string.Format("User Email: {0}", userName), smtpPwd);
             }
 
             return result;
         }
 
-        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangeEventRequest> request, Guid userId)
+        public async Task<ResultCode> RequestChangePrivateTalk(BaseRequest<RequestChangeEventRequest> request, Guid userId, string userName)
         {
             var result = await _eventRepository.RequestChangePrivateTalk(request, userId);
             if (result == ResultCode.Success)
             {
                 await _notifyRepository.SendNotification("[RequestChangePrivateTalkSuccess]", userId);
+
+                string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
+                await _emailService.Send(_appSettings.MailAdmin,
+                    "Yêu cầu đổi ngày Private Talk ", string.Format("User Email: {0}", userName), smtpPwd);
             }
 
             return result;

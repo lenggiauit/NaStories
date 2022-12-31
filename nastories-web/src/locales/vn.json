@@ -14,6 +14,7 @@
     "nav_private_talk": "Private talk",
     "nav_mock_interview": "Mock interview",
     "nav_contact": "Liên hệ",
+    "nav_resources": "Tài liệu",
     "nav_termsOfService": "Điều khoản dịch vụ",
     "nav_admin": "Admin",
     "nav_templates": "Templates",
@@ -43,6 +44,7 @@
     "nav_admin_manageCategory": "Quản lý danh mục",
     "nav_admin_manageUser": "Quản lý user",
     "nav_admin_managePost" : "Quản lý bài viết",
+    "nav_admin_manageResources": "Quản lý tài nguyên",
     "input_public" : "Công khai",
     "input_draft": "Nháp",
     "input_archived": "Lưu trữ",
@@ -61,7 +63,7 @@
     "header_private_talk_title": "Private talk",
     "header_private_talk_register_form_title": "Đăng ký Private Talk",
     "nav_admin_bookingdate": "Booking date",
-    "nav_admin_manageBookingdate": "Manage booking date",
+    "nav_admin_manageBookingdate": "Manage booking date", 
     "heading_bookingdateList": "Booking date list",
     "header_notification_title": "Notification",
     "notification_notfound": "Bạn không có thông báo nào",
@@ -107,6 +109,14 @@
     "btnCreate": "Tạo mới",
     "EmailAlreadyRegistered": "Email của bạn đã được đăng ký rồi!",
     "RegisterSuccess": "Đăng ký thành công",
-    "[UpdateUserAvatarSuccess]": "Cập nhật hình đại diện thành công!"
+    "[UpdateUserAvatarSuccess]": "Cập nhật hình đại diện thành công!",
+    "CreateAnAccount": "Tạo tài khoản",
+    "AlreadyAMember": "Bạn đã là thành viên?",
+    "MustAgreeTermsOfService": "Bạn phải đồng ý với các điều khoản sử dụng",
+    "IAgreeToThe": "Tôi đồng ý ",
+    "OrRegisterWith": "Hoặc",
+    "RegisterSuccessMsg": "Chúc mừng, Bạn đã đăng ký thành viên thành công, giờ bạn có thể ",
+    "btn_search": "Tìm kiếm",
+    "heading_categoryList": "Category List"
     
 }

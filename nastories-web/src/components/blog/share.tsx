@@ -27,7 +27,7 @@ const SharePost: React.FC<Props> = ({ postData }): ReactElement => {
             <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v15.0" nonce="PQUKoJ99"></script>
             <div className="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" 
             data-layout="button" data-size="large"><a target="_blank" 
-            href={`https://www.facebook.com/sharer/sharer.php?u=${appSetting.BaseUrl}blog/${postData.url}`} 
+            href={`https://www.facebook.com/sharer/sharer.php?u=${appSetting.SiteUrl}blog/${postData.url}`} 
             className="fb-xfbml-parse-ignore"><i className="fa fa-facebook"></i></a></div>
             
         </>

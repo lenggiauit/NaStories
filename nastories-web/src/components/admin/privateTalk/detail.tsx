@@ -4,7 +4,7 @@ import { matchPath, Redirect, useHistory, useParams, useRouteMatch } from "react
 import { useAppContext } from "../../../contexts/appContext";
 import { dictionaryList } from "../../../locales";
 import { useRemovePrivateTalkMutation, useRequestChangePrivateTalkMutation } from "../../../services/account";
-import { useCancelPrivateTalkMutation, useGetEventAvailableDateQueryQuery, useGetPrivateTalkDetailQuery, useUpdatePrivateTalkStatusMutation } from "../../../services/admin";
+import { useCancelPrivateTalkMutation, useDeleteReasonChangePrivateTalkMutation, useGetEventAvailableDateQueryQuery, useGetPrivateTalkDetailQuery, useUpdatePrivateTalkStatusMutation } from "../../../services/admin";
 import { EventBookingDateResource } from "../../../services/resources/eventBookingDateResource";
 import { PrivateTalkResource } from "../../../services/resources/privateTalkResource";
 import { AppSetting } from "../../../types/type";
@@ -43,18 +43,23 @@ const AdminPrivateTalkDetail: React.FC = () => {
     const [UpdatePrivateTalk, UpdatePrivateTalkStatus] = useUpdatePrivateTalkStatusMutation();
     const [CancelPrivateTalk, CancelPrivateTalkStatus] = useCancelPrivateTalkMutation();
     const getEventBookingAvaiableDateQueryStatus = useGetEventAvailableDateQueryQuery({ payload: null });
+    const [DeleteReason, DeleteReasonStatus] = useDeleteReasonChangePrivateTalkMutation();
 
     const [eventStatus, setEventStatus] = useState<string | null>(null);
     const [eventDateId, setEventDateId] = useState<string | null>(null);
 
     const [bookingId, setBookingId] = useState<string>("");
-
+ 
     useEffect(() => {
-        if (getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null) {
-            //setEventStatus(getdetailStatus.data.resource.eventStatus);
+        if (DeleteReasonStatus.isSuccess && DeleteReasonStatus.data.resultCode == ResultCode.Success ) {
+            getdetailStatus.refetch();
         }
 
-    }, [getdetailStatus]);
+    }, [DeleteReasonStatus]);
+
+    const handleOnDeleteReason = useCallback(() => {
+        DeleteReason({ payload: { id: id } });
+    }, []);
 
     useEffect(() => {
         if (getdetailStatus.isSuccess && getdetailStatus.data.resultCode == ResultCode.Success && getdetailStatus.data.resource != null) {
@@ -140,6 +145,20 @@ const AdminPrivateTalkDetail: React.FC = () => {
                             </tr>
 
                             <tr className="border-top border-light">
+                                <td>Status:</td>
+                                <td colSpan={2}>
+                                    <select name="eventStatus" className="form-control form-control-sm" onChange={(e) => { setEventStatus(e.target.value) }}>
+                                          
+                                        {Object.entries(PrivateTalkEnumStatus).map((status) => 
+                                        (
+                                            <option selected={getdetailStatus.data.resource.eventStatus == status[0]} value={status[0]}>{status[1]}</option>
+                                        )
+                                        )}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr className="border-top border-light">
                                 <td>Độ tuổi:</td>
                                 <td colSpan={2}>{getdetailStatus.data.resource.ageRange}</td>
                             </tr>
@@ -165,19 +184,7 @@ const AdminPrivateTalkDetail: React.FC = () => {
                                     <div dangerouslySetInnerHTML={{ __html: getdetailStatus.data.resource.yourExpectationDescription }} /> 
                                 </td>
                             </tr>
-                            <tr className="border-top border-light">
-                                <td>Status:</td>
-                                <td colSpan={2}>
-                                    <select name="eventStatus" className="form-control form-control-sm" onChange={(e) => { setEventStatus(e.target.value) }}>
-                                          
-                                        {Object.entries(PrivateTalkEnumStatus).map((status) => 
-                                        (
-                                            <option selected={getdetailStatus.data.resource.eventStatus == status[0]} value={status[0]}>{status[1]}</option>
-                                        )
-                                        )}
-                                    </select>
-                                </td>
-                            </tr>
+                           
                             <tr>
                                 <td style={{ width: "150px" }}>Redeem Code:</td>
                                 <td colSpan={2}>{getdetailStatus.data.resource.redeemCode}</td>
@@ -195,17 +202,21 @@ const AdminPrivateTalkDetail: React.FC = () => {
                                 <tr className="border-top border-light">
                                     <td>Request change Reason:</td>
                                     <td colSpan={2}>
-                                        {getdetailStatus.data.resource.eventRequestChangeReason.reason}
-                                        <br />
-                                        <select name="eventBookingDateId"
-                                            className="form-control" placeholder="Booking date">
-                                            <option value="" label="Na's Stories sẽ chọn ngày sớm nhất có thể">Na's Stories sẽ chọn ngày sớm nhất có thể</option>
-                                            {getEventBookingAvaiableDateQueryStatus.data != null &&
-                                                getEventBookingAvaiableDateQueryStatus.data.resultCode == ResultCode.Success &&
-                                                getEventBookingAvaiableDateQueryStatus.data.resource.map((b) => (
-                                                    <option key={b.id} value={b.id} selected={bookingId == b.id} >{dateFormat(b.start, "mmm dd, yyyy - HH:MM") + " VietNam"}</option>
-                                                ))}
-                                        </select>
+                                        <div className="row">
+                                            <div className="col-10">
+                                                {getdetailStatus.data.resource.eventRequestChangeReason.reason}
+                                                <br /> 
+                                                {getdetailStatus.data.resource.eventRequestChangeReason.eventBookingDate != null &&
+                                                "Ngày muốn đổi: " + dateFormat(getdetailStatus.data.resource.eventRequestChangeReason.eventBookingDate.start, "mmm dd, yyyy - HH:MM") }
+                                                {getdetailStatus.data.resource.eventRequestChangeReason.eventBookingDate == null &&
+                                                "Na's Stories sẽ chọn ngày sớm nhất có thể"   }
+
+                                            </div>
+                                            <div className="col-2">
+                                            <button className="btn btn-secondary" onClick={handleOnDeleteReason}>Delete</button>
+                                            </div>
+                                        </div> 
+                                        
                                     </td>
                                 </tr>
                             }

@@ -42,9 +42,7 @@ export const ContactForm: React.FC = () => {
                 .max(100),
             yourEmail: Yup.string().email().required(dictionaryList[locale]["RequiredField"])
                 .max(150),
-            yourMessage: Yup.string().required(dictionaryList[locale]["RequiredField"])
-                .max(500),
-
+            yourMessage: Yup.string().required(dictionaryList[locale]["RequiredField"]) 
         });
     }
 
@@ -75,7 +73,7 @@ export const ContactForm: React.FC = () => {
                 validateOnChange={false}  >
                 {({ values, errors, touched, setFieldValue }) => (
                     <Form autoComplete="off">
-                        <div className="form-row">
+                        <div className="form-row pl-8 pr-8">
                             <div className="form-group col-md-6">
                                 <Field type="text" className="form-control" name="yourName" placeholder="Họ tên" />
                                 <ErrorMessage
@@ -94,7 +92,7 @@ export const ContactForm: React.FC = () => {
                                 />
                             </div>
                             <div className="form-group col-md-12">
-                                <Field type="textarea" as="textarea" row={10} className="form-control" name="yourMessage" maxLength={500} placeholder="Nội dung" />
+                                <Field type="textarea" as="textarea" style={{height: 150}} className="form-control" name="yourMessage" placeholder="Nội dung" />
                                 <ErrorMessage
                                     name="yourMessage"
                                     component="div"
@@ -103,7 +101,7 @@ export const ContactForm: React.FC = () => {
                             </div>
 
                             <div className="col-12 text-center">
-                                <button className="btn btn-primary " style={{ width: 200 }} type="submit"><Translation tid="btnSubmit"></Translation></button>
+                                <button className="btn btn-primary " style={{ width: 250 }} type="submit"><Translation tid="btnSubmit"></Translation></button>
                             </div>
                         </div>
 

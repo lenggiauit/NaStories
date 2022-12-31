@@ -25,6 +25,7 @@ namespace NaStories.API.Controllers
     public class AdminController : BaseController
     {
         private readonly IAdminService _adminServices;
+        private readonly IFileService _fireServices;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly ILogger<AdminController> _logger;
         private readonly AppSettings _appSettings;
@@ -33,10 +34,12 @@ namespace NaStories.API.Controllers
             ILogger<AdminController> logger,
             IMapper mapper,
             IAdminService adminService,
+            IFileService fireServices,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<AppSettings> appSettings)
         {
             _adminServices = adminService;
+            _fireServices = fireServices;
             _httpClientFactoryService = httpClientFactoryService;
             _logger = logger;
             _mapper = mapper;
@@ -325,6 +328,35 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [Permissions(PermissionConstant.UpdateMockInterviewStatus)] 
+        [HttpPost("DeleteReasonChangeMockInterview")]
+        public async Task<BaseResponse<ResultCode>> DeleteReasonChangeMockInterview(BaseRequest<RequestId> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.DeleteReasonChangeMockInterview(request.Payload.Id, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
+        [Permissions(PermissionConstant.UpdatePrivateTalkStatus)]
+        [HttpPost("DeleteReasonChangePrivateTalk")]
+        public async Task<BaseResponse<ResultCode>> DeleteReasonChangePrivateTalk(BaseRequest<RequestId> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.DeleteReasonChangePrivateTalk(request.Payload.Id, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+         
+
         [Permissions(PermissionConstant.ManageUser)]
 
         [HttpPost("GetUserList")]
@@ -348,6 +380,53 @@ namespace NaStories.API.Controllers
             }
         }
 
+
+        [Permissions(PermissionConstant.ManageFileSharing)]
+        [HttpPost("AddUpdateFileSharing")]
+        public async Task<BaseResponse<(FileSharing, ResultCode)>> AddUpdateFileSharing(BaseRequest<AddUpdateFileSharingRequest> request)
+        {
+
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<(FileSharing, ResultCode)>(await _fireServices.AddUpdateFileSharing(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<(FileSharing, ResultCode)>(Constants.InvalidMsg, ResultCode.Invalid);
+            } 
+        }
+
+        [Permissions(PermissionConstant.ManageFileSharing)]
+        [HttpPost("GetFileSharing")]
+        public async Task<BaseResponse<List<FileSharing>>> GetFileSharing(BaseRequest<FileSharingSearchRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _fireServices.GetAdminFileSharing(request, GetCurrentUserId());
+                return new BaseResponse<List<FileSharing>>(data);
+            }
+            else
+            {
+                return new BaseResponse<List<FileSharing>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+
+        }
+
+        [Permissions(PermissionConstant.ManageFileSharing)]
+        [HttpPost("RemoveFileSharing")]
+        public async Task<BaseResponse<ResultCode>> RemoveFileSharing(BaseRequest<RequestId> request)
+        {
+
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _fireServices.RemoveFileSharing(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+
+        }
 
 
     }
