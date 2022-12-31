@@ -34,16 +34,16 @@ const Resources: React.FC = () => {
     }
 
     const handleOnSubmit = (values: FormValues, actions: FormikHelpers<FormValues>) => {
-        setKeyWords(values.keywords); 
+        setKeyWords(values.keywords);
     }
 
-    const [keyWords, setKeyWords] = useState<string | null>(query.get("s")); 
+    const [keyWords, setKeyWords] = useState<string | null>(query.get("s"));
     const [getFileSharingList, getFileSharingStatus] = useGetFileSharingMutation();
     const [metaData, setMetaData] = useState<MetaData>({ paging: { index: 1, size: appSetting.PageSize } });
     const [pagingData, setPagingData] = useState<Paging>({ index: 1, size: appSetting.PageSize });
     const [totalRows, setTotalRows] = useState<number>(0);
     const [fileSharingList, setFileSharingList] = useState<FileSharingResource[]>([]);
- 
+
     const pagingChangeEvent: any = (p: Paging) => {
 
         let mp: Paging = {
@@ -58,9 +58,9 @@ const Resources: React.FC = () => {
         }
         setMetaData(md);
     }, [pagingData]);
- 
+
     useEffect(() => {
-        getFileSharingList({ payload: { keywords: keyWords}, metaData: metaData });
+        getFileSharingList({ payload: { keywords: keyWords }, metaData: metaData });
     }, [metaData, keyWords]);
 
     useEffect(() => {
@@ -71,7 +71,7 @@ const Resources: React.FC = () => {
             }
             else {
                 setTotalRows(0);
-            } 
+            }
             setFileSharingList(data);
         }
     }, [getFileSharingStatus]);
@@ -91,9 +91,9 @@ const Resources: React.FC = () => {
                         validationSchema={validationSchema}
                         validateOnChange={false}  >
                         {({ values, errors, touched, setFieldValue }) => (
-                            <Form autoComplete="off" className="input-round"> 
+                            <Form autoComplete="off" className="input-round">
                                 <div className="form-group input-group">
-                                    <Field type="text" className="form-control" name="keywords" placeholder="Từ khóa" maxLength="50" />
+                                    <Field type="text" className="form-control form-control-sm" name="keywords" placeholder="Từ khóa" maxLength="50" />
                                     <div className="input-group-append">
                                         <button className="btn btn-primary" type="submit"><Translation tid="btn_search" /></button>
                                     </div>
@@ -103,37 +103,45 @@ const Resources: React.FC = () => {
                     </Formik>
                 </div>
             </div>
+            <div className="row rounded bg-img p-7" style={{ backgroundImage: `url(../../assets/images/bg.jpg)` }}>
+                <div className="col-md-6"> 
+                    <a href="/private-talk" className="btn btn-block btn-glass btn-primary">Private talk</a> 
+                </div>
+                <div className="col-md-6"> 
+                    <a href="/mock-interview" className="btn btn-block btn-glass btn-success">Mock interview </a> 
+                </div>
+            </div>
             <div className="row">
                 <div className="col-md-12">
-                {getFileSharingStatus.isLoading && <LocalSpinner /> }
+                    {getFileSharingStatus.isLoading && <LocalSpinner />}
                     {Array.from(new Set(fileSharingList.map((item) => item.category))).map((category) => (
                         <div key={v4()}>
-                          <hr className="hr-dash my-3" /> 
-                          <h3>{category}</h3>
-                          <br /> 
-                          <div className="row">
-                            {
-                                fileSharingList.filter(f => f.category == category).map((file) =>( 
-                                    <div key={v4()} className="col-md-6"> 
-                                        <h6>
-                                            <i className="fa fa-file-text-o mr-3"></i>
-                                            <a target="_blank" href={file.url}>
-                                                {file.name.length > 100 ? file.name.substring(0, 100) : file.name }
-                                            </a>
-                                        </h6>
-                                    </div> 
-                                )) 
-                            }
-                            
-                        </div> 
-                        </div>
-                    ))}  
-                    {(getFileSharingStatus.isSuccess && fileSharingList.length == 0 ) && <NotFound />}
-                </div>  
-            </div>  
-            <Pagination totalRows={totalRows} pagingData={pagingData} pageChangeEvent={pagingChangeEvent} />                
+                            <hr className="hr-dash my-3" />
+                            <h3>{category}</h3>
+                            <br />
+                            <div className="row">
+                                {
+                                    fileSharingList.filter(f => f.category == category).map((file) => (
+                                        <div key={v4()} className="col-md-6">
+                                            <h6>
+                                                <i className="fa fa-file-text-o mr-3"></i>
+                                                <a target="_blank" href={file.url}>
+                                                    {file.name.length > 100 ? file.name.substring(0, 100) : file.name}
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    ))
+                                }
 
-        </>) 
+                            </div>
+                        </div>
+                    ))}
+                    {(getFileSharingStatus.isSuccess && fileSharingList.length == 0) && <NotFound />}
+                </div>
+            </div>
+            <Pagination totalRows={totalRows} pagingData={pagingData} pageChangeEvent={pagingChangeEvent} />
+
+        </>)
 }
 
 export default Resources;
