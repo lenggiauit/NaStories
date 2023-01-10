@@ -20,7 +20,7 @@ const YoutubeCarousel: React.FC = () => {
                 </header>
                 <div className="small ls-1 text-right"><a target="_blank" href="https://www.youtube.com/@nastories">Xem tất cả</a></div>
                     {getYoutubevideosQueryStatus.isLoading && <LocalSpinner /> }
-                    <div id="youtube-carouse" className="carousel slide" data-ride="carousel">
+                    <div id="youtube-carouse" className="carousel slide" data-ride="carousel" style={{minHeight: 190}}>
                         <div className="carousel-inner">
                             <div className="carousel-item active">
                                 <div className="row gap-y"> 

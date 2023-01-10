@@ -11,7 +11,10 @@ const Event: React.FC = ({ }): ReactElement => {
             if (window.location.href.indexOf("#events") != -1) {
                 const element = document.getElementById('events'); 
                 if (element) { 
-                    element.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(()=>{
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start'}); 
+                    }, 500);
+                    
                 }
             }
         }); 

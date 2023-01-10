@@ -19,7 +19,7 @@ const BlogCarousel: React.FC = () => {
                     </header>
                     <div className="small ls-1 text-right"><a href="/blog">Xem tất cả</a></div>
                     {getTopPostQueryStatus.isLoading && <LocalSpinner /> }
-                    <div id="blog-post-carouse" className="carousel slide" data-ride="carousel">
+                    <div id="blog-post-carouse" className="carousel slide" data-ride="carousel" style={{minHeight: 350}}>
                         <div className="carousel-inner">
                             <div className="carousel-item active">
                                 <div className="row gap-y">
