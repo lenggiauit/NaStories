@@ -1,11 +1,25 @@
-import { ReactElement } from "react"
+import { ReactElement, useEffect, useRef } from "react"
+import { flushSync } from "react-dom";
+import { useQuery } from "../../utils/functions";
 import { Translation } from "../translation";
 
-const Event: React.FC = ({ }): ReactElement => {
+const Event: React.FC = ({ }): ReactElement => { 
+
+    const divRef = useRef<HTMLDivElement | null>(null); 
+    useEffect(() => { 
+        flushSync(() => {
+            if (window.location.href.indexOf("#events") != -1) {
+                const element = document.getElementById('events'); 
+                if (element) { 
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }); 
+    }, []);
 
     return (<>
 
-        <section id="section-pricing" className="section bg-gray">
+        <section id="events" ref={divRef} className="section bg-gray">
             <div className="container">
                 <header className="section-header">
                     <h2><Translation tid="header_event_title" /></h2>
@@ -18,14 +32,14 @@ const Event: React.FC = ({ }): ReactElement => {
 
                             <p className="plan-name">Private Talk</p>
                             <br />
-                           
+
                             <div className="text-muted p-1">
                                 <ul className="list-infor text-left">
-                                    <li> Bạn đang có một vài vấn đề băn khoăn, thắc mắc hoặc trở ngại cần được gỡ rối liên quan đến công việc, học tập, cuộc sống.  
+                                    <li> Bạn đang có một vài vấn đề băn khoăn, thắc mắc hoặc trở ngại cần được gỡ rối liên quan đến công việc, học tập, cuộc sống.
                                     </li>
-                                    <li> Bạn cần một người lắng nghe và cho bạn lời khuyên hữu ích hoặc một góc nhìn mới. 
+                                    <li> Bạn cần một người lắng nghe và cho bạn lời khuyên hữu ích hoặc một góc nhìn mới.
                                     </li>
-                                    <li> Bạn theo dõi Na cũng được một thời gian và bạn tin rằng những kỹ năng và kinh nghiệm của Na sẽ giúp được cho bạn. 
+                                    <li> Bạn theo dõi Na cũng được một thời gian và bạn tin rằng những kỹ năng và kinh nghiệm của Na sẽ giúp được cho bạn.
                                     </li>
                                 </ul>
                                 <p className="p-2">Vậy thì tụi mình đặt một cái hẹn nói chuyện với nhau để Na có cơ hội lắng nghe bạn nhiều hơn nhé.</p>
@@ -33,19 +47,19 @@ const Event: React.FC = ({ }): ReactElement => {
                             <br />
                             <br />
                             <br />
-                            <br /> 
-                            <br /> 
-                            <br /> 
-                            <br /> 
+                            <br />
+                            <br />
+                            <br />
+                            <br />
                             <p className="text-center py-3 align-self-end mt-auto">
-                                <a className="btn btn-primary mt-auto" href="/private-talk">Đăng ký</a>  
+                                <a className="btn btn-primary mt-auto" href="/private-talk">Đăng ký</a>
                             </p>
-                            
+
                             <h2 className="price">
                                 <span className="price-unit">VND</span>
                                 <span data-bind-radio="pricing" data-monthly="6.67" data-yearly="75">300k</span>
                             </h2>
-                                
+
                         </div>
                     </div>
 
@@ -53,21 +67,21 @@ const Event: React.FC = ({ }): ReactElement => {
                     <div className="col-md-6">
                         <div className="pricing-1">
                             <p className="plan-name">Mock Interview, Real Feedback</p>
-                            <br /> 
+                            <br />
                             <div className="text-muted p-1">
                                 <ul className="list-infor text-left">
-                                    <li> 
+                                    <li>
                                         Bạn đang tìm kiếm cơ hội trong ngành IT Business Analyst nhưng chưa có nhiều kinh nghiệm hoặc còn thiếu tự tin.
                                     </li>
-                                    <li> 
+                                    <li>
                                         Bạn đã tham gia vài khóa học và trang bị khá nhiều kiến thức về ngành nhưng vẫn sợ hãi khi nghĩ đến việc đối diện với nhà tuyển dụng trong buổi phỏng vấn.
                                     </li>
-                                    <li> 
-                                        Bạn muốn trải nghiệm thử một buổi phỏng vấn BA để có sự chuẩn bị tốt hơn. 
+                                    <li>
+                                        Bạn muốn trải nghiệm thử một buổi phỏng vấn BA để có sự chuẩn bị tốt hơn.
                                     </li>
-                                    <li> 
-                                        Bạn đã từng nghe đến assignment khi phỏng vấn nhưng không biết nó ra sao và cách làm thế nào. 
-                                    </li> 
+                                    <li>
+                                        Bạn đã từng nghe đến assignment khi phỏng vấn nhưng không biết nó ra sao và cách làm thế nào.
+                                    </li>
                                 </ul>
                                 <p className="p-2">Với kinh nghiệm 10+ năm trong ngành và đã phỏng vấn khá nhiều BA ở tất cả các level, Na sẽ mang đến cho bạn một trải nghiệm như một buổi phỏng vấn thật, giúp bạn đánh giá resume của mình, cách bạn làm assignment và gợi ý những kỹ năng, kiến thức nào bạn cần trau dồi thêm để trở thành ứng viên sáng giá.</p>
                             </div>

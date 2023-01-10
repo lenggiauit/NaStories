@@ -102,15 +102,7 @@ const Resources: React.FC = () => {
                         )}
                     </Formik>
                 </div>
-            </div>
-            <div className="row rounded bg-img p-7" style={{ backgroundImage: `url(../../assets/images/bg.jpg)` }}>
-                <div className="col-md-6"> 
-                    <a href="/private-talk" className="btn btn-block btn-glass btn-primary">Private talk</a> 
-                </div>
-                <div className="col-md-6"> 
-                    <a href="/mock-interview" className="btn btn-block btn-glass btn-success">Mock interview </a> 
-                </div>
-            </div>
+            </div> 
             <div className="row">
                 <div className="col-md-12">
                     {getFileSharingStatus.isLoading && <LocalSpinner />}
@@ -140,7 +132,16 @@ const Resources: React.FC = () => {
                 </div>
             </div>
             <Pagination totalRows={totalRows} pagingData={pagingData} pageChangeEvent={pagingChangeEvent} />
-
+            <br />
+            <br />                      
+            <div className="row rounded bg-img p-7" style={{ backgroundImage: `url(../../assets/images/bg.jpg)` }}>
+                <div className="col-md-6"> 
+                    <a href="/private-talk" className="btn btn-block btn-glass btn-primary">Đăng ký Private talk</a> 
+                </div>
+                <div className="col-md-6"> 
+                    <a href="/mock-interview" className="btn btn-block btn-glass btn-success">Đăng ký Mock interview </a> 
+                </div>
+            </div>                        
         </>)
 }
 
