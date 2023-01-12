@@ -18,4 +18,6 @@ Na’s Stories Website. Some screenshots:
 <img width="1155" alt="image" src="https://user-images.githubusercontent.com/7054426/211956437-53568121-09ee-49bf-9da1-45931b35b4fb.png">
 <img width="1138" alt="image" src="https://user-images.githubusercontent.com/7054426/211956477-e7a115d1-f13e-4808-ab6e-d5671a20ab1f.png">
 <img width="1123" alt="image" src="https://user-images.githubusercontent.com/7054426/211956548-686c3941-ba33-4498-a8d6-d1f2b7198f0f.png">
+<img width="1127" alt="image" src="https://user-images.githubusercontent.com/7054426/211956700-91658ee2-66a3-43d3-bd56-ced037c35931.png">
+![image](https://user-images.githubusercontent.com/7054426/211957003-078792f4-a8d3-4f9f-8619-19dec101cbfc.png)
 
