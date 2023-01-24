@@ -3,5 +3,6 @@ export type UserResource ={
     fullName: any, 
     avatar: any, 
     email: any,
+    createdDate: any,
     totalRows: any,
 }

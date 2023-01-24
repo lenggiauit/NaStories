@@ -360,23 +360,23 @@ namespace NaStories.API.Controllers
         [Permissions(PermissionConstant.ManageUser)]
 
         [HttpPost("GetUserList")]
-        public async Task<BaseResponse<List<UserResource>>> GetUserList()
+        public async Task<BaseResponse<List<UserListResource>>> GetUserList()
         {
             if (ModelState.IsValid)
             {
                 var (data, resultCode) = await _adminServices.GetUserList();
                 if (data != null)
                 {
-                    return new BaseResponse<List<UserResource>>(_mapper.Map<List<User>, List<UserResource>>(data));
+                    return new BaseResponse<List<UserListResource>>(_mapper.Map<List<User>, List<UserListResource>>(data));
                 }
                 else
                 {
-                    return new BaseResponse<List<UserResource>>(Constants.ErrorMsg, resultCode);
+                    return new BaseResponse<List<UserListResource>>(Constants.ErrorMsg, resultCode);
                 }
             }
             else
             {
-                return new BaseResponse<List<UserResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+                return new BaseResponse<List<UserListResource>>(Constants.InvalidMsg, ResultCode.Invalid);
             }
         }
 

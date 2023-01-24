@@ -90,8 +90,9 @@ const AdminUserList: React.FC = (): ReactElement => {
                                          User Email
                                     </div> 
                                     <div className="col-3 text-center">
-                                        Action
+                                        Created Date
                                     </div>
+                                    
                                 </div>
                             </div>
 

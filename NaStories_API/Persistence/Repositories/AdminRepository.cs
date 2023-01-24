@@ -989,6 +989,7 @@ namespace NaStories.API.Persistence.Repositories
             { 
                 return ( await _context.User
                   .AsNoTracking()
+                  .OrderByDescending(u => u.CreatedDate)
                   .ToListAsync(),ResultCode.Success); 
 
             }

@@ -13,7 +13,8 @@ namespace NaStories.API.Mapping
     {
         public AutoMapperProfile()
         { 
-            CreateMap<User, UserResource>(); 
+            CreateMap<User, UserResource>();
+            CreateMap<User, UserListResource>(); 
             CreateMap<Role, RoleResource>();
             CreateMap<Permission, PermissionResource>();
             

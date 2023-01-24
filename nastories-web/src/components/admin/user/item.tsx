@@ -33,7 +33,7 @@ const AdminUserItem: React.FC<Props> = ({ dataItem, onSelected }) => {
                 {dataItem.email}
                 </div> 
                 <div className="col-3 text-center">
-                    
+                { dateFormat( dataItem.createdDate, "mmm dd, yyyy - HH:MM")}
                 </div>
             </div>
         </div>
