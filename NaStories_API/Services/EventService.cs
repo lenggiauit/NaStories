@@ -124,7 +124,7 @@ namespace NaStories.API.Services
 
                 string smtpPwd = EncryptionHelper.Decrypt(_appSettings.SmtpPass, Constants.PassDecryptKey);
                 await _emailService.Send(_appSettings.MailAdmin,
-                    "Hủy Mock Interview ", string.Format("User Email: {0}", userName), smtpPwd);
+                    "Hủy Private Talk ", string.Format("User Email: {0}", userName), smtpPwd);
             }
              
             return result;
