@@ -21,9 +21,9 @@ const Home: React.FC = (): ReactElement => {
             <Layout isPublic={true}>
                 <CoverHeader />
                 <Introduce />
-                <YoutubeCarousel />
-                <BlogCarousel />
                 <Event />
+                <YoutubeCarousel />
+                <BlogCarousel /> 
                 <Footer />
             </Layout>
 
