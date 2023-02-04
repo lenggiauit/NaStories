@@ -201,7 +201,12 @@ namespace NaStories.API.Persistence.Repositories
                     (c, cus) => new Conversation()
                     {
                         Id = c.Id,
-                        Title = c.Title,
+                        Title = String.Join(",", 
+                        _context.ConversationUsers
+                            .Where(c1 => c1.ConversationId.Equals(c.Id) && c1.UserId != request.Payload.UserId)
+                            .Join(_context.User, 
+                            c2 => c2.UserId , u1=> u1.Id, 
+                            (c2, u1) => new string(!string.IsNullOrEmpty( u1.FullName) ? u1.FullName : u1.Email ) ).ToList()),
                         LastMessage = c.LastMessage,
                         CreatedBy = c.CreatedBy,
                         CreatedDate = c.CreatedDate,
