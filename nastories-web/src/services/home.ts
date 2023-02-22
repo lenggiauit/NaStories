@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ApiRequest, ApiResponse, AppSetting } from "../types/type";
 import { ResultCode } from '../utils/enums';
 import { getLoggedUser } from '../utils/functions'; 
+import { FeedbackResource } from './resources/feedbackResource';
  
 import { YoutubeVideoResource } from './resources/youtubeVideoResource';
  
@@ -44,9 +45,19 @@ export const HomeService = createApi({
                 return response;
             },
         }), 
+
+        GetFeedbackList: builder.query<ApiResponse<FeedbackResource[]>, null>({
+            query: () => ({
+                url: 'event/GetFeedbackList',
+                method: 'GET'
+            }),
+            transformResponse(response: ApiResponse<FeedbackResource[]>) {
+                return response;
+            },
+        }),
  
     })
 });
 
 
-export const {  useGetYoutubevideosQuery, useSendContactMutation   } = HomeService;
+export const {  useGetYoutubevideosQuery, useSendContactMutation, useGetFeedbackListQuery   } = HomeService;

@@ -12,6 +12,7 @@ import Introduce from '../../components/introduce';
 import CoverHeader from '../../components/coverHeader';
 import YoutubeCarousel from '../../components/youtubeCarousel';
 import BlogCarousel from '../../components/blog/blogCarousel';
+import FeedbackView from '../../components/feedbackView';
 
 
 const Home: React.FC = (): ReactElement => {
@@ -22,6 +23,7 @@ const Home: React.FC = (): ReactElement => {
                 <CoverHeader />
                 <Introduce />
                 <Event />
+                <FeedbackView />
                 <YoutubeCarousel />
                 <BlogCarousel /> 
                 <Footer />

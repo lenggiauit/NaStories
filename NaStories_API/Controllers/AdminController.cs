@@ -428,6 +428,29 @@ namespace NaStories.API.Controllers
 
         }
 
+        [Permissions(PermissionConstant.ManageUser)]
+
+        [HttpPost("GetFeedbackList")]
+        public async Task<BaseResponse<List<FeedbackListResource>>> GetFeedbackList(BaseRequest<GetFeedbackRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                var (data, resultCode) = await _adminServices.GetFeedbackList(request);
+                if (data != null)
+                {
+                    return new BaseResponse<List<FeedbackListResource>>(_mapper.Map<List<Feedback>, List<FeedbackListResource>>(data));
+                }
+                else
+                {
+                    return new BaseResponse<List<FeedbackListResource>>(Constants.ErrorMsg, resultCode);
+                }
+            }
+            else
+            {
+                return new BaseResponse<List<FeedbackListResource>>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
+
 
     }
 }

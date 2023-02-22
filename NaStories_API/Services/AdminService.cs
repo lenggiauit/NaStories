@@ -91,6 +91,11 @@ namespace NaStories.API.Services
             return await _adminRepository.GetEventAvailableDate(_appSettings.BookingAdjustmentDay);
         }
 
+        public async Task<(List<Feedback>, ResultCode)> GetFeedbackList(BaseRequest<GetFeedbackRequest> request)
+        {
+            return await _adminRepository.GetFeedbackList(request);
+        }
+
         public async Task<(MockInterview, ResultCode)> GetMockInterviewDetail(Guid id)
         {
             return await _adminRepository.GetMockInterviewDetail(id);

@@ -21,6 +21,6 @@ namespace NaStories.API.Domain.Services
         Task<ResultCode> UpdateProfile(Guid userId, BaseRequest<UpdateProfileRequest> request);
         Task<ResultCode> UpdateUserAvatar(Guid userId,BaseRequest<UpdateUserAvatarRequest> request);
         Task<ResultCode> CheckEmailWithUser(string email, Guid id);
-        
+        Task<ResultCode> SendFeedback(BaseRequest<FeedbackRequest> request, Guid userId);
     }
 }

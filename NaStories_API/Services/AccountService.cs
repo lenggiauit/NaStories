@@ -46,6 +46,11 @@ namespace NaStories.API.Services
             return await _accountServiceRepository.CheckUserName(userName);
         }
 
+        public async Task<ResultCode> SendFeedback(BaseRequest<FeedbackRequest> request, Guid userId)
+        {
+            return await _accountServiceRepository.SendFeedback(request, userId);
+        }
+
         public async Task<ResultCode> ForgotPassword(string email)
         {
             var user = await _accountServiceRepository.GetByEmail(email);

@@ -37,7 +37,7 @@ namespace NaStories_API
             services.AddHttpContextAccessor();
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(DelayFilter));
+               // options.Filters.Add(typeof(DelayFilter));
             })
             .AddNewtonsoftJson();
             // Use microsoft DistributedMemoryCache

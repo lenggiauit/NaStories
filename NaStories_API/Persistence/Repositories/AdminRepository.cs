@@ -1039,5 +1039,38 @@ namespace NaStories.API.Persistence.Repositories
                 return ResultCode.Error;
             }
         }
+
+        public async Task<(List<Feedback>, ResultCode)> GetFeedbackList(BaseRequest<GetFeedbackRequest> request)
+        {
+            return (null, ResultCode.Error);
+            //try
+            //{
+            //    var query = _context.Feedback.AsQueryable();
+
+            //    var totalRow = await query.CountAsync();
+
+            //    return (await query
+            //        .Include(f => f.User) 
+            //        .AsNoTracking() 
+            //        .Select(p => new Feedback()
+            //        {
+            //            Id = p.Id,
+            //            User = p.User,
+            //            Rating = p.Rating,
+            //            Comment = p.Comment,
+            //            CreatedDate = p.CreatedDate,
+            //            TotalRows = totalRow
+            //        })
+            //        .OrderByDescending(p => p.CreatedDate)
+            //        .GetPagingQueryable(request.MetaData)
+            //        .ToListAsync(), ResultCode.Success);
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError("Error at GetFeedbackList method: " + ex.Message);
+            //    return (null, ResultCode.Error);
+            //}
+        }
     }
 }

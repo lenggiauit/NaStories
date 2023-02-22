@@ -158,6 +158,14 @@ const ResourcesPage = lazy(() => {
         .then(([moduleExports]) => moduleExports);
 });
 
+const FeedbackPage = lazy(() => {
+    return Promise.all([
+        import("../views/feedback"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
  
 // Admin 
 const AdminBlogCategory = lazy(() => {
@@ -233,6 +241,15 @@ const AdminMockInterviewDetailPage = lazy(() => {
         .then(([moduleExports]) => moduleExports);
 });
 
+const AdminFeedback = lazy(() => {
+    return Promise.all([
+        import("../views/admin/feedback"),
+        new Promise(resolve => setTimeout(resolve, delayTime))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
+
+
 
 const Page404 = lazy(() => {
     return Promise.all([
@@ -287,6 +304,8 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/private-talk" exact component={PrivateTalk} /> 
                         <Route path="/mock-interview" exact component={MockInterview} /> 
 
+                        <Route path="/feedback" exact component={FeedbackPage} />
+                         
                         <Route path="/termOfService" exact component={TermOfService} />
                         {/* Admin  */} 
                         <Route path="/admin/blog/category" exact component={AdminBlogCategory} />
@@ -298,7 +317,7 @@ const IndexRouter: React.FC = (): ReactElement => {
                         <Route path="/admin/mock-interview" exact component={AdminMockInterview} /> 
                         <Route path="/admin/mock-interview/:id" exact component={AdminMockInterviewDetailPage} /> 
                         <Route path="/admin/manageResources" exact component={AdminResources} /> 
- 
+                        <Route path="/admin/manageFeedback" exact component={AdminFeedback} /> 
                         {/* User  */} 
                         <Route path="/user/private-talk" exact component={UserPrivateTalk} />
                         <Route path="/user/private-talk/:id" exact component={UserPrivateTalk} />

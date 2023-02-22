@@ -13,6 +13,7 @@ import { MockInterview } from './models/admin/mockInterview';
 import { User } from './models/user';
 import { UserResource } from './resources/userResource';
 import { FileSharing } from './models/admin/fileSharing';
+import { FeedbackResource } from './resources/feedbackResource';
  
 let appSetting: AppSetting = require('../appSetting.json');
 
@@ -311,6 +312,36 @@ export const AdminService = createApi({
             },
         }),
 
+        GetFeedbackList:  builder.mutation<ApiResponse<FeedbackResource[]>, ApiRequest<{keywords: any}>>({
+            query: (payload) => ({
+                url: 'admin/GetFeedbackList',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<FeedbackResource[]>) {
+                return response;
+            },
+        }),
+        UpdateFeedbackStatus : builder.mutation<ApiResponse<ResultCode>, ApiRequest<any>>({
+            query: (payload) => ({
+                url: 'admin/UpdateFeedbackStatus',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
+        deleteFeedback : builder.mutation<ApiResponse<ResultCode>, ApiRequest<any>>({
+            query: (payload) => ({
+                url: 'admin/RemoveFeedback',
+                method: 'post',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }),
 
 
 
@@ -341,5 +372,8 @@ export const { useGetCategoryMutation,
     useDeleteReasonChangeMockInterviewMutation,
     useDeleteReasonChangePrivateTalkMutation,
     useGetAdminFileSharingMutation,
-    useCreateEditFileSharingMutation
+    useCreateEditFileSharingMutation,
+    useGetFeedbackListMutation,
+    useDeleteFeedbackMutation,
+    useUpdateFeedbackStatusMutation
  } = AdminService;

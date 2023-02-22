@@ -38,7 +38,7 @@ namespace NaStories.API.Mapping
             CreateMap<EventRequestChangeReason, EventRequestChangeReasonResource>();
             //
             CreateMap<FileSharing, FileSharingResource > ();
-
+            CreateMap<Feedback, FeedbackListResource>();
 
         }
     }

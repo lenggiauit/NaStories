@@ -22,5 +22,6 @@ namespace NaStories.API.Domain.Repositories
         Task<bool> UpdateUserAvatar(Guid id, string avartarUrl);
         Task<ResultCode> CheckEmailWithUser(string email, Guid id);
         Task<ResultCode> Register(string name, string email, string password, string fullname, string avatar);
+        Task<ResultCode> SendFeedback(BaseRequest<FeedbackRequest> request, Guid userId);
     }
 }

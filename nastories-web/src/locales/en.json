@@ -147,5 +147,9 @@
     "[RequestChangePrivateTalkSuccess]": "Request Change Private Talk Success",
     "[UpdateProfileSuccess]": "Update Profile Success",
     "[UpdateUserAvatarSuccess]": "Update User Avatar Success",
-    "btn_search": "Search"
+    "btn_search": "Search",
+    "header_feedback": "Feedback",
+    "nav_admin_manageFeedback": "Manage feedback",
+    "delete_msg": "Are you sure you want to delete?",
+    "header_feedback_title": "What member say about us"
 }

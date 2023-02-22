@@ -99,6 +99,36 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
+        public async Task<ResultCode> SendFeedback(BaseRequest<FeedbackRequest> request, Guid userId)
+        {
+            try
+            {
+                var feedback = await _context.Feedback.Where(f => f.UserId.Equals(userId)).FirstOrDefaultAsync();
+                if(feedback == null)
+                {
+                    Feedback newFeedback = new Feedback();
+                    newFeedback.Id = Guid.NewGuid();
+                    newFeedback.CreatedBy = userId;
+                    newFeedback.UserId = userId;
+                    newFeedback.CreatedDate = DateTime.Now;
+                    newFeedback.Comment = request.Payload.YourFeedback;
+                    newFeedback.Rating = request.Payload.Rating;
+                    await _context.Feedback.AddAsync(newFeedback);
+                    _context.SaveChanges();
+                    return ResultCode.Success; 
+                }
+                else
+                {
+                    return ResultCode.Invalid;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Feedback:" + ex.Message);
+                return ResultCode.Error;
+            }
+        }
+
         public async Task<User> GetByEmail(string email)
         {
             try

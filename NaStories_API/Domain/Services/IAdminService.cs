@@ -35,5 +35,6 @@ namespace NaStories.API.Domain.Services
         Task<(List<User>, ResultCode)> GetUserList();
         Task<ResultCode> DeleteReasonChangeMockInterview(Guid id, Guid guid);
         Task<ResultCode> DeleteReasonChangePrivateTalk(Guid id, Guid guid);
+        Task<(List<Feedback>, ResultCode)> GetFeedbackList(BaseRequest<GetFeedbackRequest> request);
     }
 }

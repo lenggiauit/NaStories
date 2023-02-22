@@ -144,6 +144,13 @@ const Navigation: React.FC<Props> = ({ isPublic, navCssClass, currentUser }) => 
                                                     <span className="ml-2"><Translation tid="nav_admin_manageUser" /></span>
                                                 </a>
                                                 </li>
+                                                <li><hr className="dropdown-divider" /></li> 
+                                                <li className="dropdown-submenu">
+                                                <a className="dropdown-item" href="/admin/manageFeedback">
+                                                    <i className="bi bi-hand-thumbs-up" style={{ fontSize: 18 }}></i>
+                                                    <span className="ml-2"><Translation tid="nav_admin_manageFeedback" /></span>
+                                                </a>
+                                                </li>
                                             </ul>
                                         </li>
                                     </>

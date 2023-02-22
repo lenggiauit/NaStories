@@ -41,6 +41,8 @@ namespace NaStories.API.Domain.Entities
         public virtual DbSet<EventCancelReason> EventCancelReason { get; set; } 
         public virtual DbSet<FileSharing> FileSharing { get; set; }
 
+        public virtual DbSet<Feedback> Feedback { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLoggerFactory(loggerFactory); 

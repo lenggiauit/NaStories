@@ -324,6 +324,19 @@ namespace NaStories.API.Controllers
                 return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
             }
         }
+         
+        [HttpPost("SendFeedback")]
+        public async Task<BaseResponse<ResultCode>> SendFeedback([FromBody] BaseRequest<FeedbackRequest> request)
+        {
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _accountServices.SendFeedback(request, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+        }
 
 
 

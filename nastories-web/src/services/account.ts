@@ -126,6 +126,16 @@ export const UserService = createApi({
                 return response;
             },
         }),
+        SendFeedback:  builder.mutation<ApiResponse<ResultCode>, ApiRequest<{rating: any, yourFeedback: any}>>({
+            query: (payload) => ({
+                url: 'account/SendFeedback',
+                method: 'POST',
+                body: payload
+            }),
+            transformResponse(response: ApiResponse<ResultCode>) {
+                return response;
+            },
+        }), 
 
 
     
@@ -140,7 +150,8 @@ export const {
     useRequestChangePrivateTalkMutation,
     useGetMockInterviewListQuery,
     useRemoveMockInterviewMutation,
-    useRequestChangeMockInterviewMutation
+    useRequestChangeMockInterviewMutation,
+    useSendFeedbackMutation
 
 } = UserService;
 

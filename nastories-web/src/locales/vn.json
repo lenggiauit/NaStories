@@ -117,6 +117,9 @@
     "OrRegisterWith": "Hoặc",
     "RegisterSuccessMsg": "Chúc mừng, Bạn đã đăng ký thành viên thành công, giờ bạn có thể ",
     "btn_search": "Tìm kiếm",
-    "heading_categoryList": "Category List"
-    
+    "heading_categoryList": "Category List",
+    "header_feedback": "Nhận xét về Na’s Stories",
+    "nav_admin_manageFeedback": "Quản lý feedback",
+    "delete_msg": "Bạn có chắc muốn xóa?",
+    "header_feedback_title": "Nhận xét về Na’s Stories"
 }
