@@ -172,7 +172,17 @@ namespace NaStories.API.Domain.Entities
                 entity.Property(e => e.Name).HasMaxLength(100);
 
             });
- 
+
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Comment).HasMaxLength(5000);
+
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

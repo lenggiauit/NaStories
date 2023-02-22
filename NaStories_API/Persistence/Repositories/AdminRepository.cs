@@ -1041,36 +1041,83 @@ namespace NaStories.API.Persistence.Repositories
         }
 
         public async Task<(List<Feedback>, ResultCode)> GetFeedbackList(BaseRequest<GetFeedbackRequest> request)
+        { 
+            try
+            {
+                var query = _context.Feedback.AsQueryable();
+
+                var totalRow = await query.CountAsync();
+
+                return (await query
+                    .Include(f => f.User)
+                    .AsNoTracking()
+                    .Select(p => new Feedback()
+                    {
+                        Id = p.Id,
+                        User = p.User,
+                        IsPulished = p.IsPulished,
+                        Rating = p.Rating,
+                        Comment = p.Comment,
+                        CreatedDate = p.CreatedDate,
+                        TotalRows = totalRow
+                    })
+                    .OrderByDescending(p => p.CreatedDate)
+                    .GetPagingQueryable(request.MetaData)
+                    .ToListAsync(), ResultCode.Success);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetFeedbackList method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
+        public async Task<ResultCode> RemoveFeedback(Guid id, Guid userId)
         {
-            return (null, ResultCode.Error);
-            //try
-            //{
-            //    var query = _context.Feedback.AsQueryable();
+            try
+            {
+                var fb = await _context.Feedback.Where(f => f.Id.Equals(id)).FirstOrDefaultAsync();
+                if (fb != null)
+                {
+                    _context.Feedback.Remove(fb);
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+                else
+                {
+                    return ResultCode.Invalid;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at RemoveFeedback method: " + ex.Message);
+                return ResultCode.Error;
+            }
+        }
 
-            //    var totalRow = await query.CountAsync();
-
-            //    return (await query
-            //        .Include(f => f.User) 
-            //        .AsNoTracking() 
-            //        .Select(p => new Feedback()
-            //        {
-            //            Id = p.Id,
-            //            User = p.User,
-            //            Rating = p.Rating,
-            //            Comment = p.Comment,
-            //            CreatedDate = p.CreatedDate,
-            //            TotalRows = totalRow
-            //        })
-            //        .OrderByDescending(p => p.CreatedDate)
-            //        .GetPagingQueryable(request.MetaData)
-            //        .ToListAsync(), ResultCode.Success);
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError("Error at GetFeedbackList method: " + ex.Message);
-            //    return (null, ResultCode.Error);
-            //}
+        public async Task<ResultCode> UpdateFeedbackStatus(Guid id, Guid userId)
+        {
+            try
+            {
+                var fb = await _context.Feedback.Where(f => f.Id.Equals(id)).FirstOrDefaultAsync();
+                if (fb != null)
+                {
+                    fb.IsPulished = !fb.IsPulished;
+                    _context.Feedback.Update(fb); 
+                    await _context.SaveChangesAsync();
+                    return ResultCode.Success;
+                }
+                else
+                {
+                    return ResultCode.Invalid;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at UpdateFeedbackStatus method: " + ex.Message);
+                return ResultCode.Error;
+            }
         }
     }
 }

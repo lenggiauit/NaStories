@@ -29,7 +29,10 @@ namespace NaStories.API.Services
             _clientFactory = clientFactory;
         }
 
-
+        public Task<(List<Feedback>, ResultCode)> GetFeedbackList()
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<(List<YoutubeVideo>, ResultCode)> GetYoutubeVideos()
         {

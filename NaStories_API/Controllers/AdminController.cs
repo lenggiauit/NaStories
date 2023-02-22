@@ -451,6 +451,38 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [Permissions(PermissionConstant.ManageUser)]
+        [HttpPost("UpdateFeedbackStatus")]
+        public async Task<BaseResponse<ResultCode>> UpdateFeedbackStatus(BaseRequest<Guid> request)
+        {
+
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.UpdateFeedbackStatus(request.Payload, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+
+        }
+
+        [Permissions(PermissionConstant.ManageUser)]
+        [HttpPost("RemoveFeedback")]
+        public async Task<BaseResponse<ResultCode>> RemoveFeedback(BaseRequest<Guid> request)
+        {
+
+            if (ModelState.IsValid)
+            {
+                return new BaseResponse<ResultCode>(await _adminServices.RemoveFeedback(request.Payload, GetCurrentUserId()));
+            }
+            else
+            {
+                return new BaseResponse<ResultCode>(Constants.InvalidMsg, ResultCode.Invalid);
+            }
+
+        }
+
 
     }
 }

@@ -136,9 +136,19 @@ namespace NaStories.API.Services
             return await _adminRepository.RemoveEventAvailableDate(request, userId);
         }
 
+        public async Task<ResultCode> RemoveFeedback(Guid id, Guid userId)
+        {
+            return await _adminRepository.RemoveFeedback(id, userId);
+        }
+
         public async Task<ResultCode> UpdateBlogPostStatus(BaseRequest<UpdateBlogPostStatusRequest> request, Guid userId)
         {
             return await _adminRepository.UpdateBlogPostStatus(request, userId);
+        }
+
+        public async Task<ResultCode> UpdateFeedbackStatus(Guid id, Guid userId)
+        {
+            return await _adminRepository.UpdateFeedbackStatus(id, userId);
         }
 
         public async Task<ResultCode> UpdateMockInterviewStatus(UpdateMockInterviewStatusRequest payload, Guid userId)

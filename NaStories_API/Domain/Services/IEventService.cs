@@ -18,5 +18,6 @@ namespace NaStories.API.Domain.Services
         Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(Guid userId);
         Task<ResultCode> RemoveMockInterview(Guid id, string reason, Guid userId, string userName);
         Task<ResultCode> RequestChangeMockInterview(BaseRequest<RequestChangeEventRequest> request, Guid userId, string userName);
+        Task<(List<Feedback>, ResultCode)> GetFeedbackList();
     }
 }

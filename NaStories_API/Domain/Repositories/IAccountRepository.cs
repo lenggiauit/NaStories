@@ -1,6 +1,6 @@
 ﻿using NaStories.API.Domain.Entities;
 using NaStories.API.Domain.Helpers;
-using NaStories.API.Domain.Services.Communication.Request;
+using NaStories.API.Domain.Services.Communication.Request; 
 using System;
 using System.Collections.Generic;
 using System.Linq;

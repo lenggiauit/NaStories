@@ -215,6 +215,26 @@ namespace NaStories.API.Persistence.Repositories
             }
         }
 
+        public async Task<(List<Feedback>, ResultCode)> GetFeedbackList()
+        {
+            try
+            {
+                return (await _context.Feedback
+                    .Include(f => f.User)
+                    .Where(f => f.IsPulished)
+                    .OrderBy(f => f.CreatedDate)
+                    .AsNoTracking()
+                    .OrderBy(f => Guid.NewGuid())
+                    .Take(2) 
+                    .ToListAsync(), ResultCode.Success); 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error at GetFeedbackList method: " + ex.Message);
+                return (null, ResultCode.Error);
+            }
+        }
+
         public async Task<(List<MockInterview>, ResultCode)> GetMockInterviewList(Guid userId)
         {
             try

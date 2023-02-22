@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using NaStories.API.Domain.Entities;
 using NaStories.API.Domain.Helpers;
 using NaStories.API.Domain.Repositories;
-using NaStories.API.Domain.Services.Communication.Request;
+using NaStories.API.Domain.Services.Communication.Request; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -192,7 +192,8 @@ namespace NaStories.API.Persistence.Repositories
         public async Task<User> Login(string name, string password)
         {
             try
-            {
+            { 
+
                 return await _context.User.AsNoTracking()
                 .Where(a => (a.UserName.Equals(name) || a.Email.Equals(name)) && a.Password.Equals(password))
                 

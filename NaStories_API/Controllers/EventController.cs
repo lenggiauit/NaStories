@@ -88,8 +88,25 @@ namespace NaStories.API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetFeedbackList")]
+        public async Task<BaseResponse<List<FeedbackListResource>>> GetFeedbackList()
+        {
 
-        
+            var (data, resultCode) = await _eventService.GetFeedbackList();
+            if (data != null)
+            {
+                return new BaseResponse<List<FeedbackListResource>>(_mapper.Map<List<Feedback>, List<FeedbackListResource>>(data));
+            }
+            else
+            {
+                return new BaseResponse<List<FeedbackListResource>>(Constants.ErrorMsg, resultCode);
+            }
+
+        }
+
+
+
 
 
     }
